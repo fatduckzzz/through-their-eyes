@@ -434,7 +434,6 @@ var I18N = {
     "wins.cs.s5.p": "The redesign gives each app a dominant colour and a unique silhouette: a red envelope, a green triangle, a blue calendar, a yellow camera. Recognition no longer depends on reading hue alone.",
     "wins.w1.app2": "Spotify dot",
     "wins.w1.app3": "Trello stripes",
-
     "wins.w2.os1": "iOS",
     "wins.w2.os2": "Android",
     "wins.cs.l0": "Before 2009: colour only",
@@ -477,7 +476,10 @@ var I18N = {
     "done.check.2": "Check contrast. WCAG AA is the minimum, not the ceiling.",
     "done.check.3": "Ask someone with CVD to test your design. One conversation beats a hundred audits.",
     "wins.cs.l4d": "Meet",
-    "wins.cs.l5d": "Meet"
+    "wins.cs.l5d": "Meet",
+    "gate.title": "Completion code",
+    "gate.lede": "When you have been through the experience, tap below to generate your completion code and paste it back into the questionnaire.",
+    "gate.btn": "Get completion code"
   },
   "zh": {
     "common.continue": "继续 →",
@@ -914,7 +916,6 @@ var I18N = {
     "wins.cs.s5.p": "重新设计后，每个应用都有更明显的轮廓：红色信封、绿色三角、蓝色日历、黄色相机。识别图标时，就不必只盯着颜色。",
     "wins.w1.app2": "Spotify 圆点",
     "wins.w1.app3": "Trello 条纹",
-
     "wins.w2.os1": "iOS",
     "wins.w2.os2": "Android",
     "wins.cs.l0": "2009 年前：仅依赖颜色",
@@ -957,6 +958,9 @@ var I18N = {
     "done.check.2": "检查对比度。WCAG AA 只是最低线，不是满分。",
     "done.check.3": "找色觉障碍者试一次。一次真实反馈，比空想有用得多。",
     "wins.cs.l4d": "Meet",
-    "wins.cs.l5d": "Meet"
+    "wins.cs.l5d": "Meet",
+    "gate.title": "完成码",
+    "gate.lede": "完整体验结束后，点击下方按钮获取完成码，并将其填回问卷。",
+    "gate.btn": "获取完成码"
   }
 };
