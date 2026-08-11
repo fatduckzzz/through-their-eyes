@@ -1,3 +1,14 @@
+  /* Self-hosted Latin faces. Google Fonts is blocked in mainland China, so the
+     external stylesheet used to stall first paint for the study population. */
+  @font-face{font-family:"Fraunces";src:url("assets/fonts/fraunces-latin.woff2") format("woff2");
+    font-weight:300 900;font-style:normal;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+  @font-face{font-family:"Fraunces";src:url("assets/fonts/fraunces-italic-latin.woff2") format("woff2");
+    font-weight:300 900;font-style:italic;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+  @font-face{font-family:"Hanken Grotesk";src:url("assets/fonts/hanken-latin.woff2") format("woff2");
+    font-weight:300 800;font-style:normal;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+  @font-face{font-family:"Spline Sans Mono";src:url("assets/fonts/spline-mono-latin.woff2") format("woff2");
+    font-weight:400 500;font-style:normal;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+
   :root{
     --ink:#08080b; --ink-2:#0e0e13; --card:#121219;
     --paper:#f3efe6; --dim:#ddd8cc; --mute:#b0aaa0; --line:#2a2a34;
@@ -5,7 +16,13 @@
     --serif:"Fraunces",Georgia,serif; --sans:"Hanken Grotesk",system-ui,sans-serif; --mono:"Spline Sans Mono",ui-monospace,monospace;
     --accent:var(--gold);
   }
-  html[lang="zh"]{ --serif:"Noto Serif SC",serif; --sans:"Noto Sans SC",system-ui,sans-serif; }
+  /* CJK uses the system stack: PingFang SC ships with macOS/iOS, Microsoft YaHei
+     with Windows, Noto Sans CJK SC with Android and most Linux desktops. Nothing
+     to download, and nothing that can fail behind the Great Firewall. */
+  html[lang="zh"]{
+    --serif:"Songti SC","SimSun","Noto Serif CJK SC","Source Han Serif SC",serif;
+    --sans:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC","Source Han Sans SC",system-ui,sans-serif;
+  }
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%}
   body{background:var(--ink);color:var(--paper);font-family:var(--sans);font-weight:330;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;text-shadow:0 1px 2px rgba(0,0,0,.25)}
@@ -23,7 +40,7 @@
   body::before{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(120% 90% at 50% -10%,transparent 55%,rgba(0,0,0,.6) 100%)}
   body::after{content:"";position:fixed;inset:-50%;z-index:2;pointer-events:none;opacity:.045;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:grain 7s steps(6) infinite}
   @keyframes grain{0%{transform:translate(0,0)}25%{transform:translate(-4%,3%)}50%{transform:translate(3%,-2%)}75%{transform:translate(-2%,4%)}100%{transform:translate(0,0)}}
-  #hud{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;align-items:center;justify-content:space-between;padding:14px 22px;backdrop-filter:blur(10px);background:linear-gradient(180deg,rgba(8,8,11,.9),rgba(8,8,11,0));transition:.4s;opacity:0;transform:translateY(-12px);pointer-events:none}
+  #hud{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;align-items:center;justify-content:space-between;padding:14px 22px;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);background:linear-gradient(180deg,rgba(8,8,11,.9),rgba(8,8,11,0));transition:.4s;opacity:0;transform:translateY(-12px);pointer-events:none}
   #hud.show{opacity:1;transform:none;pointer-events:auto}
   #hud .left{display:flex;align-items:center;gap:14px}
   #hud .chapter{font-family:var(--serif);font-style:italic;font-size:1.08rem}
@@ -34,18 +51,18 @@
   #hud .fr b{color:var(--gold);font-weight:500}
   #hud .badge{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;display:flex;align-items:center;gap:7px;color:var(--dim);white-space:nowrap;margin-right:74px}
   #hud .badge .dot{width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent)}
-  #langtoggle{position:fixed;top:13px;right:18px;z-index:60;display:flex;border:1px solid var(--line);border-radius:30px;overflow:hidden;background:rgba(8,8,11,.7);backdrop-filter:blur(8px)}
+  #langtoggle{position:fixed;top:13px;right:18px;z-index:60;display:flex;border:1px solid var(--line);border-radius:30px;overflow:hidden;background:rgba(8,8,11,.7);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
   #langtoggle button{background:none;border:none;color:var(--mute);font-family:var(--mono);font-size:11px;letter-spacing:.08em;padding:7px 12px;transition:.2s}
   #langtoggle button.on{background:var(--paper);color:#000}
   #prog{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--protan),var(--gold),var(--deutan),var(--tritan));width:0;z-index:41;transition:width .5s ease}
-  #quicknav{position:fixed;left:50%;bottom:18px;z-index:58;transform:translateX(-50%);display:flex;gap:6px;max-width:calc(100vw - 28px);padding:7px;border:1px solid rgba(255,255,255,.12);border-radius:999px;background:rgba(8,8,11,.74);backdrop-filter:blur(12px);box-shadow:0 18px 55px rgba(0,0,0,.35);overflow-x:auto;scrollbar-width:none}
+  #quicknav{position:fixed;left:50%;bottom:18px;z-index:58;transform:translateX(-50%);display:flex;gap:6px;max-width:calc(100vw - 28px);padding:7px;border:1px solid rgba(255,255,255,.12);border-radius:999px;background:rgba(8,8,11,.74);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:0 18px 55px rgba(0,0,0,.35);overflow-x:auto;scrollbar-width:none}
   #quicknav::-webkit-scrollbar{display:none}
   .qnav-btn{flex:0 0 auto;border:0;border-radius:999px;background:transparent;color:var(--mute);padding:9px 13px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;transition:background .2s,color .2s,transform .2s}
   .qnav-btn:hover{color:var(--paper);background:rgba(255,255,255,.06)}
   .qnav-btn.active{background:var(--paper);color:#07070a;box-shadow:0 6px 18px rgba(243,239,230,.18)}
   html[lang="zh"] .qnav-btn{font-family:var(--sans);letter-spacing:.06em;font-weight:500}
-  main{position:relative;min-height:100vh}
-  .screen{min-height:100vh;display:none;flex-direction:column;justify-content:center;align-items:center;padding:96px 6vw 120px;text-align:center}
+  main{position:relative;min-height:100vh;min-height:100dvh}
+  .screen{min-height:100vh;min-height:100dvh;display:none;flex-direction:column;justify-content:center;align-items:center;padding:96px 6vw 120px;text-align:center}
   .screen.active{display:flex;animation:fadeUp .7s cubic-bezier(.2,.7,.2,1)}
   @media(max-width:620px){#quicknav{left:10px;right:10px;bottom:12px;transform:none;border-radius:18px;justify-content:flex-start}.qnav-btn{padding:8px 11px;font-size:10px}.screen{padding-bottom:132px}}
   @keyframes fadeUp{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
@@ -786,3 +803,39 @@ html[lang="zh"] #ctool .ct-img-panel-lbl{font-family:var(--sans);letter-spacing:
   #ctool .ct-cell{height:50px}
   #ctool .ct-code{display:none}
 }
+
+/* ============================================================================
+   Cross-platform compatibility layer (additive; keep at the bottom).
+   Added for the RCT deployment, where participants arrive on a wide mix of
+   Android/iOS phones and Windows/macOS desktops over Chinese mobile networks.
+   ========================================================================== */
+
+/* Touch targets. WCAG 2.2 SC 2.5.8 asks for 24x24 CSS px; Apple HIG asks for 44.
+   The quick-nav buttons measured 28 px tall and the language toggle 30 px, both
+   of which are easy to mis-tap on a phone — and quick-nav is primary navigation. */
+@media(pointer:coarse){
+  .qnav-btn{min-height:44px;padding:11px 15px}
+  #langtoggle button{min-height:44px;min-width:58px;padding:12px 14px}
+  .winsrc a,.bib a,.ev-src a{display:inline-block;padding:6px 0;min-height:32px}
+  .btn{padding:17px 28px}
+}
+
+/* Decorative hover states only where a real pointer exists. On touch screens a
+   :hover rule sticks after the tap, leaving elements visually "stuck". */
+@media(hover:none){
+  .btn:hover,.choice:hover,.vcard:hover,.brow:hover,.qnav-btn:hover,
+  .ct-preset:hover,.ct-cell:hover{transform:none}
+  #cursorDot,#cursorRing{display:none !important}
+}
+
+/* Completion-code gate (mirrors the control site so both arms look equivalent) */
+#gate{margin:38px auto 0;max-width:560px;padding:26px 24px;border:1px solid var(--line);
+  border-radius:16px;background:rgba(18,18,25,.6);text-align:center}
+#gate h3{font-family:var(--serif);font-weight:400;font-size:1.4rem;margin-bottom:8px}
+#gate p{color:var(--dim);font-size:.95rem;line-height:1.7}
+#gate .btn{margin-top:20px}
+#gate .btn:disabled{opacity:.45;cursor:not-allowed}
+#gateCode{display:none;margin:18px auto 6px;padding:14px 18px;border:1px dashed var(--gold);
+  border-radius:10px;font-family:var(--mono);font-size:1.5rem;letter-spacing:.18em;
+  color:var(--gold);user-select:all;-webkit-user-select:all;word-break:break-all}
+#gateStatus{margin-top:12px;font-size:.85rem;color:var(--mute)}

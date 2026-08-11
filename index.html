@@ -4,12 +4,13 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Through Their Eyes — A Day in Their Eyes</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Hanken+Grotesk:wght@300..800&family=Noto+Serif+SC:wght@300;400;600;900&family=Noto+Sans+SC:wght@300;400;500&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Fonts are self-hosted (see @font-face in style.css). Google Fonts is unreachable
+     from mainland China, where this study is run: the request would block text
+     rendering until it times out. Latin faces ship in assets/fonts/ (~220 KB);
+     CJK falls back to the system stack, which is preinstalled on every target OS. -->
 <link rel="stylesheet" href="style.css?v=2">
 </head>
-<body data-vision="normal">
+<body data-vision="normal" data-arm="narrative">
 <div id="cursorDot"></div><div id="cursorRing"></div>
 
 <canvas id="ambient" aria-hidden="true"></canvas>
@@ -1118,12 +1119,23 @@
           <li data-i="done.check.3"></li>
         </ul>
       </div>
+      <!-- 完成码闸门。标记必须与对照站 (#gate/#gateBtn/#gateCode/#gateStatus)
+           逐字一致，tracker.js 才能以同一套逻辑驱动两组。 -->
+      <div id="gate">
+        <h3 data-i="gate.title"></h3>
+        <p data-i="gate.lede"></p>
+        <button class="btn" id="gateBtn" disabled data-i="gate.btn"></button>
+        <div id="gateCode" aria-live="polite"></div>
+        <p id="gateStatus"></p>
+      </div>
+
       <div class="done-actions"><button class="btn" id="restartBtn" data-i="done.restart"></button></div>
       <footer data-i-html="done.footer"></footer>
     </div>
   </section>
 </main>
 <script src="i18n.js"></script>
+<script src="tracker.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

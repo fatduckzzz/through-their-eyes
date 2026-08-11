@@ -21,6 +21,9 @@ Key facts:
 ├── app.js            # All JavaScript: state, navigation, interactions, colour simulator, effects
 ├── i18n.js           # Translation dictionary: var I18N = { en: {...}, zh: {...} }
 ├── style.css         # All styling, animations, responsive breakpoints
+├── tracker.js        # RCT instrumentation: dwell timing, section coverage, completion code
+├── tools/
+│   └── decode_codes.py  # decodes completion codes from the questionnaire export
 ├── cividis.png       # Cividis colour-map reference image
 ├── wcag_aa.png       # WCAG AA conformance badge image
 └── assets/           # Icons, photos and screenshots used in the wins section
@@ -41,17 +44,23 @@ Key facts:
 
 ```html
 <script src="i18n.js"></script>
+<script src="tracker.js"></script>
 <script src="app.js"></script>
 ```
+
+`tracker.js` is byte-identical to the copy in the control repo — that is deliberate.
+Both arms of the trial must measure exposure the same way, otherwise the groups are
+not comparable. If you change it here, copy it there in the same commit.
 
 ## Technology stack
 
 - **HTML5** — semantic sections, inline SVG, ARIA attributes where appropriate.
 - **CSS3** — custom properties, flex/grid layouts, keyframe animations, `prefers-reduced-motion` media queries.
 - **Vanilla JavaScript (ES5-style)** — the code is wrapped in IIFEs and uses `var` so it runs in older browsers without transpilation.
-- **External resources**:
-  - Google Fonts (`fonts.googleapis.com` / `fonts.gstatic.com`).
-  - Several images hotlinked from Wikimedia Commons with inline SVG fallbacks.
+- **External resources**: none required at load time. Latin fonts are self-hosted in
+  `assets/fonts/` and CJK falls back to the system stack, because Google Fonts is
+  unreachable from mainland China where the study runs. A few images are still
+  hotlinked from Wikimedia Commons and have inline SVG fallbacks.
 - **No dependencies** such as React, Vue, Webpack, Vite, npm, etc.
 
 ## Runtime architecture
@@ -108,6 +117,17 @@ Before committing changes, manually verify at least:
 6. **Palette simulator**: add/remove colours, use presets, verify protan/deutan/tritan columns update.
 7. **External images**: where Wikimedia images fail, the inline SVG fallback should appear.
 8. **Console**: no JavaScript errors on initial load or during section transitions.
+
+## Study mode
+
+Append `?study=1` to run the page as the experimental arm of the trial:
+
+- CVD type is assigned **uniformly at random** instead of the prevalence-weighted
+  split the public build uses. Prevalence weighting would hand achromatopsia to
+  about 5% of participants — fewer than four people at n≈70 — which makes any
+  analysis stratified by type impossible.
+- `?pid=…` carries the questionnaire's response id so the completion code can be
+  matched back to the survey row.
 
 ## Deployment
 

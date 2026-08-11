@@ -66,6 +66,12 @@
     updateQuicknav(id);
     if(id==='sunset') prepSunset();
     if(id==='twist') setTimeout(animateTwist,120);
+    if(window.TTE){
+      TTE.set('ctoolOpened', id==='ctool' || TTE.dump().reported.ctoolOpened);
+      /* 单页切屏时 IntersectionObserver 只看得到当前这一屏，
+         这里补记一次，保证 sectionsSeen 覆盖真实的浏览路径 */
+      TTE.seen(id);
+    }
   }
   document.querySelectorAll('[data-go]').forEach(function(b){ b.addEventListener('click',function(){ show(b.getAttribute('data-go')); }); });
   updateQuicknav('hero');
@@ -84,11 +90,37 @@
     state.type=type; if(hiddenMode!==undefined) state.hidden=hiddenMode;
     body.setAttribute('data-vision',type); updateVisionBadge();
     document.querySelectorAll('#visionPills .pill').forEach(function(p){p.classList.toggle('sel',p.getAttribute('data-v')===type);});
+    if(window.TTE) TTE.set('cvdType', type);   // 记入完成码，供随机化均衡性检查
   }
+
+  /* ------------------------------------------------------------------
+     Study mode — ?study=1
+
+     公开版让访问者自选 CVD 类型，这在实验条件下不行：类型会变成组间
+     比较的混杂变量。加上 ?study=1 后，页面跳过自选、直接均匀随机分配
+     一种类型，并保留「揭晓」这一叙事装置（它属于体验的一部分，不是
+     混杂因素）。
+
+     注意公开版的 surprise 按钮用的是患病率加权（deutan 55% / protan 30%
+     / tritan 10% / achro 5%）。那对科普是对的，对实验不对：achro 只会
+     分到 5% 的人，按 n≈70 算不足 4 人，任何按类型分层的分析都做不了。
+     所以 study 模式改用均匀分配。
+     ------------------------------------------------------------------ */
+  var STUDY_MODE = /[?&]study=1/.test(location.search);
+  var TYPES = ['deutan','protan','tritan','achro'];
+
+  function randomType(uniform){
+    if(uniform) return TYPES[Math.floor(Math.random()*TYPES.length)];
+    var r=Math.random();
+    if(r<0.55) return 'deutan';
+    if(r<0.85) return 'protan';
+    if(r<0.95) return 'tritan';
+    return 'achro';
+  }
+
   document.querySelectorAll('.vcard').forEach(function(c){ c.addEventListener('click',function(){ setVision(c.getAttribute('data-type'),false); show('brief'); }); });
   document.getElementById('surpriseBtn').addEventListener('click',function(){
-    var r=Math.random(),tp; if(r<0.55)tp='deutan'; else if(r<0.85)tp='protan'; else if(r<0.95)tp='tritan'; else tp='achro';
-    setVision(tp,true); show('brief');
+    setVision(randomType(STUDY_MODE), true); show('brief');
   });
   document.getElementById('visionPills').addEventListener('click',function(e){
     var p=e.target.closest('.pill'); if(!p) return; state.hidden=false; setVision(p.getAttribute('data-v'));
@@ -381,7 +413,10 @@
       setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
     }
     var exportBtn=document.getElementById('ctExport');
-    if(exportBtn) exportBtn.addEventListener('click', exportReport);
+    if(exportBtn) exportBtn.addEventListener('click', function(){
+      exportReport();
+      if(window.TTE) TTE.set('ctoolExported', true);
+    });
 
     /* ---------- upload-your-own-image simulator (client-side only, nothing leaves the browser) ---------- */
     var IMG_MAXDIM=480;
@@ -449,7 +484,7 @@
     var imgInput=document.getElementById('ctImgInput');
     if(imgInput) imgInput.addEventListener('change', function(e){
       var f=e.target.files && e.target.files[0];
-      if(f) loadImageFile(f);
+      if(f){ loadImageFile(f); if(window.TTE) TTE.set('imgAnalysed', true); }
     });
 
     render();
@@ -573,8 +608,15 @@
     });
   }
 
+  /* Pointer-driven effects below (magnetic hover, 3D tilt) are meaningless on a
+     touch screen: mousemove only fires on tap, so the element lurches once and
+     then sticks. Click ripples and scroll reveal further down stay enabled. */
+  var finePointer = !window.matchMedia ||
+    (matchMedia('(hover:hover)').matches && matchMedia('(pointer:fine)').matches);
+
   /* ---------- magnetic hover ---------- */
   function magnetize(selector, strength){
+    if(!finePointer) return;
     document.querySelectorAll(selector).forEach(function(el){
       el.addEventListener('mousemove', function(e){
         var r = el.getBoundingClientRect();
@@ -594,7 +636,7 @@
   magnetize('.brow', 5);
 
   /* ---------- 3D tilt on scene illustrations ---------- */
-  document.querySelectorAll('.scene .stage').forEach(function(stage){
+  if(finePointer) document.querySelectorAll('.scene .stage').forEach(function(stage){
     var box = stage.querySelector('.world, .formworld');
     if(!box) return;
     stage.addEventListener('mousemove', function(e){
