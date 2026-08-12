@@ -842,16 +842,3 @@ html[lang="zh"] #ctool .ct-img-panel-lbl{font-family:var(--sans);letter-spacing:
 
 /* 复制按钮：沿用 .btn，紧跟在码后面 */
 #gateCopy{margin-top:12px}
-
-/* w2 的设置面板示意图，与对照站是同一份 assets/filter_settings.svg。
-
-   不反色：手机设置页本来就是白底，放在浅色底板上更像一张截图。
-   （最初试过 invert()，既被上面的 `.bviz img{filter:...}` 盖掉，
-   观感也不对——反色后成了一块黑板，不像手机界面。）
-   选择器用 `.bviz img.ossettings`：`.bviz img:not(.bimg)` 是 (0,2,1)，
-   `.bviz .ossettings` 只有 (0,2,0)，会被它的 width:100% 和
-   object-fit:cover 压过去，图会被拉满并裁切。 */
-.bviz img.ossettings{width:min(154px,44%);height:auto;display:block;
-  margin:16px auto 4px;padding:10px 12px;
-  background:#f3efe6;border-radius:12px;object-fit:contain;
-  box-shadow:0 10px 30px rgba(0,0,0,.45);filter:none}
