@@ -839,3 +839,6 @@ html[lang="zh"] #ctool .ct-img-panel-lbl{font-family:var(--sans);letter-spacing:
   border-radius:10px;font-family:var(--mono);font-size:1.5rem;letter-spacing:.18em;
   color:var(--gold);user-select:all;-webkit-user-select:all;word-break:break-all}
 #gateStatus{margin-top:12px;font-size:.85rem;color:var(--mute)}
+
+/* 复制按钮：沿用 .btn，紧跟在码后面 */
+#gateCopy{margin-top:12px}
