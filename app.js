@@ -1,5 +1,7 @@
 (function(){
-  var LANG='en';
+  /* 默认中文。被试全在国内，而对照站是 <html lang="zh-CN"> 的中文站——
+     两组的默认语言若不一致，语言本身就成了组间差异。右上角的切换保留。 */
+  var LANG='zh';
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   var html=document.documentElement, body=document.body;
   function t(key){ return (I18N[LANG] && I18N[LANG][key]!=null) ? I18N[LANG][key] : (I18N.en[key]||''); }
