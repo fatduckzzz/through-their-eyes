@@ -842,3 +842,9 @@ html[lang="zh"] #ctool .ct-img-panel-lbl{font-family:var(--sans);letter-spacing:
 
 /* 复制按钮：沿用 .btn，紧跟在码后面 */
 #gateCopy{margin-top:12px}
+
+/* study 模式：关掉自选，只留随机分配。
+   自选会让 CVD 类型变成组间比较的混杂变量；随机「揭晓」那一层叙事保留，
+   它属于体验本身，不是混杂因素。 */
+#choose.assigned-only .grid-types{display:none}
+#choose.assigned-only .surprise{margin-top:26px}

@@ -455,7 +455,9 @@ var I18N = {
     "wins.cs.l5d": "Meet",
     "gate.title": "Completion code",
     "gate.lede": "When you have been through the experience, tap below to generate your completion code and paste it back into the questionnaire.",
-    "gate.btn": "Get completion code"
+    "gate.btn": "Get completion code",
+    "choose.lede.study": "For this study a type of colour vision will be assigned to you at random, and you will wear it for the next twelve hours — the way most people live for years before they find out.",
+    "choose.surprise.study": "🎲 Assign me one — don’t tell me which"
   },
   "zh": {
     "common.continue": "继续 →",
@@ -913,6 +915,8 @@ var I18N = {
     "wins.cs.l5d": "Meet",
     "gate.title": "完成码",
     "gate.lede": "完整体验结束后，点击下方按钮获取完成码，并将其填回问卷。",
-    "gate.btn": "获取完成码"
+    "gate.btn": "获取完成码",
+    "choose.lede.study": "本次研究会随机分给你一种视角，跟着亚历克斯过完这一天。现实里，很多人也是过了很久，才知道自己看到的世界和别人不太一样。",
+    "choose.surprise.study": "🎲 随机分配一种，先别告诉我"
   }
 };

@@ -85,6 +85,20 @@
     state.type=type; if(hiddenMode!==undefined) state.hidden=hiddenMode;
     body.setAttribute('data-vision',type); updateVisionBadge();
     document.querySelectorAll('#visionPills .pill').forEach(function(p){p.classList.toggle('sel',p.getAttribute('data-v')===type);});
+  }
+
+  /* 分配 ≠ 切换。
+
+     记进完成码的必须是**一开始分配到的那一种**，只写一次。
+     无障碍实验室那一节允许来回切换视角（"也试试别的眼睛"），那是材料的
+     一部分、要保留；但它走的也是 setVision，早先把 TTE.set 写在 setVision
+     里，于是被试在实验室里点一下"全色盲"，完成码里记录的分配类型就被改成
+     了全色盲。问卷 M1 问的是"系统为您分配的类型"，两边就对不上了，随机化
+     的均衡性检查也就无从做起。 */
+  var ASSIGNED = null;
+  function assign(type,hiddenMode){
+    ASSIGNED = type;
+    setVision(type,hiddenMode);
     if(window.TTE) TTE.set('cvdType', type);   // 记入完成码，供随机化均衡性检查
   }
 
@@ -113,10 +127,24 @@
     return 'achro';
   }
 
-  document.querySelectorAll('.vcard').forEach(function(c){ c.addEventListener('click',function(){ setVision(c.getAttribute('data-type'),false); show('brief'); }); });
+  /* study 模式下真的关掉自选。
+
+     这里原本只把 randomType 的分布换成均匀，四张自选卡片照样能点——注释
+     写着"跳过自选"，其实没实现。被试自己挑类型，"随机分配"这个说法就不
+     成立，类型重新变回混杂变量，而问卷 M1 记到的会是"他自己选的"。 */
+  if(STUDY_MODE){
+    document.getElementById('choose').classList.add('assigned-only');
+    var ll=document.querySelector('#choose .lede'); if(ll) ll.setAttribute('data-i','choose.lede.study');
+    var sb=document.getElementById('surpriseBtn'); if(sb) sb.setAttribute('data-i','choose.surprise.study');
+  }
+  document.querySelectorAll('.vcard').forEach(function(c){ c.addEventListener('click',function(){
+    if(STUDY_MODE) return;                       // 自选在实验条件下是混杂变量
+    assign(c.getAttribute('data-type'),false); show('brief');
+  }); });
   document.getElementById('surpriseBtn').addEventListener('click',function(){
-    setVision(randomType(STUDY_MODE), true); show('brief');
+    assign(randomType(STUDY_MODE), true); show('brief');
   });
+  /* 实验室里的切换只改当前显示，不动已记录的分配类型 */
   document.getElementById('visionPills').addEventListener('click',function(e){
     var p=e.target.closest('.pill'); if(!p) return; state.hidden=false; setVision(p.getAttribute('data-v'));
   });
