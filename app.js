@@ -151,13 +151,25 @@
     var p=e.target.closest('.pill'); if(!p) return; state.hidden=false; setVision(p.getAttribute('data-v'));
   });
 
+
+  /* 把场景答题表现记进完成码。
+
+     这三处一直在数（页面结尾还把数字显示给被试看），却从没上报，
+     于是「被试有没有真的在判断」这个最直接的行为证据被扔掉了：
+     阅读时长只能说明页面开着，答对了几道才说明人在读、在判断。 */
+  function reportScenes(){
+    if(!window.TTE) return;
+    TTE.set('correct', state.correct);
+    TTE.set('guesses', state.guesses);
+  }
+
   ['b','c','e','m','g','t'].forEach(function(sid){
     var sc=document.getElementById(sid); var choices=[].slice.call(sc.querySelectorAll('.choice'));
     choices.forEach(function(ch){
       ch.addEventListener('click',function(){
         if(sc.dataset.answered) return; sc.dataset.answered='1';
         var ok=ch.getAttribute('data-correct')==='1';
-        state.guesses++; if(ok) state.correct++; else addFriction(1);
+        state.guesses++; if(ok) state.correct++; else addFriction(1); reportScenes();
         choices.forEach(function(o){o.classList.add('dim');}); ch.classList.remove('dim'); ch.classList.add('picked');
         var fb=document.getElementById('fb-'+sid);
         var extra=(sid==='m'&&state.shirt==='pink')?t('fb.m.pink'):'';
@@ -174,7 +186,7 @@
       ch.addEventListener('click',function(){
         if(sc.dataset.answered) return; sc.dataset.answered='1';
         var k=ch.getAttribute('data-k'); state.shirt=k; state.guesses++;
-        if(k==='grey') state.correct++; else addFriction(1);
+        if(k==='grey') state.correct++; else addFriction(1); reportScenes();
         choices.forEach(function(o){o.classList.add('dim');}); ch.classList.remove('dim'); ch.classList.add('picked');
         var fb=document.getElementById('fb-w'); fb.innerHTML=tv('fb.w.'+k); fb.classList.remove('hidden');
         setTimeout(function(){document.getElementById('dc-w').classList.remove('hidden');},450);
@@ -188,7 +200,7 @@
     fields.forEach(function(fl){
       fl.addEventListener('click',function(){
         if(sc.dataset.answered) return; sc.dataset.answered='1';
-        var ok=fl.classList.contains('err'); state.guesses++; addFriction(1); if(ok) state.correct++;
+        var ok=fl.classList.contains('err'); state.guesses++; addFriction(1); if(ok) state.correct++; reportScenes();
         fields.forEach(function(o){o.style.pointerEvents='none';o.style.opacity=.55;});
         fl.style.opacity=1; fl.style.borderColor='var(--gold)';
         var fb=document.getElementById('fb-f'); fb.innerHTML=tv(ok?'f.fb.ok':'f.fb.no'); fb.classList.remove('hidden');
