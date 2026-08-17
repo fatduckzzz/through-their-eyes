@@ -138,6 +138,28 @@
     document.getElementById('choose').classList.add('assigned-only');
     var ll=document.querySelector('#choose .lede'); if(ll) ll.setAttribute('data-i','choose.lede.study');
     var sb=document.getElementById('surpriseBtn'); if(sb) sb.setAttribute('data-i','choose.surprise.study');
+
+    /* 底部跳转栏在实验条件下必须关掉。
+
+       show() 结尾会调 TTE.seen(id)，所以点一下 quicknav 就把那一节记成
+       "看过"——人一个字没读，sectionsSeen 却涨了。四个按钮点一遍白涨 4。
+
+       对照站是 16 节挤在一整页里滚动、没有任何跳转链接，它的 sectionsSeen
+       是"滚过"。两组的同名指标因此不是同一个东西，却要放在一起比。
+
+       另外"能跳过内容"不属于要操纵的那个维度（叙事框架、具身、与内容互动），
+       它只是曝光量不等。闸门是纯时间的，关掉跳转不会让谁读得更久，只改变
+       这五分钟里他看到了什么。
+
+       #quicknav 的 display:flex 写在 id 选择器上，[hidden] 盖不住，只能直接
+       改 style。前进链 hero→choose→…→done 每屏都有按钮，关掉不会把人困死。 */
+    var qn=document.getElementById('quicknav'); if(qn) qn.style.display='none';
+
+    /* 与对照站逐字相同的一句阅读说明。两站的指示语若有差异，它就从指示语
+       变成了自变量的一部分。刻意不提"5 分钟"：问卷里写的是"10–15 分钟"，
+       那是个比下限高的锚；点明门槛会把下限变成目标（试点里四个被试全部
+       停在 300 秒整）。 */
+    var sn=document.getElementById('studyNote'); if(sn) sn.style.display='';
   }
   document.querySelectorAll('.vcard').forEach(function(c){ c.addEventListener('click',function(){
     if(STUDY_MODE) return;                       // 自选在实验条件下是混杂变量
