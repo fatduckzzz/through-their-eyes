@@ -317,5 +317,21 @@ body[data-vision] .world.peek{filter:none!important}
 /* full-screen blur + blend on a canvas flickers in Safari and drains phones; the radial blobs are already soft */
 #ambient{filter:none!important;mix-blend-mode:normal!important}
 @media (pointer:coarse),(max-width:760px){#ambient{display:none}}
-/* no custom cursor: the native one is enough, and a second circle looked like a glitch */
-#cursorDot,#cursorRing,#cursorLight{display:none!important}
+#cursorLight{display:none!important}
+
+
+/* ---------- cursor: dot + spectrum ring (fx.js) ---------- */
+#cursorDot,#cursorRing{position:fixed;left:0;top:0;width:0;height:0;border:0;background:none;border-radius:0;pointer-events:none;z-index:9999;opacity:0;transition:opacity .25s;will-change:transform}
+#cursorDot::before{content:"";position:absolute;left:-3.5px;top:-3.5px;width:7px;height:7px;border-radius:50%;background:#fff;box-shadow:0 0 0 1px rgba(5,5,7,.55),0 0 12px rgba(255,255,255,.55);transition:transform .2s}
+#cursorRing::before{content:"";position:absolute;left:-19px;top:-19px;width:38px;height:38px;border-radius:50%;
+  background:conic-gradient(#ff5b4a,#ffb24a,#e8e04a,#7fd36b,#19c2c2,#46a6ff,#a47cf0,#ff5b4a);
+  -webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 2.5px),#000 calc(100% - 2px));mask:radial-gradient(farthest-side,transparent calc(100% - 2.5px),#000 calc(100% - 2px));
+  filter:drop-shadow(0 0 5px rgba(5,5,7,.7));animation:cursorSpin 7s linear infinite;transition:transform .28s cubic-bezier(.2,.8,.2,1)}
+body.cursor-on #cursorDot,body.cursor-on #cursorRing{opacity:1}
+body.cursor-native #cursorDot,body.cursor-native #cursorRing{opacity:0}
+#cursorRing.is-big::before{transform:scale(1.55)}
+#cursorRing.is-down::before{transform:scale(.78)}
+#cursorRing.is-big{width:0;height:0;border:0}
+body.cursor-on:not(.cursor-native),body.cursor-on:not(.cursor-native) *{cursor:none!important}
+@keyframes cursorSpin{to{rotate:360deg}}
+@media (pointer:coarse),(hover:none),(prefers-reduced-motion:reduce){#cursorDot,#cursorRing{display:none!important}}

@@ -315,26 +315,6 @@ document.getElementById('restartBtn').addEventListener('click',function(){ locat
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (reduce) return; // every effect below is purely decorative — skip entirely
 
-  /* ---------- custom cursor ---------- */
-  var dot = document.getElementById('cursorDot'), ring = document.getElementById('cursorRing');
-  if (dot && ring && matchMedia('(pointer:fine)').matches) {
-    document.body.classList.add('cursor-on');
-    var rx = 0, ry = 0, tx = 0, ty = 0;
-    window.addEventListener('mousemove', function(e){
-      tx = e.clientX; ty = e.clientY;
-      dot.style.transform = 'translate(' + tx + 'px,' + ty + 'px) translate(-50%,-50%)';
-    });
-    (function loop(){
-      rx += (tx - rx) * 0.18; ry += (ty - ry) * 0.18;
-      ring.style.transform = 'translate(' + rx + 'px,' + ry + 'px) translate(-50%,-50%)';
-      requestAnimationFrame(loop);
-    })();
-    document.querySelectorAll('a,button,.choice,.field,input[type=range],.switch').forEach(function(el){
-      el.addEventListener('mouseenter', function(){ ring.classList.add('is-big'); });
-      el.addEventListener('mouseleave', function(){ ring.classList.remove('is-big'); });
-    });
-  }
-
   /* Pointer-driven effects below (magnetic hover, 3D tilt) are meaningless on a
      touch screen: mousemove only fires on tap, so the element lurches once and
      then sticks. Click ripples and scroll reveal further down stay enabled. */
