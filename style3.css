@@ -335,3 +335,19 @@ body.cursor-native #cursorDot,body.cursor-native #cursorRing{opacity:0}
 body.cursor-on:not(.cursor-native),body.cursor-on:not(.cursor-native) *{cursor:none!important}
 @keyframes cursorSpin{to{rotate:360deg}}
 @media (pointer:coarse),(hover:none),(prefers-reduced-motion:reduce){#cursorDot,#cursorRing{display:none!important}}
+
+
+/* ---------- top menu: same on every screen ---------- */
+/* Opaque bar: no see-through text from the page below (ghost letters in Safari), no blur to render differently. */
+#topnav{background:linear-gradient(180deg,rgba(8,8,11,.97),rgba(8,8,11,.94))!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+#topnav.solid{background:rgba(8,8,11,.98)!important}
+/* One layout on Mac and Windows: no sub-labels in the bar (they show in the dropdowns and the phone menu), so the bar never changes with screen scaling. */
+@media(min-width:821px){
+  .tn-top small,.tn-brand small{display:none!important}
+  .tn-top{padding:0 clamp(8px,1.15vw,18px)}
+}
+/* arrow sits inline after the label, so every label is on the same line */
+.tn-top b{gap:7px}
+.tn-top .chev{display:block;flex:0 0 auto;width:10px;height:6px;border:0;transform:none;opacity:.7;transition:transform .25s,opacity .2s}
+.tn-item:hover .chev,.tn-item:focus-within .chev,.tn-item.open .chev{transform:rotate(180deg);opacity:1}
+body.cursor-ringless #cursorRing{opacity:0}

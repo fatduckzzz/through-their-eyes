@@ -43,6 +43,7 @@
       var t = e.target, el = t && t.closest ? t : null;
       var native = !!(el && el.closest(NATIVE));
       document.body.classList.toggle('cursor-native', native);
+      document.body.classList.toggle('cursor-ringless', !!(el && el.closest('#topnav')));
       ringEl.classList.toggle('is-big', !native && !!(el && el.closest(HOVER)));
       if (!running) { running = true; requestAnimationFrame(frame); }
     }, { passive: true });
