@@ -87,7 +87,6 @@ p.lede{font-size:clamp(1.02rem,1.5vw,1.2rem);line-height:1.65;color:var(--dim)}
   -webkit-mask:radial-gradient(circle,transparent 39%,#000 40%,#000 61%,transparent 62.5%);mask:radial-gradient(circle,transparent 39%,#000 40%,#000 61%,transparent 62.5%);animation:irisSpin 200s linear infinite reverse}
 .iris .halo{position:absolute;inset:-6%;border-radius:50%;background:radial-gradient(circle,transparent 60%,rgba(255,178,74,.22) 63%,transparent 72%);filter:blur(18px)}
 .iris .pupil{position:absolute;inset:26%;border-radius:50%;background:radial-gradient(circle at 38% 34%,#1a1a22,#050507 62%);box-shadow:0 0 120px 30px rgba(5,5,7,.9),inset 0 0 40px rgba(255,255,255,.04)}
-.iris .glint{position:absolute;left:41%;top:38%;width:5%;height:5%;border-radius:50%;background:radial-gradient(circle,#fff,rgba(255,255,255,0) 70%);filter:blur(1px);opacity:.8}
 @keyframes irisSpin{to{transform:rotate(360deg)}}
 .hero-a,.hero-b{position:relative;z-index:1}
 #hero h1{text-shadow:0 8px 60px rgba(0,0,0,.65)}
