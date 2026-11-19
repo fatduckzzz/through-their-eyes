@@ -53,6 +53,23 @@
     window.addEventListener('blur', function () { show(false); });
   }
 
+
+  /* ---- phones: no text under 11px (the small mono labels are 8 to 10px on desktop) ---- */
+  if (window.matchMedia && matchMedia('(max-width: 760px)').matches) {
+    var TXT = 'span,small,em,b,i,p,h4,li,a,button,label,figcaption,td,th';
+    var bump = function (root) {
+      if (!root) return;
+      var all = root.querySelectorAll(TXT);
+      for (var i = 0; i < all.length; i++) {
+        var e = all[i], own = false;
+        for (var k = 0; k < e.childNodes.length; k++) if (e.childNodes[k].nodeType === 3 && e.childNodes[k].textContent.trim().length > 2) { own = true; break; }
+        if (own && parseFloat(getComputedStyle(e).fontSize) < 11) e.style.fontSize = '11px';
+      }
+    };
+    bump(document.body);
+    if (window.TTE_APP) TTE_APP.onShow(function (id) { setTimeout(function () { bump(document.getElementById(id)); }, 150); });
+  }
+
   /* ---- chapter wipe: five colour bars sweep across when the story changes chapter ---- */
   var GROUP = { hero: 'intro', choose: 'prologue', brief: 'prologue', w: 'prologue', b: 'prologue', c: 'prologue', f: 'prologue', e: 'prologue',
                 m: 'prologue', g: 'prologue', t: 'prologue', sunset: 'prologue', flamingo: 'prologue', twist: 'people', evidence: 'numbers',

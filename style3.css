@@ -351,3 +351,11 @@ body.cursor-on:not(.cursor-native),body.cursor-on:not(.cursor-native) *{cursor:n
 .tn-top .chev{display:block;flex:0 0 auto;width:10px;height:6px;border:0;transform:none;opacity:.7;transition:transform .25s,opacity .2s}
 .tn-item:hover .chev,.tn-item:focus-within .chev,.tn-item.open .chev{transform:rotate(180deg);opacity:1}
 body.cursor-ringless #cursorRing{opacity:0}
+
+
+/* ---------- phones and touch: comfortable tap targets ---------- */
+@media (pointer:coarse),(max-width:760px){
+  .pill,.switch,.wchip,.aeye,.ct-preset,.paper-link,.peek-btn,.pal-steps li,.dig-tile{min-height:44px}
+  .pill,.wchip,.aeye,.paper-link{display:inline-flex;align-items:center}
+  #charts a:not(.btn),#evidence .dig-panel a,.winsrc a{display:inline-block;padding:11px 2px}
+}
