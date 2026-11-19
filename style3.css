@@ -306,3 +306,17 @@ img.bimg,.audit-imgwrap,.sc-imgwrap,.wipe{border-radius:18px}
 .bib-list .bib-g{grid-column:1/-1;font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin:14px 0 0;padding-bottom:6px;border-bottom:1px solid var(--glass-b)}
 .bib-list .bib-g:first-child{margin-top:0}
 .bib-list a span{display:block}
+
+
+/* ---------- compatibility (Safari / Mac / phones) ---------- */
+/* The colour-vision filter is the content, not decoration: keep it whatever the motion setting. */
+body[data-vision="achro"] .simfx,body[data-vision="achro"] .scene.active .world.simfx{filter:url(#f-achro)!important}
+body[data-vision="protan"] .simfx,body[data-vision="protan"] .scene.active .world.simfx{filter:url(#f-protan)!important}
+body[data-vision="deutan"] .simfx,body[data-vision="deutan"] .scene.active .world.simfx{filter:url(#f-deutan)!important}
+body[data-vision="tritan"] .simfx,body[data-vision="tritan"] .scene.active .world.simfx{filter:url(#f-tritan)!important}
+body[data-vision] .world.peek{filter:none!important}
+/* full-screen blur + blend on a canvas flickers in Safari and drains phones; the radial blobs are already soft */
+#ambient{filter:none!important;mix-blend-mode:normal!important}
+@media (pointer:coarse),(max-width:760px){#ambient{display:none}}
+/* no custom cursor: the native one is enough, and a second circle looked like a glitch */
+#cursorDot,#cursorRing,#cursorLight{display:none!important}

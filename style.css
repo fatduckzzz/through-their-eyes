@@ -524,7 +524,9 @@
   @media(prefers-reduced-motion:reduce){
     #ambient{display:none}
     #loader .lmark,#prog,.spectrum i{animation:none!important}
-    .screen.active,.screen.active .wrap > *,.scene.active .panel > *,.scene.active .world{animation:none!important;opacity:1!important;filter:none!important;transform:none!important}
+    .screen.active,.screen.active .wrap > *,.scene.active .panel > *{animation:none!important;opacity:1!important;filter:none!important;transform:none!important}
+    /* the world carries the colour-vision filter: never strip it, only its entrance animation */
+    .scene.active .world{animation:none!important;opacity:1!important;transform:none!important}
     .btn::after{display:none}
   }
   @media(prefers-reduced-motion:reduce){*{animation-duration:.001s!important;transition:none!important}.narr::after{content:""}}

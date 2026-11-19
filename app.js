@@ -269,7 +269,7 @@ document.getElementById('restartBtn').addEventListener('click',function(){ locat
 
   /* ambient flowing colour field */
   var cv=document.getElementById('ambient');
-  if(cv && cv.getContext && !reduce){
+  if(cv && cv.getContext && !reduce && !(window.matchMedia && matchMedia('(pointer:coarse)').matches)){
     var ctx=cv.getContext('2d'), W=2, H=2, scale=0.42;
     function resize(){ W=cv.width=Math.max(2,Math.floor(innerWidth*scale)); H=cv.height=Math.max(2,Math.floor(innerHeight*scale)); }
     resize(); addEventListener('resize',resize);

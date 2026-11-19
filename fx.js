@@ -8,17 +8,15 @@
   /* ---- card spotlight: the card under the pointer gets --mx/--my ---- */
   var CARD = '.vcard,.paper-card,.numc,.pal-card,.audit-panel,.sc-sticky,.wall-summary,.prev-box,.labcard,.cncard,.brow,.vmessage,.feedback,.ev-bridge,.source-panel,.method-row,.cnstat,.checklist,.case-composite,.csstage,.trello-card';
   if (!reduce && !coarse) {
-    var light = document.createElement('div'); light.id = 'cursorLight'; light.setAttribute('aria-hidden', 'true'); document.body.appendChild(light);
     var lx = 0, ly = 0, raf = 0;
     document.addEventListener('pointermove', function (e) {
       lx = e.clientX; ly = e.clientY;
       if (!raf) raf = requestAnimationFrame(function () {
-        raf = 0; light.style.transform = 'translate(' + lx + 'px,' + ly + 'px)'; document.body.classList.add('has-light');
+        raf = 0;
         var c = e.target.closest && e.target.closest(CARD);
         if (c) { var r = c.getBoundingClientRect(); c.style.setProperty('--mx', (lx - r.left) + 'px'); c.style.setProperty('--my', (ly - r.top) + 'px'); }
       });
     }, { passive: true });
-    document.addEventListener('pointerleave', function () { document.body.classList.remove('has-light'); });
   }
 
   /* ---- chapter wipe: five colour bars sweep across when the story changes chapter ---- */
