@@ -1,0 +1,121 @@
+id,title,chart_kind,source_url,licence,flagged_any,protan,deutan,tritan,pairs_flagged,colours_found
+test_001,Prices of the five materials included in the Simon-Ehrlich wager,line,https://ourworldindata.org/grapher/price-five-simon-ehrlich-materials,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,1
+test_002,Threatened endemic reef-forming coral species,map,https://ourworldindata.org/grapher/threatened-endemic-coral,CC BY 4.0 (OWID); underlying data credited on chart,1,0,1,0,1,6
+test_003,Child mortality rate by cause,bar,https://ourworldindata.org/grapher/child-death-rates-by-cause,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,2
+test_004,Annual CO₂ emissions from gas,map,https://ourworldindata.org/grapher/annual-co2-gas,CC BY 4.0 (OWID); underlying data credited on chart,1,0,1,0,1,7
+test_005,Share of expenditure spent on food vs. food expenditure per person,scatter,https://ourworldindata.org/grapher/share-of-food-expenditure-vs-food-expenditure,CC BY 4.0 (OWID); underlying data credited on chart,1,0,1,1,1,3
+test_006,International tourist departures,map,https://ourworldindata.org/grapher/international-tourist-departures,CC BY 4.0 (OWID); underlying data credited on chart,1,0,0,1,1,3
+test_007,Egalitarian Political Institutions Index,map,https://ourworldindata.org/grapher/egalitarian-political-institutions-index,CC BY 4.0 (OWID); underlying data credited on chart,1,0,1,1,1,7
+test_008,Exclusive breastfeeding rate,map,https://ourworldindata.org/grapher/exclusive-breastfeeding-rate,CC BY 4.0 (OWID); underlying data credited on chart,1,0,0,1,1,7
+test_009,Labor share of gross domestic product (GDP),map,https://ourworldindata.org/grapher/labor-share-of-gdp,CC BY 4.0 (OWID); underlying data credited on chart,1,0,0,1,1,7
+test_010,Change in CO₂ emissions and GDP,line,https://ourworldindata.org/grapher/co2-emissions-and-gdp,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,3
+test_011,Which countries do COVID-19 contact tracing?,map,https://ourworldindata.org/grapher/covid-contact-tracing,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,3
+test_012,Countries that are electoral democracies,stacked,https://ourworldindata.org/grapher/countries-democracies-nondemocracies-simplified-lexical,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,3
+test_013,External funding for privately held generative AI companies,stacked,https://ourworldindata.org/grapher/global-investment-in-generative-ai,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,2
+test_014,Non-agricultural share of labor force,line,https://ourworldindata.org/grapher/non-agricultural-share-of-labour-force,CC BY 4.0 (OWID); underlying data credited on chart,1,1,1,1,4,5
+test_015,Equality of Civil Liberties across Social Groups Score,map,https://ourworldindata.org/grapher/equality-of-civil-liberties-across-social-groups-score,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,5
+test_016,Per capita electricity generation vs. GDP per capita,scatter,https://ourworldindata.org/grapher/per-capita-electricity-generation-vs-gdp-per-capita,CC BY 4.0 (OWID); underlying data credited on chart,1,1,1,1,4,5
+test_017,Consumption-based energy use per person,map,https://ourworldindata.org/grapher/consumption-based-energy-per-capita,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,4
+test_018,Oil rents as a share of GDP,map,https://ourworldindata.org/grapher/oil-rents-as-a-share-of-gdp,CC BY 4.0 (OWID); underlying data credited on chart,1,1,1,0,2,4
+test_019,Capital intensity vs. labor productivity,scatter,https://ourworldindata.org/grapher/capital-intensity-vs-labor-productivity,CC BY 4.0 (OWID); underlying data credited on chart,1,1,1,1,2,5
+test_020,Number of people living in the capital city,map,https://ourworldindata.org/grapher/number-of-people-living-in-the-capital-city-european-commission,CC BY 4.0 (OWID); underlying data credited on chart,1,0,1,0,1,4
+test_021,Freshwater use per kilogram of farmed seafood,bar,https://ourworldindata.org/grapher/freshwater-use-seafood,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,2
+test_022,Share of the population with bipolar disorder  men vs. women,scatter,https://ourworldindata.org/grapher/bipolar-disorder-prevalence-males-vs-females,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,2
+test_023,Share of global primary energy use by source,line,https://ourworldindata.org/grapher/global-primary-energy-share-inc-biomass,CC BY 4.0 (OWID); underlying data credited on chart,1,1,1,1,3,5
+test_024,New drugs approved in the United States,stacked,https://ourworldindata.org/grapher/new-drugs-approved-in-the-united-states,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,4
+test_025,Democracy,map,https://ourworldindata.org/grapher/political-regime-eiu,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,4
+test_026,Share of schools with access to computers for teaching,line,https://ourworldindata.org/grapher/schools-access-computers,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,2
+test_027,Global temperature anomalies by El Niño and La Niña and month,line,https://ourworldindata.org/grapher/global-temperature-anomalies-by-el-nino-la-nina-and-month,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,5
+test_028,Freshwater withdrawals as a share of internal resources,map,https://ourworldindata.org/grapher/freshwater-withdrawals-as-a-share-of-internal-resources,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,6
+test_029,Human Development Index vs. mean male height,scatter,https://ourworldindata.org/grapher/human-development-index-vs-mean-male-height,CC BY 4.0 (OWID); underlying data credited on chart,1,1,1,1,3,5
+test_030,Civil Society Participation Index,map,https://ourworldindata.org/grapher/civil-society-participation-index,CC BY 4.0 (OWID); underlying data credited on chart,1,0,1,1,1,7
+test_031,Share of cancers attributed to nine HPV types,bar,https://ourworldindata.org/grapher/share-of-cancers-attributed-to-9-hpv-types,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,2
+test_032,Death rate by age group in England and Wales,line,https://ourworldindata.org/grapher/death-rate-by-age-group-in-england-and-wales,CC BY 4.0 (OWID); underlying data credited on chart,1,1,1,1,6,7
+test_033,Share of women expected to survive to the age of 65,map,https://ourworldindata.org/grapher/women-survival-to-age-65,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,4
+test_034,Public morality laws on non-traditional sexual relations,map,https://ourworldindata.org/grapher/public-morality-laws-on-non-traditional-sexual-relations,CC BY 4.0 (OWID); underlying data credited on chart,1,0,0,1,2,4
+test_035,Crude suicide rates: comparison of sources,line,https://ourworldindata.org/grapher/suicide-rates-source-comparison-crude,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,2
+test_036,Corn: Attainable crop yields,map,https://ourworldindata.org/grapher/maize-attainable-yield,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,5
+test_037,Share of one-year-olds who received one dose of the inactivated polio vaccine,map,https://ourworldindata.org/grapher/ipv-vaccine-coverage,CC BY 4.0 (OWID); underlying data credited on chart,1,0,1,1,1,7
+test_038,People not using safely managed sanitation facilities,map,https://ourworldindata.org/grapher/safe-sanitation-without,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,6
+test_039,Democracy classification by source,line,https://ourworldindata.org/grapher/political-regime-classification-by-source,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,1
+test_040,Gap in GDP per hour worked with respect to the United States,line,https://ourworldindata.org/grapher/gap-in-gdp-per-hour-worked-with-respect-to-the-united-states,CC BY 4.0 (OWID); underlying data credited on chart,1,0,1,0,1,3
+test_041,Number of income/consumption surveys in the past decade available via the World Bank,map,https://ourworldindata.org/grapher/data-deprivation-poverty-surveys-per-decade,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,3
+test_042,Number of United Nations member states,stacked,https://ourworldindata.org/grapher/number-of-members-of-united-nations,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,3
+test_043,Completeness of homelessness data,map,https://ourworldindata.org/grapher/completeness-of-homelessness-data,CC BY 4.0 (OWID); underlying data credited on chart,1,0,0,1,1,5
+test_044,Share of one-year-olds vaccinated against Haemophilus influenzae type B,line,https://ourworldindata.org/grapher/hib-vaccine,CC BY 4.0 (OWID); underlying data credited on chart,1,1,1,0,1,4
+test_045,Food loss index,line,https://ourworldindata.org/grapher/global-food-loss-index,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,2
+test_046,Number of children under 15  by world region,line,https://ourworldindata.org/grapher/population-younger-than-15-with-projections,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,1
+test_047,Phosphorus emissions per tonne of farmed seafood,bar,https://ourworldindata.org/grapher/phosphorus-emissions-seafood,CC BY 4.0 (OWID); underlying data credited on chart,1,0,1,0,1,3
+test_048,Do sons and daughters have equal rights to inherit from their parents?,map,https://ourworldindata.org/grapher/sons-and-daughters-inheritance,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,3
+test_049,HIV incidence per 1 000 individuals  by age,line,https://ourworldindata.org/grapher/incidence-of-hiv-by-age,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,2
+test_050,Energy embedded in traded goods as a share of domestic energy,map,https://ourworldindata.org/grapher/traded-energy-share-domestic,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,5
+test_051,Graphite production,map,https://ourworldindata.org/grapher/graphite-production,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,5
+test_052,How much global land is used as pasture for livestock?,line,https://ourworldindata.org/grapher/global-pasture,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,2
+test_053,Global share of plastic waste by disposal method with projections,line,https://ourworldindata.org/grapher/plastic-fate-to-2050,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,1
+test_054,Fatal airliner accidents per million commercial flights,line,https://ourworldindata.org/grapher/fatal-airliner-accidents-per-million-flights,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,1
+test_055,Share of adults who are obese,map,https://ourworldindata.org/grapher/share-of-adults-defined-as-obese,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,4
+test_056,Tax revenue as share of GDP,line,https://ourworldindata.org/grapher/tax-revenue-share-gdp-oecd-grsd,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,1
+test_057,Share of the population with tertiary education,map,https://ourworldindata.org/grapher/share-of-the-population-with-completed-tertiary-education,CC BY 4.0 (OWID); underlying data credited on chart,1,1,1,0,2,9
+test_058,Flu vaccination coverage in the over-65's,map,https://ourworldindata.org/grapher/influenza-vaccination-rate-elderly-oecd,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,6
+test_059,Share of urban vs. rural population using at least basic sanitation,scatter,https://ourworldindata.org/grapher/urban-vs-rural-population-using-at-least-basic-sanitation,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,2
+test_060,Share of the population subjected to physical violence  male vs. female,scatter,https://ourworldindata.org/grapher/population-subjected-to-physical-violence,CC BY 4.0 (OWID); underlying data credited on chart,1,1,1,1,5,6
+test_061,Social spending as share of GDP,stacked,https://ourworldindata.org/grapher/social-expenditure-as-percentage-of-gdp,CC BY 4.0 (OWID); underlying data credited on chart,1,1,1,1,9,8
+test_062,Diphtheria cases in the United States,line,https://ourworldindata.org/grapher/diphtheria-cases-in-the-united-states,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,1
+test_063,Number with a drug use disorder by substance,stacked,https://ourworldindata.org/grapher/number-with-drug-disorders-by-substance,CC BY 4.0 (OWID); underlying data credited on chart,1,1,1,1,6,6
+test_064,Disease burden from communicable  maternal  neonatal & nutritional diseases by age,stacked,https://ourworldindata.org/grapher/disease-burden-from-communicable-diseases-by-age,CC BY 4.0 (OWID); underlying data credited on chart,1,1,1,1,6,6
+test_065,Share of the population in poverty vs. Electoral Democracy Index,scatter,https://ourworldindata.org/grapher/share-of-population-in-extreme-poverty-vs-electoral-democracy-index,CC BY 4.0 (OWID); underlying data credited on chart,1,1,1,1,3,4
+test_066,Land used for agriculture,line,https://ourworldindata.org/grapher/land-use-agriculture-longterm,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,1
+test_067,Infectious and parasitic diseases death rate,line,https://ourworldindata.org/grapher/infectious-and-parasitic-diseases-death-rate-who-mdb,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,2
+test_068,Weekly working hours,line,https://ourworldindata.org/grapher/work-hours-per-week,CC BY 4.0 (OWID); underlying data credited on chart,1,0,0,1,1,3
+test_069,Age of consent for same-sex and different-sex partners,map,https://ourworldindata.org/grapher/age-of-consent-same-sex-partners-equaldex,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,6
+test_070,Distribution of child labor by economic sector,stacked,https://ourworldindata.org/grapher/distribution-of-child-labor-by-economic-sector,CC BY 4.0 (OWID); underlying data credited on chart,1,1,1,0,1,4
+test_071,World regions according to the United Nations,map,https://ourworldindata.org/grapher/world-regions-un1,CC BY 4.0 (OWID); underlying data credited on chart,1,0,1,1,3,6
+test_072,Death rate from malaria,line,https://ourworldindata.org/grapher/malaria-death-rates,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,1
+test_073,Direct disaster economic loss,map,https://ourworldindata.org/grapher/direct-disaster-economic-loss,CC BY 4.0 (OWID); underlying data credited on chart,1,0,1,0,2,7
+test_074,Snow cover in North America,line,https://ourworldindata.org/grapher/snow-cover-north-america,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,1
+test_075,Fish catch by fishing sector,stacked,https://ourworldindata.org/grapher/fish-catch-by-fishing-sector,CC BY 4.0 (OWID); underlying data credited on chart,1,1,1,1,4,5
+test_076,Number of people using the Internet,line,https://ourworldindata.org/grapher/number-of-internet-users,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,3
+test_077,Incidence rate of cardiovascular diseases,map,https://ourworldindata.org/grapher/incidence-rate-of-cardiovascular-disease,CC BY 4.0 (OWID); underlying data credited on chart,1,0,1,0,2,7
+test_078,Cumulative number of objects launched into space,line,https://ourworldindata.org/grapher/cumulative-number-of-objects-launched-into-outer-space,CC BY 4.0 (OWID); underlying data credited on chart,1,0,0,1,1,3
+test_079,Basic State Functions Score,map,https://ourworldindata.org/grapher/basic-state-functions-score-bti,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,2
+test_080,Protected area coverage of marine key biodiversity areas,map,https://ourworldindata.org/grapher/protected-area-coverage-of-marine-key-biodiversity-areas,CC BY 4.0 (OWID); underlying data credited on chart,1,0,0,1,2,6
+test_081,Reported deaths from rabies,map,https://ourworldindata.org/grapher/reported-rabies-deaths,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,6
+test_082,Share of children achieving minimum reading proficiency by the end of lower-secondary age,bar,https://ourworldindata.org/grapher/share-of-children-reaching-sufficient-reading-comprehension-by-the-end-of-lower-secondary-age,CC BY 4.0 (OWID); underlying data credited on chart,1,0,0,1,1,5
+test_083,Number of deaths from air pollution,stacked,https://ourworldindata.org/grapher/deaths-from-air-pollution,CC BY 4.0 (OWID); underlying data credited on chart,1,1,1,0,1,4
+test_084,World population  comparison of different historical sources,line,https://ourworldindata.org/grapher/world-population-comparison-historical-sources,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,2
+test_085,Foreign aid received by income group,stacked,https://ourworldindata.org/grapher/foreign-aid-received-by-income-group,CC BY 4.0 (OWID); underlying data credited on chart,1,1,1,1,8,7
+test_086,Fertility rate versus female labor force participation rate,scatter,https://ourworldindata.org/grapher/fertility-and-female-labor-force-participation,CC BY 4.0 (OWID); underlying data credited on chart,1,1,1,0,2,4
+test_087,Burden of disease by cause,bar,https://ourworldindata.org/grapher/burden-of-disease-by-cause,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,2
+test_088,Extreme monetary poverty and multidimensional poverty over time,scatter,https://ourworldindata.org/grapher/share-extreme-poverty-vs-share-mpi-poor-over-time,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,2
+test_089,Number of people requiring preventive treatment for schistosomiasis,map,https://ourworldindata.org/grapher/population-requiring-preventive-chemotherapy-for-schistosomiasis,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,4
+test_090,Mental illnesses prevalence,bar,https://ourworldindata.org/grapher/mental-illnesses-prevalence,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,2
+test_091,Number of North Atlantic hurricanes,line,https://ourworldindata.org/grapher/frequency-north-atlantic-hurricanes,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,1
+test_092,Foreign aid given as a share of national income,line,https://ourworldindata.org/grapher/foreign-aid-given-as-a-share-of-national-income,CC BY 4.0 (OWID); underlying data credited on chart,1,1,1,1,3,5
+test_093,Share of total electricity demand used by data centers,line,https://ourworldindata.org/grapher/data-centers-share-electricity-demand,CC BY 4.0 (OWID); underlying data credited on chart,1,1,1,1,5,6
+test_094,Legal frameworks addressing gender equality overall,map,https://ourworldindata.org/grapher/overarching-legal-frameworks-regarding-gender-equality,CC BY 4.0 (OWID); underlying data credited on chart,1,0,1,1,1,7
+test_095,Rate of measles cases by state in the United States,line,https://ourworldindata.org/grapher/reported-measles-case-rate-by-state-in-the-united-states,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,1
+test_096,Share of women who are expected to die from pregnancy-related causes,map,https://ourworldindata.org/grapher/lifetime-risk-of-maternal-death,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,5
+test_097,Share of the population victim to physical and sexual harassment,line,https://ourworldindata.org/grapher/share-of-the-population-victim-to-physical-and-sexual-harassment,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,2
+test_098,Share of land area that is protected,map,https://ourworldindata.org/grapher/terrestrial-protected-areas,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,5
+test_099,Average ammonium concentration in freshwater,line,https://ourworldindata.org/grapher/average-ammonium-concentration-in-freshwater,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,2
+test_100,Share of women using contraceptives,map,https://ourworldindata.org/grapher/contraceptive-prevalence-any-methods-of-women-ages-15-49,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,5
+test_101,Deaths from outdoor particulate matter air pollution  by age,stacked,https://ourworldindata.org/grapher/number-outdoor-pollution-deaths-by-age,CC BY 4.0 (OWID); underlying data credited on chart,1,1,0,1,3,5
+test_102,Wanted fertility rate,map,https://ourworldindata.org/grapher/wanted-fertility-rate,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,5
+test_103,Daily new confirmed COVID-19 cases and deaths,line,https://ourworldindata.org/grapher/daily-covid-cases-deaths-7-day-ra,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,1
+test_104,Legal provisions for child marriage,map,https://ourworldindata.org/grapher/laws-on-child-marriage,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,5
+test_105,Is there a law specifically on domestic violence?,map,https://ourworldindata.org/grapher/legislation-domestic-violence,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,3
+test_106,Share of population with cancer,map,https://ourworldindata.org/grapher/share-of-population-with-cancer-age-standardized,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,4
+test_107,Unemployment rate: young vs. older adults,line,https://ourworldindata.org/grapher/unemployment-rate-young-vs-older-adults,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,1
+test_108,Number of neonatal deaths by region,stacked,https://ourworldindata.org/grapher/number-of-neonatal-deaths-by-region,CC BY 4.0 (OWID); underlying data credited on chart,1,1,1,1,8,7
+test_109,Total official flows commitments for aid for trade  by recipient,map,https://ourworldindata.org/grapher/total-oda-for-aid-for-trade-by-recipient,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,2
+test_110,Monthly average ocean heat content in the top 700 meters,line,https://ourworldindata.org/grapher/monthly-upper-ocean-heat,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,1
+test_111,Average height of women by year of birth,map,https://ourworldindata.org/grapher/average-height-of-women,CC BY 4.0 (OWID); underlying data credited on chart,1,0,0,1,2,7
+test_112,Cancer death rates in children under 10 years old,line,https://ourworldindata.org/grapher/cancer-death-rates-in-children-under-10-years-old,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,2
+test_113,Number of children under 5  by world region,stacked,https://ourworldindata.org/grapher/projected-population-under-age-5,CC BY 4.0 (OWID); underlying data credited on chart,1,1,1,1,5,6
+test_114,Total GDP vs. GDP per capita,scatter,https://ourworldindata.org/grapher/total-gdp-vs-gdp-per-capita-maddison,CC BY 4.0 (OWID); underlying data credited on chart,1,1,0,0,1,3
+test_115,Population density of the world's largest cities,line,https://ourworldindata.org/grapher/population-density-by-city,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,1
+test_116,World regions in the Maddison Project Database,map,https://ourworldindata.org/grapher/world-regions-according-to-maddison-project-database,CC BY 4.0 (OWID); underlying data credited on chart,1,1,0,1,7,8
+test_117,Per capita meat consumption by type,stacked,https://ourworldindata.org/grapher/per-capita-meat-consumption-by-type-kilograms-per-year,CC BY 4.0 (OWID); underlying data credited on chart,1,1,1,1,5,6
+test_118,Share of young men and women living with HIV,bar,https://ourworldindata.org/grapher/prevalence-of-hiv-percentage-of-males-and-females-ages-15-24-infected-with-hiv,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,2
+test_119,Annual tropical deforestation by agricultural product,bar,https://ourworldindata.org/grapher/deforestation-by-commodity,CC BY 4.0 (OWID); underlying data credited on chart,0,0,0,0,0,2
+test_120,Infant mortality rate,map,https://ourworldindata.org/grapher/infant-mortality-rate,CC BY 4.0 (OWID); underlying data credited on chart,1,1,0,0,1,5

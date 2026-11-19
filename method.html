@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>How the chart audit works · Through Their Eyes</title>
+<meta name="description" content="Method, sampling protocol, results and limits of the chart audit behind Through Their Eyes." />
+<link rel="stylesheet" href="style.css?v=6">
+<link rel="stylesheet" href="style3.css?v=5">
+<style>
+  html,body{height:auto}
+  body{overflow-x:hidden}
+  .m-wrap{max-width:860px;margin:0 auto;padding:40px 6vw 120px;text-align:left}
+  .m-back{display:inline-flex;gap:8px;align-items:center;color:var(--dim);text-decoration:none;font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;border:1px solid var(--glass-b);border-radius:999px;padding:9px 16px;margin-bottom:34px;background:rgba(255,255,255,.04)}
+  .m-back:hover{border-color:rgba(255,255,255,.4);color:var(--paper)}
+  .m-wrap h1{font-family:var(--serif);font-weight:300;font-size:clamp(2.2rem,5.4vw,3.8rem);line-height:1.05;letter-spacing:-.02em;margin:10px 0 14px}
+  .m-wrap h1::after{content:"";display:block;width:92px;height:4px;margin-top:22px;border-radius:4px;background:var(--spectrum)}
+  .m-lede{font-size:1.1rem;line-height:1.65;color:var(--dim);max-width:62ch}
+  .m-wrap h2{font-family:var(--serif);font-weight:400;font-size:1.5rem;margin:46px 0 12px}
+  .m-wrap p,.m-wrap li{color:var(--dim);line-height:1.7;font-size:15.5px}
+  .m-wrap ol,.m-wrap ul{margin:10px 0 0 22px}
+  .m-wrap li{margin-bottom:8px}
+  .m-wrap code{font-family:var(--mono);font-size:.86em;background:rgba(255,255,255,.07);padding:2px 6px;border-radius:5px}
+  .m-card{background:var(--glass);border:1px solid var(--glass-b);border-radius:22px;padding:22px 24px;margin-top:16px}
+  .m-big{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:20px}
+  .m-big div{background:var(--glass);border:1px solid var(--glass-b);border-radius:18px;padding:18px}
+  .m-big b{display:block;font-family:var(--serif);font-weight:300;font-size:2.6rem;line-height:1;background:linear-gradient(100deg,#ffd9a0,#ff7a5a);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .m-big span{display:block;margin-top:8px;font-size:13px;color:var(--dim);line-height:1.45}
+  table{width:100%;border-collapse:collapse;margin-top:14px;font-size:14px}
+  th,td{padding:11px 12px;text-align:left;border-bottom:1px solid var(--glass-b)}
+  th{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:500}
+  td.n{font-variant-numeric:tabular-nums}
+  .m-limits li::marker{color:var(--gold)}
+  .m-dl{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px}
+  .m-dl a{color:#07070a;background:var(--paper);text-decoration:none;font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;padding:13px 20px;border-radius:999px}
+  .m-dl a.alt{background:transparent;color:var(--paper);box-shadow:0 0 0 1px var(--glass-b)}
+  @media(max-width:700px){.m-big{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main class="m-wrap">
+  <a class="m-back" href="index.html">← Back to the story</a>
+  <div class="kicker"><span class="secnum" style="border:0;padding:0">Method</span></div>
+  <h1>How the chart audit works</h1>
+  <p class="m-lede">The Charts chapter reports what a colour-collision checker finds in real charts. This page says exactly how those numbers were made, what they show, and what they do not.</p>
+
+  <div class="m-big" id="mBig"></div>
+
+  <h2>The question</h2>
+  <p>In a random sample of public charts from one publisher, what share contain at least one pair of colours that the checker flags as collapsing for each type of colour vision?</p>
+
+  <h2>How the sample was drawn</h2>
+  <ol>
+    <li><b>Frame.</b> Every chart listed in the Our World in Data sitemap (<span id="mFrame">4,292</span> charts), minus the 27 already used to try the checker.</li>
+    <li><b>Draw.</b> The list was shuffled with a seeded generator (seed <code id="mSeed">20261119</code>). We walked down it, fetching each chart's PNG, until 120 were kept. Only <span id="mSkip">1</span> was skipped.</li>
+    <li><b>Instrument.</b> The checker's files and thresholds were written to a frozen snapshot <b>before</b> any of the 120 was analysed, and the analysis refuses to run if they change.</li>
+    <li><b>Analysis.</b> Fixed in advance: share of charts with at least one flagged pair, overall and by type of colour vision and by chart kind, with Wilson 95% intervals. Nothing was tuned afterwards.</li>
+  </ol>
+
+  <h2>What the checker does</h2>
+  <p>It reads the pixels of a chart, finds the main colours used for categories, simulates what each colour looks like under protanopia, deuteranopia and tritanopia, and flags a pair when two colours that were clearly different become nearly the same and lightness cannot tell them apart. Each flag is graded: <i>nearly identical</i> when the simulated colour difference is under 13, otherwise <i>harder to tell apart</i>. It runs entirely in your browser; the same code powers the palette studio.</p>
+
+  <h2>Results</h2>
+  <div class="m-card">
+    <table id="mTable"><thead><tr><th>Chart kind</th><th>Charts</th><th>With a flagged pair</th><th>Protan</th><th>Deutan</th><th>Tritan</th></tr></thead><tbody></tbody></table>
+  </div>
+
+  <h2>Limits: please keep these with any figure you quote</h2>
+  <ol class="m-limits">
+    <li>The checker has <b>not</b> been validated against people with colour vision deficiency. A flag is a warning, not proof that a reader fails.</li>
+    <li>One publisher, one house style. This is not “all charts”.</li>
+    <li>The checker reads pixels. Sequential map scales and dense charts may be over-flagged, which is why results are split by chart kind.</li>
+    <li>Whether a direct label or another second cue rescues a flagged pair is <b>not</b> measured. Many charts label their lines directly.</li>
+  </ol>
+
+  <h2>Download the data</h2>
+  <p>Every row links to its source chart. Charts are © Our World in Data, CC BY 4.0.</p>
+  <div class="m-dl">
+    <a href="data/chart-audit-sample.csv" download>120-chart random sample (CSV)</a>
+    <a class="alt" href="data/chart-audit-trial-set.csv" download>30-chart trial set (CSV)</a>
+  </div>
+  <p style="margin-top:14px;font-size:13px;color:var(--mute)">The trial set was picked by hand to try the checker and is <b>not</b> a sample. Three of its charts appear up close in the story.</p>
+</main>
+<script src="sample-data.js"></script>
+<script>
+(function () {
+  if (typeof SAMPLE === 'undefined') return;
+  var pct = function (k, n) { return n ? Math.round(100 * k / n) : 0; };
+  document.getElementById('mFrame').textContent = SAMPLE.frame.toLocaleString('en-US');
+  document.getElementById('mSeed').textContent = SAMPLE.seed;
+  document.getElementById('mSkip').textContent = SAMPLE.skipped;
+  document.getElementById('mBig').innerHTML =
+    '<div><b>' + pct(SAMPLE.any, SAMPLE.n) + '%</b><span>of ' + SAMPLE.n + ' random charts have at least one flagged pair (' + SAMPLE.any + ' of ' + SAMPLE.n + ')</span></div>' +
+    '<div><b>' + SAMPLE.ci[0] + '–' + SAMPLE.ci[1] + '%</b><span>95% interval for that share</span></div>' +
+    '<div><b>' + pct(SAMPLE.high, SAMPLE.n) + '%</b><span>have a pair that becomes <i>nearly identical</i> (simulated colour difference under 13) for some type: ' + SAMPLE.high + ' of ' + SAMPLE.n + ', interval ' + SAMPLE.highCi[0] + '–' + SAMPLE.highCi[1] + '%. The rest lose much of the difference but keep some lightness contrast.</span></div>' +
+    '<div><b>' + SAMPLE.n + '</b><span>charts drawn at random, thresholds frozen first</span></div>';
+  var names = { stacked: 'Stacked', scatter: 'Scatter', map: 'Map', line: 'Line', bar: 'Bars' }, rows = '';
+  ['stacked', 'scatter', 'map', 'line', 'bar'].forEach(function (k) {
+    var r = SAMPLE.byKind.filter(function (x) { return x.kind === k; })[0];
+    rows += '<tr><td>' + names[k] + '</td><td class="n">' + r.n + '</td><td class="n">' + r.any + ' (' + pct(r.any, r.n) + '%, ' + r.ci[0] + '–' + r.ci[1] + '%)</td><td class="n">' + r.protan + '</td><td class="n">' + r.deutan + '</td><td class="n">' + r.tritan + '</td></tr>';
+  });
+  rows += '<tr><td><b>All</b></td><td class="n"><b>' + SAMPLE.n + '</b></td><td class="n"><b>' + SAMPLE.any + ' (' + pct(SAMPLE.any, SAMPLE.n) + '%)</b></td><td class="n"><b>' + SAMPLE.protan + '</b></td><td class="n"><b>' + SAMPLE.deutan + '</b></td><td class="n"><b>' + SAMPLE.tritan + '</b></td></tr>';
+  document.querySelector('#mTable tbody').innerHTML = rows;
+})();
+</script>
+</body>
+</html>

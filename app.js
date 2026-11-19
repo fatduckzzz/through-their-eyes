@@ -1,7 +1,5 @@
 (function(){
-  /* 默认中文。被试全在国内，而对照站是 <html lang="zh-CN"> 的中文站——
-     两组的默认语言若不一致，语言本身就成了组间差异。右上角的切换保留。 */
-  var LANG='zh';
+  var LANG='en';
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   var html=document.documentElement, body=document.body;
   function t(key){ return (I18N[LANG] && I18N[LANG][key]!=null) ? I18N[LANG][key] : (I18N.en[key]||''); }
@@ -20,14 +18,10 @@
     var act=document.querySelector('.screen.active');
     if(act) act.querySelectorAll('.tw').forEach(function(el){ el.textContent=t(el.getAttribute('data-i-tw')); el.classList.add('done'); });
     updateVisionBadge();
-    document.querySelectorAll('#langtoggle button').forEach(function(b){ b.classList.toggle('on',b.getAttribute('data-lang')===LANG); });
   }
-  document.getElementById('langtoggle').addEventListener('click',function(e){
-    var b=e.target.closest('button'); if(!b) return; LANG=b.getAttribute('data-lang'); applyLang();
-  });
 
   var hud=document.getElementById('hud'), prog=document.getElementById('prog');
-  var order=['hero','choose','brief','w','b','c','f','e','m','g','t','sunset','flamingo','twist','voices','lab','wins','evidence','methods','bibliography','done'];
+  var order=['hero','choose','brief','w','b','c','f','e','m','g','t','sunset','flamingo','voices','twist','evidence','charts','lab','wins','palette','done'];
   var state={type:null,hidden:false,baseline:5,post:5,confidence:null,moment:null,open:"",recorded:false,
              shirt:null,frictions:0,correct:0,guesses:0,openedUp:null};
   var twTimer=null;
@@ -44,7 +38,7 @@
   }
   function qnavGroup(id){
     if(['lab'].indexOf(id)>=0) return 'fixes';
-    if(['wins'].indexOf(id)>=0) return 'cases';
+    if(['wins','audit'].indexOf(id)>=0) return 'cases';
     if(['evidence','methods','bibliography'].indexOf(id)>=0) return 'research';
     return 'experience';
   }
@@ -54,6 +48,7 @@
       b.classList.toggle('active',b.getAttribute('data-qnav')===group);
     });
   }
+  var showHooks=[];
   function show(id){
     var cur=document.querySelector('.screen.active'); if(cur) cur.classList.remove('active');
     var el=document.getElementById(id); el.classList.add('active'); window.scrollTo(0,0);
@@ -64,12 +59,13 @@
     el.querySelectorAll('svg').forEach(function(s){ try{ if(s.setCurrentTime) s.setCurrentTime(0); }catch(e){} });
     runTypewriter(el);
     updateQuicknav(id);
+    for(var hi=0;hi<showHooks.length;hi++){ try{ showHooks[hi](id); }catch(err){ if(window.console) console.error(err); } }
     if(id==='sunset') prepSunset();
     if(id==='twist') setTimeout(animateTwist,120);
     /* 单页切屏时 IntersectionObserver 只看得到当前这一屏，
        这里补记一次，保证 sectionsSeen 覆盖真实的浏览路径 */
-    if(window.TTE) TTE.seen(id);
   }
+  window.TTE_APP={ show:function(id){ show(id); }, onShow:function(fn){ showHooks.push(fn); }, getType:function(){ return state.type; }, getStats:function(){ return {frictions:state.frictions, correct:state.correct, guesses:state.guesses}; } };
   document.querySelectorAll('[data-go]').forEach(function(b){ b.addEventListener('click',function(){ show(b.getAttribute('data-go')); }); });
   updateQuicknav('hero');
 
@@ -101,7 +97,6 @@
   function assign(type,hiddenMode){
     ASSIGNED = type;
     setVision(type,hiddenMode);
-    if(window.TTE) TTE.set('cvdType', type);   // 记入完成码，供随机化均衡性检查
   }
 
   /* ------------------------------------------------------------------
@@ -117,7 +112,6 @@
      分到 5% 的人，按 n≈70 算不足 4 人，任何按类型分层的分析都做不了。
      所以 study 模式改用均匀分配。
      ------------------------------------------------------------------ */
-  var STUDY_MODE = /[?&]study=1/.test(location.search);
   var TYPES = ['deutan','protan','tritan','achro'];
 
   function randomType(uniform){
@@ -129,44 +123,11 @@
     return 'achro';
   }
 
-  /* study 模式下真的关掉自选。
-
-     这里原本只把 randomType 的分布换成均匀，四张自选卡片照样能点——注释
-     写着"跳过自选"，其实没实现。被试自己挑类型，"随机分配"这个说法就不
-     成立，类型重新变回混杂变量，而问卷 M1 记到的会是"他自己选的"。 */
-  if(STUDY_MODE){
-    document.getElementById('choose').classList.add('assigned-only');
-    var ll=document.querySelector('#choose .lede'); if(ll) ll.setAttribute('data-i','choose.lede.study');
-    var sb=document.getElementById('surpriseBtn'); if(sb) sb.setAttribute('data-i','choose.surprise.study');
-
-    /* 底部跳转栏在实验条件下必须关掉。
-
-       show() 结尾会调 TTE.seen(id)，所以点一下 quicknav 就把那一节记成
-       "看过"——人一个字没读，sectionsSeen 却涨了。四个按钮点一遍白涨 4。
-
-       对照站是 16 节挤在一整页里滚动、没有任何跳转链接，它的 sectionsSeen
-       是"滚过"。两组的同名指标因此不是同一个东西，却要放在一起比。
-
-       另外"能跳过内容"不属于要操纵的那个维度（叙事框架、具身、与内容互动），
-       它只是曝光量不等。闸门是纯时间的，关掉跳转不会让谁读得更久，只改变
-       这五分钟里他看到了什么。
-
-       #quicknav 的 display:flex 写在 id 选择器上，[hidden] 盖不住，只能直接
-       改 style。前进链 hero→choose→…→done 每屏都有按钮，关掉不会把人困死。 */
-    var qn=document.getElementById('quicknav'); if(qn) qn.style.display='none';
-
-    /* 与对照站逐字相同的一句阅读说明。两站的指示语若有差异，它就从指示语
-       变成了自变量的一部分。刻意不提"5 分钟"：问卷里写的是"10–15 分钟"，
-       那是个比下限高的锚；点明门槛会把下限变成目标（试点里四个被试全部
-       停在 300 秒整）。 */
-    var sn=document.getElementById('studyNote'); if(sn) sn.style.display='';
-  }
   document.querySelectorAll('.vcard').forEach(function(c){ c.addEventListener('click',function(){
-    if(STUDY_MODE) return;                       // 自选在实验条件下是混杂变量
     assign(c.getAttribute('data-type'),false); show('brief');
   }); });
   document.getElementById('surpriseBtn').addEventListener('click',function(){
-    assign(randomType(STUDY_MODE), true); show('brief');
+    assign(randomType(false), true); show('brief');
   });
   /* 实验室里的切换只改当前显示，不动已记录的分配类型 */
   document.getElementById('visionPills').addEventListener('click',function(e){
@@ -174,16 +135,6 @@
   });
 
 
-  /* 把场景答题表现记进完成码。
-
-     这三处一直在数（页面结尾还把数字显示给被试看），却从没上报，
-     于是「被试有没有真的在判断」这个最直接的行为证据被扔掉了：
-     阅读时长只能说明页面开着，答对了几道才说明人在读、在判断。 */
-  function reportScenes(){
-    if(!window.TTE) return;
-    TTE.set('correct', state.correct);
-    TTE.set('guesses', state.guesses);
-  }
 
   ['b','c','e','m','g','t'].forEach(function(sid){
     var sc=document.getElementById(sid); var choices=[].slice.call(sc.querySelectorAll('.choice'));
@@ -191,7 +142,7 @@
       ch.addEventListener('click',function(){
         if(sc.dataset.answered) return; sc.dataset.answered='1';
         var ok=ch.getAttribute('data-correct')==='1';
-        state.guesses++; if(ok) state.correct++; else addFriction(1); reportScenes();
+        state.guesses++; if(ok) state.correct++; else addFriction(1);
         choices.forEach(function(o){o.classList.add('dim');}); ch.classList.remove('dim'); ch.classList.add('picked');
         var fb=document.getElementById('fb-'+sid);
         var extra=(sid==='m'&&state.shirt==='pink')?t('fb.m.pink'):'';
@@ -208,7 +159,7 @@
       ch.addEventListener('click',function(){
         if(sc.dataset.answered) return; sc.dataset.answered='1';
         var k=ch.getAttribute('data-k'); state.shirt=k; state.guesses++;
-        if(k==='grey') state.correct++; else addFriction(1); reportScenes();
+        if(k==='grey') state.correct++; else addFriction(1);
         choices.forEach(function(o){o.classList.add('dim');}); ch.classList.remove('dim'); ch.classList.add('picked');
         var fb=document.getElementById('fb-w'); fb.innerHTML=tv('fb.w.'+k); fb.classList.remove('hidden');
         setTimeout(function(){document.getElementById('dc-w').classList.remove('hidden');},450);
@@ -222,7 +173,7 @@
     fields.forEach(function(fl){
       fl.addEventListener('click',function(){
         if(sc.dataset.answered) return; sc.dataset.answered='1';
-        var ok=fl.classList.contains('err'); state.guesses++; addFriction(1); if(ok) state.correct++; reportScenes();
+        var ok=fl.classList.contains('err'); state.guesses++; addFriction(1); if(ok) state.correct++;
         fields.forEach(function(o){o.style.pointerEvents='none';o.style.opacity=.55;});
         fl.style.opacity=1; fl.style.borderColor='var(--gold)';
         var fb=document.getElementById('fb-f'); fb.innerHTML=tv(ok?'f.fb.ok':'f.fb.no'); fb.classList.remove('hidden');
@@ -285,6 +236,7 @@ document.getElementById('restartBtn').addEventListener('click',function(){ locat
   })();
 
   applyLang();
+
 })();
 (function(){
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -702,5 +654,6 @@ document.getElementById('restartBtn').addEventListener('click',function(){ locat
       }
     });
   })();
+
 
 })();

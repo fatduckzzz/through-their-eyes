@@ -1,5 +1,8 @@
 # AGENTS.md — Through Their Eyes
 
+> **Update (post-study):** this file describes the original study build. The site is now English only; `tracker.js`, the completion-code gate and `?study=1` are gone; the bottom quick-nav is replaced by a top menu (`nav.js`); new features live in `shared.js`, `hero.js`, `story.js`, `research.js`, `palette.js` and `style2.css`; `app.js` exposes `TTE_APP.onShow(fn)` for them. See README.md for the current structure. Sections below that mention Chinese, the tracker or study mode are out of date.
+
+
 > This file is written for AI coding agents. It describes the project as it actually exists today. There was no previous `AGENTS.md` in the project root, so this document was created from scratch after inspecting every source file.
 
 ## Project overview

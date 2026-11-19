@@ -1,14 +1,22 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>透过他们的眼睛 · 在他们眼中过一天</title>
+<meta name="description" content="An interactive data story about colour vision deficiency: live a day through Alex's eyes, then see real charts, real numbers and a palette tool through four pairs of eyes." />
+<meta name="theme-color" content="#08080b" />
+<meta property="og:title" content="Through Their Eyes" />
+<meta property="og:description" content="Live a day through colour-blind eyes, then look at real charts the way they do." />
+<meta property="og:type" content="website" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2308080b'/%3E%3Ccircle cx='20' cy='24' r='9' fill='%23ff5b4a'/%3E%3Ccircle cx='44' cy='24' r='9' fill='%23ffb24a'/%3E%3Ccircle cx='20' cy='44' r='9' fill='%237fd36b'/%3E%3Ccircle cx='44' cy='44' r='9' fill='%2346a6ff'/%3E%3C/svg%3E" />
+<title>Through Their Eyes · A Day Through Colour-Blind Eyes</title>
 <!-- Fonts are self-hosted (see @font-face in style.css). Google Fonts is unreachable
      from mainland China, where this study is run: the request would block text
      rendering until it times out. Latin faces ship in assets/fonts/ (~220 KB);
      CJK falls back to the system stack, which is preinstalled on every target OS. -->
-<link rel="stylesheet" href="style.css?v=2">
+<link rel="stylesheet" href="style.css?v=6">
+<link rel="stylesheet" href="style2.css?v=7">
+<link rel="stylesheet" href="style3.css?v=16">
 </head>
 <body data-vision="normal" data-arm="n">
 <div id="cursorDot"></div><div id="cursorRing"></div>
@@ -39,7 +47,7 @@
     <rect x="0" y="380" width="700" height="20" fill="#0d0d14"/>
     <g fill="#0d0d14"><rect x="40" y="330" width="60" height="56"/><rect x="620" y="316" width="50" height="70"/><rect x="560" y="344" width="40" height="42"/></g>
   </symbol>
-  <symbol id="m-shirt" viewBox="0 0 100 100"><rect width="100" height="100" fill="#1a1620"/><path d="M30 28 l14 -8 q6 6 12 0 l14 8 8 14 -10 6 0 32 -36 0 0 -32 -10 -6z" fill="#ff4d8d"/></symbol>
+  <symbol id="m-shirt" viewBox="0 0 100 100"><rect width="100" height="100" fill="#1a1620"/><path d="M30 28 l14 -8 q6 6 12 0 l14 8 8 14 -10 6 0 32 -36 0 0 -32 -10 -6z" fill="#b45aa0"/></symbol>
   <symbol id="m-tomato" viewBox="0 0 100 100"><rect width="100" height="100" fill="#211c18"/><circle cx="50" cy="56" r="28" fill="#e23b2e"/><path d="M50 28 q6 -8 12 0" stroke="#4a7a2a" stroke-width="5" fill="none"/></symbol>
   <symbol id="m-light" viewBox="0 0 100 100"><rect width="100" height="100" fill="#23262e"/><rect x="36" y="14" width="28" height="72" rx="9" fill="#14151a"/><circle cx="50" cy="30" r="9" fill="#3a1410"/><circle cx="50" cy="50" r="9" fill="#3a3410"/><circle cx="50" cy="70" r="9" fill="#3fae57"/></symbol>
   <symbol id="m-form" viewBox="0 0 100 100"><rect width="100" height="100" fill="#15151d"/><rect x="18" y="24" width="64" height="14" rx="4" fill="#101018" stroke="#2c8a3e" stroke-width="3"/><rect x="18" y="44" width="64" height="14" rx="4" fill="#101018" stroke="#c0392b" stroke-width="3"/><rect x="18" y="64" width="64" height="14" rx="4" fill="#101018" stroke="#2c8a3e" stroke-width="3"/></symbol>
@@ -49,32 +57,65 @@
   <symbol id="m-sun" viewBox="0 0 100 100"><rect width="100" height="62" fill="#7b3aa0"/><rect y="62" width="100" height="38" fill="#1f1f4d"/><circle cx="50" cy="58" r="14" fill="#fff0c4"/><ellipse cx="50" cy="65" rx="26" ry="4" fill="#ffd86b" opacity=".4"/></symbol>
 </defs></svg>
 
-<div id="langtoggle"><button data-lang="en" class="on">EN</button><button data-lang="zh">中文</button></div>
 <div id="prog"></div>
 <header id="hud">
   <div class="left"><span class="chapter" id="hudChapter"></span><span class="clock" id="hudClock">07:02</span><span id="sunarc" aria-hidden="true"><svg viewBox="0 0 56 28"><path class="arctrack" d="M3,25 Q28,1 53,25"/><path class="arcfill" d="M3,25 Q28,1 53,25" id="arcFillPath"/><circle class="sundot" id="sunDot" r="3"/></svg></span></div>
   <div class="right"><span class="fr"><span data-i="hud.friction"></span> <b id="hudFr">0</b></span><span class="badge"><span class="dot"></span><span id="hudVision"></span></span></div>
 </header>
 
-<nav id="quicknav" aria-label="Section shortcuts">
-  <button class="qnav-btn" data-go="choose" data-qnav="experience"><span data-i="nav.experience"></span></button>
-  <button class="qnav-btn" data-go="lab" data-qnav="fixes"><span data-i="nav.fixes"></span></button>
-  <button class="qnav-btn" data-go="wins" data-qnav="cases"><span data-i="nav.cases"></span></button>
-  <button class="qnav-btn" data-go="evidence" data-qnav="research"><span data-i="nav.research"></span></button>
-</nav>
+<header id="topnav">
+  <button class="tn-brand" data-go="hero" aria-label="Through Their Eyes, home"><b>THROUGH <i>THEIR</i> EYES</b><small>A day in colour</small></button>
+  <button class="tn-burger" aria-label="Menu" aria-expanded="false"><i></i><i></i><i></i></button>
+  <nav class="tn-items" aria-label="Chapters">
+    <div class="tn-item" data-group="intro"><button class="tn-top" data-go="hero"><b>Intro</b><small>Start here</small></button></div>
+    <div class="tn-item" data-group="prologue"><button class="tn-top" data-go="choose"><b>Prologue</b><small>A day, in colour</small></button></div>
+    <div class="tn-item has-menu" data-group="people">
+      <button class="tn-top" aria-haspopup="true" aria-expanded="false"><b>The People</b><small>In their words</small><span class="chev"></span></button>
+      <div class="tn-menu"><button data-go="voices">Real voices<small>Small things, again and again</small></button><button data-go="twist">What the videos skip<small>The cure that is not</small></button></div>
+    </div>
+    <div class="tn-item" data-group="numbers"><button class="tn-top" data-go="evidence"><b>The Numbers</b><small>Who is affected</small></button></div>
+    <div class="tn-item" data-group="charts"><button class="tn-top" data-go="charts"><b>The Charts</b><small>Four pairs of eyes</small></button></div>
+    <div class="tn-item has-menu" data-group="fix">
+      <button class="tn-top" aria-haspopup="true" aria-expanded="false"><b>The Fix</b><small>Design that works</small><span class="chev"></span></button>
+      <div class="tn-menu"><button data-go="lab">Accessibility lab<small>Same eyes, better design</small></button><button data-go="wins">Real-world fixes<small>Before and after</small></button></div>
+    </div>
+    <div class="tn-item" data-group="palette"><button class="tn-top" data-go="palette"><b>Palette</b><small>Build and check</small></button></div>
+    <div class="tn-item" data-group="epilogue"><button class="tn-top" data-go="done"><b>Epilogue</b><small>What you can do</small></button></div>
+  </nav>
+</header>
 
 <main>
   <section class="screen active" id="hero" data-hud="0" style="position:relative">
     <div class="orbs"><i></i><i></i><i></i></div>
+    <div class="iris" aria-hidden="true"><div class="halo"></div><div class="ring"></div><div class="fibres"></div><div class="pupil"></div><div class="glint"></div></div>
     <div id="heroGlow"></div>
-    <div class="wrap">
-      <div class="kicker" style="margin-bottom:26px" data-i="hero.eyebrow"><span class="secnum">01</span></div>
-      <h1 data-i-html="hero.title"></h1>
+    <div class="hero-a">
+      <div class="kicker" data-i="hero.eyebrow"><span class="secnum">01</span></div>
+      <h1 id="heroTitle" data-i-html="hero.title"></h1>
       <p class="sub" data-i="hero.sub"></p>
-      <div class="stat-strip"><div><b>1/12</b><span data-i="hero.s1"></span></div><div><b>1/200</b><span data-i="hero.s2"></span></div><div><b>300M+</b><span data-i="hero.s3"></span></div></div>
+      <div class="hero-cta"><button class="btn" data-go="choose" data-i="hero.cta"></button><button class="btn ghost" id="heroScroll" type="button">See what they see</button></div>
+      <div class="scroll-cue"><span>Scroll</span><i></i></div>
+    </div>
+    <div class="marquee" aria-hidden="true"><div class="mq-track"><span><b>8%</b> of men of European ancestry</span><i></i><span><b>4.11%</b> of male Chinese undergraduates</span><i></i><span><b>300M+</b> people worldwide</span><i></i><span><b>120</b> charts drawn at random</span><i></i><span><b>43%</b> held a pair of colours that collapse</span><i></i><span><b>1</b> day, eight small decisions</span><i></i><span><b>8%</b> of men of European ancestry</span><i></i><span><b>4.11%</b> of male Chinese undergraduates</span><i></i><span><b>300M+</b> people worldwide</span><i></i><span><b>120</b> charts drawn at random</span><i></i><span><b>43%</b> held a pair of colours that collapse</span><i></i><span><b>1</b> day, eight small decisions</span><i></i></div></div>
+    <div class="hero-b">
+      <h2>Same picture. Two pairs of eyes.</h2>
+      <p class="lede">Drag the handle. On the left, a transit map as most people see it. On the right, the same map as someone with deuteranopia sees it. Try to follow each line from end to end.</p>
+      <div class="wipe" id="wipe">
+        <div class="base"><img src="assets/tube_map.png" alt="A transit map with red, green and blue lines" draggable="false"></div>
+        <div class="sim"><img src="assets/tube_map.png" alt="" draggable="false"></div>
+        <span class="wipe-line"></span><span class="wipe-knob"></span>
+        <span class="wipe-tag l">Typical vision</span><span class="wipe-tag r">Deuteranopia</span>
+      </div>
+      <input class="wipe-range" id="wipeRange" type="range" min="0" max="100" value="100" aria-label="Compare typical vision with deuteranopia">
+      <p class="wipe-cap">Nothing about the map changed. Only the eyes did. <span class="wipe-credit">Map: Transport for London. The right-hand side is a simulation of deuteranopia.</span></p>
+      <div class="stat-strip"><div><b>8%</b><span data-i="hero.s1"></span></div><div><b>4.1%</b><span data-i="hero.s2"></span></div><div><b>300M+</b><span data-i="hero.s3"></span></div></div>
+      <div class="hero-data" id="heroData">
+        <span class="hd-k">A first look at the data</span>
+        <h3 id="hdHead"></h3>
+        <svg id="heroDataChart" viewBox="0 0 640 200" role="img" aria-labelledby="heroDataChartT heroDataChartD"></svg>
+        <p class="hd-note">Each bar is the share of 120 charts, drawn at random from Our World in Data, with at least one pair of colours that loses much of its difference for that type of colour vision. “Nearly identical” means the simulated colours differ by almost nothing (any type). A flag is a warning, not proof that a reader fails. <a href="method.html" target="_blank" rel="noopener">How this was measured</a></p>
+      </div>
       <p class="hero-note" data-i="hero.note"></p>
-      <!-- 仅 study 模式显示（app.js 里放开）。与对照站 masthead 的那句逐字相同。 -->
-      <p class="hero-note" id="studyNote" style="display:none" data-i="hero.studynote"></p>
       <div class="source-panel hero-sources">
         <div class="source-label" data-i="sources.key"></div>
         <ul>
@@ -113,7 +154,7 @@
         <svg viewBox="0 0 700 500" preserveAspectRatio="xMidYMid slice"><rect width="700" height="500" fill="#1a1620"/><polygon points="350,0 180,500 520,500" fill="#3a3346" opacity=".22"/><rect x="60" y="40" width="580" height="380" rx="14" fill="#211b29" stroke="#2e2738" stroke-width="3"/><line x1="100" y1="110" x2="600" y2="110" stroke="#3a3346" stroke-width="6"/><g fill="#544a64"><g transform="rotate(0 216 110)"><circle cx="216" cy="110" r="8"/><animateTransform attributeName="transform" type="rotate" values="-3 216 110;3 216 110;-3 216 110" dur="4.2s" repeatCount="indefinite"/></g><g transform="rotate(0 350 110)"><circle cx="350" cy="110" r="8"/><animateTransform attributeName="transform" type="rotate" values="2 350 110;-2 350 110;2 350 110" dur="3.6s" repeatCount="indefinite"/></g><g transform="rotate(0 484 110)"><circle cx="484" cy="110" r="8"/><animateTransform attributeName="transform" type="rotate" values="-3 484 110;3 484 110;-3 484 110" dur="4.8s" repeatCount="indefinite"/></g></g></svg>
         <div class="choices" style="align-items:center;padding-bottom:0">
           <button class="choice" data-k="navy"><svg viewBox="0 0 120 130"><path d="M34 26 l18 -10 q8 8 16 0 l18 10 10 18 -12 8 0 52 -48 0 0 -52 -12 -8z" fill="#2e3f6e"/></svg></button>
-          <button class="choice" data-k="pink"><svg viewBox="0 0 120 130"><path d="M34 26 l18 -10 q8 8 16 0 l18 10 10 18 -12 8 0 52 -48 0 0 -52 -12 -8z" fill="#ff4d8d"/></svg></button>
+          <button class="choice" data-k="pink"><svg viewBox="0 0 120 130"><path d="M34 26 l18 -10 q8 8 16 0 l18 10 10 18 -12 8 0 52 -48 0 0 -52 -12 -8z" fill="#b45aa0"/></svg></button>
           <button class="choice" data-k="grey"><svg viewBox="0 0 120 130"><path d="M34 26 l18 -10 q8 8 16 0 l18 10 10 18 -12 8 0 52 -48 0 0 -52 -12 -8z" fill="#8d8f98"/></svg></button>
         </div>
       </div>
@@ -214,9 +255,9 @@
             <rect x="500" y="0" width="260" height="500" fill="#0d0d11"><animateTransform attributeName="transform" type="translate" values="0 0; -260 0" dur="1.1s" begin="2.4s" fill="freeze"/></rect></g>
         </svg>
         <div class="liftbtn-wrap choices" style="align-items:center;padding-bottom:0">
-          <button class="choice" data-correct="0"><svg viewBox="0 0 90 130"><rect width="90" height="130" rx="14" fill="#1c1c24" stroke="#2c2c38" stroke-width="3"/><circle cx="45" cy="65" r="26" fill="none" stroke="#5a5142" stroke-width="6"/><text x="45" y="73" text-anchor="middle" font-family="monospace" font-size="26" fill="#cfcabd">8</text></svg></button>
-          <button class="choice" data-correct="1"><svg viewBox="0 0 90 130"><rect width="90" height="130" rx="14" fill="#1c1c24" stroke="#2c2c38" stroke-width="3"/><circle cx="45" cy="65" r="26" fill="none" stroke="#c8932f" stroke-width="6"><animate attributeName="opacity" values="1;.55;1" dur="1.5s" repeatCount="indefinite"/></circle><text x="45" y="73" text-anchor="middle" font-family="monospace" font-size="26" fill="#cfcabd">12</text></svg></button>
-          <button class="choice" data-correct="0"><svg viewBox="0 0 90 130"><rect width="90" height="130" rx="14" fill="#1c1c24" stroke="#2c2c38" stroke-width="3"/><circle cx="45" cy="65" r="26" fill="none" stroke="#5a5142" stroke-width="6"/><text x="45" y="73" text-anchor="middle" font-family="monospace" font-size="26" fill="#cfcabd">15</text></svg></button>
+          <button class="choice" data-correct="0"><svg viewBox="0 0 90 130"><rect width="90" height="130" rx="14" fill="#1c1c24" stroke="#2c2c38" stroke-width="3"/><circle cx="45" cy="65" r="26" fill="none" stroke="#b46464" stroke-width="6"/><text x="45" y="73" text-anchor="middle" font-family="monospace" font-size="26" fill="#cfcabd">8</text></svg></button>
+          <button class="choice" data-correct="1"><svg viewBox="0 0 90 130"><rect width="90" height="130" rx="14" fill="#1c1c24" stroke="#2c2c38" stroke-width="3"/><circle cx="45" cy="65" r="26" fill="none" stroke="#8cb41e" stroke-width="6"><animate attributeName="opacity" values="1;.55;1" dur="1.5s" repeatCount="indefinite"/></circle><text x="45" y="73" text-anchor="middle" font-family="monospace" font-size="26" fill="#cfcabd">12</text></svg></button>
+          <button class="choice" data-correct="0"><svg viewBox="0 0 90 130"><rect width="90" height="130" rx="14" fill="#1c1c24" stroke="#2c2c38" stroke-width="3"/><circle cx="45" cy="65" r="26" fill="none" stroke="#b46464" stroke-width="6"/><text x="45" y="73" text-anchor="middle" font-family="monospace" font-size="26" fill="#cfcabd">15</text></svg></button>
         </div>
       </div>
       <div class="panel"><div class="kicker" data-i="e.kicker"></div><h2 data-i="e.h"></h2><p class="q" data-i="e.q"></p>
@@ -245,11 +286,11 @@
           <circle cx="170" cy="150" r="5" fill="#ff5b4a" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;.78;.84;.96;1" dur="2.1s" begin="1s" fill="freeze"/><animateMotion path="M0,0 L60,8 L130,-2 L195,20" dur="2.1s" begin="1s" fill="freeze"/></circle>
         </svg>
         <div class="choices" style="padding-bottom:4%">
-          <button class="choice" style="max-width:17%" data-correct="0"><svg viewBox="0 0 60 60"><rect width="60" height="60" rx="8" fill="#e23b2e"/></svg></button>
-          <button class="choice" style="max-width:17%" data-correct="0"><svg viewBox="0 0 60 60"><rect width="60" height="60" rx="8" fill="#f4b400"/></svg></button>
-          <button class="choice" style="max-width:17%" data-correct="1"><svg viewBox="0 0 60 60"><rect width="60" height="60" rx="8" fill="#6fae3e"/></svg></button>
-          <button class="choice" style="max-width:17%" data-correct="0"><svg viewBox="0 0 60 60"><rect width="60" height="60" rx="8" fill="#3a86ff"/></svg></button>
-          <button class="choice" style="max-width:17%" data-correct="0"><svg viewBox="0 0 60 60"><rect width="60" height="60" rx="8" fill="#b06fd1"/></svg></button>
+          <button class="choice" style="max-width:17%" data-correct="0" data-name="red"><svg viewBox="0 0 60 60"><rect width="60" height="60" rx="8" fill="#e23b2e"/></svg></button>
+          <button class="choice" style="max-width:17%" data-correct="0" data-name="orange"><svg viewBox="0 0 60 60"><rect width="60" height="60" rx="8" fill="#f4b400"/></svg></button>
+          <button class="choice" style="max-width:17%" data-correct="1" data-name="green"><svg viewBox="0 0 60 60"><rect width="60" height="60" rx="8" fill="#6fae3e"/></svg></button>
+          <button class="choice" style="max-width:17%" data-correct="0" data-name="blue"><svg viewBox="0 0 60 60"><rect width="60" height="60" rx="8" fill="#3a86ff"/></svg></button>
+          <button class="choice" style="max-width:17%" data-correct="0" data-name="purple"><svg viewBox="0 0 60 60"><rect width="60" height="60" rx="8" fill="#b06fd1"/></svg></button>
         </div>
       </div>
       <div class="panel"><div class="kicker" data-i="m.kicker"></div><h2 data-i="m.h"></h2><p class="q" data-i="m.q"></p>
@@ -265,9 +306,9 @@
       <div class="world simfx">
         <svg viewBox="0 0 700 500" preserveAspectRatio="xMidYMid slice"><rect width="700" height="500" fill="#1d1822"/><rect y="0" width="700" height="74" fill="#251f2c"/><text x="350" y="46" text-anchor="middle" font-family="monospace" font-size="18" fill="#8d8398" data-i-svg="g.shelf">SHELF</text><rect x="56" y="110" width="588" height="270" rx="12" fill="#241e2b" stroke="#322a3a" stroke-width="2"/><line x1="56" y1="245" x2="644" y2="245" stroke="#322a3a" stroke-width="4"/><rect x="56" y="74" width="588" height="6" fill="#f3efe6" opacity=".35"><animate attributeName="opacity" values=".35;.08;.35;.32;.35" keyTimes="0;.08;.16;.2;1" dur="3.4s" repeatCount="indefinite"/></rect></svg>
         <div class="choices" style="align-items:center;padding-bottom:0">
-          <button class="choice" style="max-width:22%" data-correct="0"><svg viewBox="0 0 90 150"><rect x="12" y="10" width="66" height="130" rx="12" fill="#2f5d2f"/><circle cx="45" cy="38" r="8" fill="#1d1822"/></svg></button>
-          <button class="choice" style="max-width:22%" data-correct="1"><svg viewBox="0 0 90 150"><rect x="12" y="10" width="66" height="130" rx="12" fill="#b23227"/><circle cx="45" cy="38" r="8" fill="#1d1822"/></svg></button>
-          <button class="choice" style="max-width:22%" data-correct="0"><svg viewBox="0 0 90 150"><rect x="12" y="10" width="66" height="130" rx="12" fill="#5a3b22"/><circle cx="45" cy="38" r="8" fill="#1d1822"/></svg></button>
+          <button class="choice" style="max-width:22%" data-correct="0" data-name="green"><svg viewBox="0 0 90 150"><rect x="12" y="10" width="66" height="130" rx="12" fill="#2f5d2f"/><circle cx="45" cy="38" r="8" fill="#1d1822"/></svg></button>
+          <button class="choice" style="max-width:22%" data-correct="1" data-name="red"><svg viewBox="0 0 90 150"><rect x="12" y="10" width="66" height="130" rx="12" fill="#b23227"/><circle cx="45" cy="38" r="8" fill="#1d1822"/></svg></button>
+          <button class="choice" style="max-width:22%" data-correct="0" data-name="brown"><svg viewBox="0 0 90 150"><rect x="12" y="10" width="66" height="130" rx="12" fill="#5a3b22"/><circle cx="45" cy="38" r="8" fill="#1d1822"/></svg></button>
         </div>
       </div>
       <div class="panel"><div class="kicker" data-i="g.kicker"></div><h2 data-i="g.h"></h2><p class="q" data-i="g.q"></p>
@@ -284,18 +325,12 @@
         <svg viewBox="0 0 700 500" preserveAspectRatio="xMidYMid slice">
           <rect width="700" height="500" fill="#101015"/>
           <g opacity=".5"><rect x="-340" y="40" width="320" height="64" rx="12" fill="#1d1d26"/><g fill="#3b3b4a"><rect x="-322" y="56" width="40" height="30" rx="4"/><rect x="-272" y="56" width="40" height="30" rx="4"/><rect x="-222" y="56" width="40" height="30" rx="4"/><rect x="-172" y="56" width="40" height="30" rx="4"/></g><animateTransform attributeName="transform" type="translate" from="0 0" to="1100 0" dur="9s" repeatCount="indefinite"/></g>
-          <text x="350" y="158" text-anchor="middle" font-family="monospace" font-size="17" fill="#8d8398" data-i-svg="t.head">METRO</text>
-          <polyline points="90,150 300,150 300,430" fill="none" stroke="#ff4d4d" stroke-width="14" stroke-linecap="round" stroke-dasharray="900" stroke-dashoffset="900"><animate attributeName="stroke-dashoffset" from="900" to="0" dur="1.4s" fill="freeze"/></polyline>
-          <polyline points="90,330 610,150" fill="none" stroke="#3a86ff" stroke-width="14" stroke-linecap="round" stroke-dasharray="900" stroke-dashoffset="900"><animate attributeName="stroke-dashoffset" from="900" to="0" dur="1.4s" begin=".35s" fill="freeze"/></polyline>
-          <polyline points="150,430 440,430 610,250" fill="none" stroke="#22c55e" stroke-width="14" stroke-linecap="round" stroke-dasharray="900" stroke-dashoffset="900"><animate attributeName="stroke-dashoffset" from="900" to="0" dur="1.4s" begin=".7s" fill="freeze"/></polyline>
-          <g>
-            <circle cx="300" cy="150" r="15" fill="#11121a" stroke="#fff" stroke-width="4"/>
-            <circle cx="440" cy="430" r="15" fill="#11121a" stroke="#fff" stroke-width="4"/>
-            <circle cx="220" cy="285" r="15" fill="#11121a" stroke="#fff" stroke-width="4"/>
-            <text x="300" y="127" text-anchor="middle" font-family="monospace" font-size="18" fill="#cfcabd">A</text>
-            <text x="471" y="437" text-anchor="middle" font-family="monospace" font-size="18" fill="#cfcabd">B</text>
-            <text x="186" y="278" text-anchor="middle" font-family="monospace" font-size="18" fill="#cfcabd">C</text>
-          </g>
+          <text x="350" y="64" text-anchor="middle" font-family="monospace" font-size="16" fill="#8d8398" data-i-svg="t.head">METRO</text>
+          <polyline points="60,240 640,240" fill="none" stroke="#3a86ff" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="900" stroke-dashoffset="900"><animate attributeName="stroke-dashoffset" from="900" to="0" dur="1.4s" begin="0s" fill="freeze"/></polyline>
+          <polyline points="330,100 330,320" fill="none" stroke="#22c55e" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="900" stroke-dashoffset="900"><animate attributeName="stroke-dashoffset" from="900" to="0" dur="1.4s" begin=".35s" fill="freeze"/></polyline>
+          <polyline points="120,110 270,330" fill="none" stroke="#101015" stroke-width="30" stroke-linecap="round" stroke-dasharray="900" stroke-dashoffset="900"><animate attributeName="stroke-dashoffset" from="900" to="0" dur="1.4s" begin=".7s" fill="freeze"/></polyline>
+          <polyline points="120,110 270,330" fill="none" stroke="#ff4d4d" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="900" stroke-dashoffset="900"><animate attributeName="stroke-dashoffset" from="900" to="0" dur="1.4s" begin=".7s" fill="freeze"/></polyline>
+          <g><circle cx="120" cy="240" r="6" fill="#11121a" stroke="#fff" stroke-width="3"/><circle cx="440" cy="240" r="6" fill="#11121a" stroke="#fff" stroke-width="3"/><circle cx="590" cy="240" r="6" fill="#11121a" stroke="#fff" stroke-width="3"/><circle cx="330" cy="150" r="6" fill="#11121a" stroke="#fff" stroke-width="3"/><circle cx="330" cy="300" r="6" fill="#11121a" stroke="#fff" stroke-width="3"/><circle cx="243" cy="290" r="6" fill="#11121a" stroke="#fff" stroke-width="3"/><circle cx="150" cy="154" r="15" fill="#11121a" stroke="#fff" stroke-width="4"/><text x="150" y="128" text-anchor="middle" font-family="monospace" font-size="19" fill="#f3efe6">A</text><circle cx="330" cy="240" r="21" fill="#11121a" stroke="#fff" stroke-width="5"/><circle cx="330" cy="240" r="9" fill="#fff"/><text x="372" y="222" text-anchor="middle" font-family="monospace" font-size="19" fill="#f3efe6">B</text><circle cx="520" cy="240" r="15" fill="#11121a" stroke="#fff" stroke-width="4"/><text x="520" y="212" text-anchor="middle" font-family="monospace" font-size="19" fill="#f3efe6">C</text></g>
           <g opacity=".92">
             <g stroke="#46a6ff" stroke-width="3" opacity="0"><line x1="640" y1="466" x2="900" y2="466"/><line x1="640" y1="480" x2="900" y2="480"><animate attributeName="opacity" values="0;.5;0" dur=".5s" begin=".1s" fill="freeze"/></line><animate attributeName="opacity" values="0;.5;0" dur=".5s" begin=".05s" fill="freeze"/></g>
             <g><rect x="900" y="452" width="250" height="46" rx="8" fill="#262a33"/><rect x="916" y="460" width="38" height="22" rx="3" fill="#9fd6ff" opacity=".8"/><rect x="966" y="460" width="38" height="22" rx="3" fill="#9fd6ff" opacity=".8"/><rect x="1016" y="460" width="38" height="22" rx="3" fill="#9fd6ff" opacity=".8"/><rect x="1066" y="460" width="38" height="22" rx="3" fill="#9fd6ff" opacity=".8"/><rect x="1116" y="460" width="28" height="22" rx="3" fill="#171b22"/>
@@ -304,9 +339,9 @@
           </g>
         </svg>
         <div class="choices" style="align-items:flex-end;padding-bottom:3.5%">
-          <button class="choice" style="max-width:22%" data-correct="0"><svg viewBox="0 0 90 40"><text x="45" y="28" text-anchor="middle" font-family="monospace" font-size="20" fill="#fff">A</text></svg></button>
-          <button class="choice" style="max-width:22%" data-correct="1"><svg viewBox="0 0 90 40"><text x="45" y="28" text-anchor="middle" font-family="monospace" font-size="20" fill="#fff">B</text></svg></button>
-          <button class="choice" style="max-width:22%" data-correct="0"><svg viewBox="0 0 90 40"><text x="45" y="28" text-anchor="middle" font-family="monospace" font-size="20" fill="#fff">C</text></svg></button>
+          <button class="choice" style="max-width:22%" data-correct="0" data-line="red"><svg viewBox="0 0 90 40"><text x="45" y="28" text-anchor="middle" font-family="monospace" font-size="20" fill="#fff">A</text></svg></button>
+          <button class="choice" style="max-width:22%" data-correct="1" data-line="green"><svg viewBox="0 0 90 40"><text x="45" y="28" text-anchor="middle" font-family="monospace" font-size="20" fill="#fff">B</text></svg></button>
+          <button class="choice" style="max-width:22%" data-correct="0" data-line="blue"><svg viewBox="0 0 90 40"><text x="45" y="28" text-anchor="middle" font-family="monospace" font-size="20" fill="#fff">C</text></svg></button>
         </div>
       </div>
       <div class="panel"><div class="kicker" data-i="t.kicker"></div><h2 data-i="t.h"></h2><p class="q" data-i="t.q"></p>
@@ -352,7 +387,7 @@
       </div>
       <p class="twquote" style="margin-top:30px" data-i="fl.quote"></p>
       <p class="lede" data-i="fl.body"></p>
-      <button class="btn" data-go="twist" data-i="fl.next"></button>
+      <button class="btn" data-go="voices">Hear what it is like, day to day →</button>
     </div>
   </section>
 
@@ -361,6 +396,37 @@
       <div class="kicker" data-i="tw.kicker"><span class="secnum">05</span></div>
       <h2 class="title" style="margin-top:14px" data-i-html="tw.title"></h2>
       <p class="lede" data-i="tw.lede"></p>
+      <div class="clip" id="clipDemo" data-step="0">
+        <div class="clip-screen">
+          <div class="clip-bar"><span class="rec">● REC</span><span class="clip-title">“First time seeing colour”</span><span class="clip-ill">illustration</span></div>
+          <div class="clip-scene">
+            <svg viewBox="0 0 700 330" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+              <defs><linearGradient id="cl-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7fb7ff"/><stop offset="1" stop-color="#ffe3b8"/></linearGradient></defs>
+              <rect width="700" height="330" fill="url(#cl-sky)"/><circle cx="590" cy="62" r="34" fill="#ffd45e"/>
+              <path d="M0 210 Q170 150 350 205 T700 190 V330 H0Z" fill="#3f9a3a"/><path d="M0 250 Q220 205 430 250 T700 238 V330 H0Z" fill="#2c7a30"/>
+              <g stroke="#1d5a22" stroke-width="3"><line x1="110" y1="262" x2="110" y2="296"/><line x1="230" y1="272" x2="230" y2="306"/><line x1="350" y1="258" x2="350" y2="294"/><line x1="470" y1="270" x2="470" y2="306"/><line x1="590" y1="258" x2="590" y2="292"/><line x1="170" y1="228" x2="170" y2="252"/><line x1="410" y1="226" x2="410" y2="250"/></g>
+              <g><circle cx="110" cy="256" r="17" fill="#d6262b"/><circle cx="230" cy="266" r="19" fill="#f28c28"/><circle cx="350" cy="252" r="17" fill="#e255a1"/><circle cx="470" cy="264" r="19" fill="#d6262b"/><circle cx="590" cy="252" r="17" fill="#8e5bd9"/><circle cx="170" cy="222" r="12" fill="#f28c28"/><circle cx="410" cy="220" r="12" fill="#e255a1"/><circle cx="270" cy="232" r="10" fill="#d6262b"/><circle cx="520" cy="228" r="10" fill="#f28c28"/></g>
+              <g fill="#ffe27a"><circle cx="110" cy="256" r="5"/><circle cx="230" cy="266" r="5"/><circle cx="350" cy="252" r="5"/><circle cx="470" cy="264" r="5"/><circle cx="590" cy="252" r="5"/></g>
+            </svg>
+          </div>
+          <svg class="clip-glasses" viewBox="0 0 300 120" aria-hidden="true"><defs><linearGradient id="cl-lens" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff9ad0" stop-opacity=".78"/><stop offset="1" stop-color="#7a5cff" stop-opacity=".78"/></linearGradient></defs>
+            <rect x="12" y="22" width="112" height="76" rx="26" fill="url(#cl-lens)" stroke="#f6f1e7" stroke-width="6"/><rect x="176" y="22" width="112" height="76" rx="26" fill="url(#cl-lens)" stroke="#f6f1e7" stroke-width="6"/>
+            <path d="M124 52 Q150 36 176 52" fill="none" stroke="#f6f1e7" stroke-width="6" stroke-linecap="round"/><path d="M12 44 L0 36 M288 44 L300 36" stroke="#f6f1e7" stroke-width="6" stroke-linecap="round"/><path d="M34 40 L58 32 M198 40 L222 32" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".7"/></svg>
+          <div class="clip-flash"></div>
+          <div class="clip-sub" id="clipSub">Everything looks a little flat…</div>
+        </div>
+        <div class="clip-side">
+          <h3>What the viral clips show</h3>
+          <ol class="clip-steps">
+            <li data-s="0">Someone with red-green colour blindness looks at a colourful scene. It looks muted.</li>
+            <li data-s="1">A friend hands them a pair of tinted glasses.</li>
+            <li data-s="2">They put them on. The reds and greens pull apart, and they react.</li>
+            <li data-s="3">The clip ends there. The two studies below begin there.</li>
+          </ol>
+          <button class="btn ghost" id="clipReplay" type="button" style="margin-top:6px">↻ Replay</button>
+          <p class="clip-note">An illustration, not a real clip. Glasses like these are tinted filters that raise red-green contrast for some wearers.</p>
+        </div>
+      </div>
       <div class="twcols">
         <div class="twcol left"><div class="lab" data-i="tw.left.lab"></div>
           <div class="twrow"><b>90%</b><span data-i="tw.left.r1"></span><div class="twbar"><i data-w="90" style="background:var(--gold)"></i></div></div>
@@ -369,21 +435,22 @@
         </div>
         <div class="twcol right"><div class="lab" data-i="tw.right.lab"></div>
           <div class="twrow"><b>2/10</b><span data-i="tw.right.r1"></span><div class="twbar"><i data-w="20" style="background:var(--tritan)"></i></div></div>
-          <div class="twrow"><b>p=0.79</b><span data-i="tw.right.r2"></span><div class="twbar"><i data-w="8" style="background:var(--tritan)"></i></div></div>
-          <div class="twrow"><b>+1</b><span data-i="tw.right.r3"></span><div class="twbar"><i data-w="100" style="background:var(--protan)"></i></div></div>
+          <div class="twrow"><b>p=0.86</b><span data-i="tw.right.r2"></span><div class="twbar"><i data-w="8" style="background:var(--tritan)"></i></div></div>
+          <div class="twrow"><b>n=10</b><span data-i="tw.right.r3"></span><div class="twbar"><i data-w="10" style="background:var(--protan)"></i></div></div>
         </div>
       </div>
       <p class="twquote" data-i-html="tw.quote"></p>
       <div class="kicker" style="margin-top:26px" data-i="tw.src"></div>
-      <button class="btn" data-go="voices" data-i="tw.next"></button>
+      <button class="btn" data-go="evidence">The numbers behind it →</button>
     </div>
   </section>
 
   <section class="screen" id="voices" data-hud="0">
     <div class="wrap">
-      <div class="kicker" data-i="voices.kicker"><span class="secnum">06</span></div>
+      <div class="kicker" data-i="voices.kicker"><span class="secnum">08</span></div>
       <h2 class="title" style="margin-top:14px" data-i="voices.title"></h2>
       <p class="lede" data-i="voices.lede"></p>
+      <p class="v-you" id="vYou" hidden></p>
       <div class="voices-grid">
         <div class="vmessage">
           <div class="vmeta"><b data-i="v1.name"></b><span data-i="v1.context"></span></div>
@@ -415,13 +482,13 @@
           <li><a href="https://m.thepaper.cn/baijiahao_13762524" target="_blank" rel="noopener">Plural Lab / The Paper</a><span data-i="voices.sources.paper"></span></li>
         </ul>
       </div>
-      <button class="btn" data-go="lab" data-i="common.continue"></button>
+      <button class="btn" data-go="twist">But isn’t there a cure? →</button>
     </div>
   </section>
 
   <section class="screen" id="lab" data-hud="0">
     <div class="wrap">
-      <div class="kicker" data-i="lab.kicker"><span class="secnum">06</span></div>
+      <div class="kicker" data-i="lab.kicker"><span class="secnum">09</span></div>
       <h2 class="title" style="margin-top:14px" data-i="lab.title"></h2>
       <p class="lede" data-i="lab.lede"></p>
       <div class="pills" id="visionPills">
@@ -488,7 +555,7 @@
 
   <section class="screen" id="wins" data-hud="0">
     <div class="wrap">
-      <div class="kicker" data-i="wins.kicker"><span class="secnum">07</span></div>
+      <div class="kicker" data-i="wins.kicker"><span class="secnum">10</span></div>
       <h2 class="title" style="margin-top:14px" data-i="wins.title"></h2>
       <p class="lede" data-i="wins.intro"></p>
 
@@ -497,6 +564,7 @@
           <div class="bandtag" data-i="wins.band.wins.tag"></div>
           <h3 data-i="wins.band.wins.h"></h3>
         </div>
+        <div class="wins-filter" id="winsFilter" aria-label="Filter fixes"></div>
         <div class="bento">
           <article class="brow wide reveal-on-scroll">
             <div class="bchrome"><i></i><i></i><i></i><span class="baddr">apps.design/accessibility</span></div>
@@ -536,21 +604,7 @@
             </div>
           </article>
 
-          <article class="brow reveal-on-scroll">
-            <div class="bchrome"><i></i><i></i><i></i><span class="baddr">npa.go.jp/road-safety</span></div>
-            <div class="bviz dark">
-              <img src="assets/japan_traffic_light.png" alt="Japanese traffic signal showing blue-leaning green ao light" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.bfallback').style.display='flex'">
-              <div class="bfallback"><svg viewBox="0 0 240 100"><text x="120" y="54" text-anchor="middle" font-family="monospace" font-size="10" fill="#7b766c">Blue-leaning green (ao)</text></svg></div>
-            </div>
-            <div class="bmeta">
-              <div class="tag" data-i="wins.w3.tag"></div>
-              <div class="fixcue" data-i="wins.w3.cue"></div>
-              <h3 data-i="wins.w3.h"></h3>
-              <p data-i="wins.w3.p"></p>
-              <div class="bfact" data-i="wins.w3.fact"></div>
-              <div class="winsrc"><a href="https://www.npa.go.jp/" target="_blank" rel="noopener">npa.go.jp</a><span class="arr">&#8599;</span></div>
-            </div>
-          </article>
+
 
           <article class="brow wide reveal-on-scroll">
             <div class="bchrome"><i></i><i></i><i></i><span class="baddr">colorbrewer2.org</span></div>
@@ -580,28 +634,14 @@
               <h3 data-i="wins.w5.h"></h3>
               <p data-i="wins.w5.p"></p>
               <div class="bfact" data-i="wins.w5.fact"></div>
-              <div class="winsrc"><a href="https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html" target="_blank" rel="noopener">WCAG use of color</a><span class="dotsep">&#183;</span><a href="https://www.section508.gov/" target="_blank" rel="noopener">section508.gov</a><span class="arr">&#8599;</span></div>
+              <div class="winsrc"><a href="https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html" target="_blank" rel="noopener">WCAG use of color</a><span class="dotsep">&#183;</span><a href="https://www.access-board.gov/ict/" target="_blank" rel="noopener">US Access Board (508)</a><span class="arr">&#8599;</span></div>
             </div>
           </article>
 
-          <article class="brow reveal-on-scroll">
-            <div class="bchrome"><i></i><i></i><i></i><span class="baddr">tfl.gov.uk</span></div>
-            <div class="bviz dark">
-              <img src="assets/tube_map.png" alt="London Underground tube map" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.bfallback').style.display='flex'">
-              <div class="bfallback"><svg viewBox="0 0 240 100"><text x="120" y="54" text-anchor="middle" font-family="monospace" font-size="10" fill="#7b766c">London Underground map</text></svg></div>
-            </div>
-            <div class="bmeta">
-              <div class="tag" data-i="wins.w7.tag"></div>
-              <div class="fixcue" data-i="wins.w7.cue"></div>
-              <h3 data-i="wins.w7.h"></h3>
-              <p data-i="wins.w7.p"></p>
-              <div class="bfact" data-i="wins.w7.fact"></div>
-              <div class="winsrc"><a href="https://tfl.gov.uk/" target="_blank" rel="noopener">tfl.gov.uk</a><span class="arr">&#8599;</span></div>
-            </div>
-          </article>
+
 
           <article class="brow reveal-on-scroll">
-            <div class="bchrome"><i></i><i></i><i></i><span class="baddr">fda.gov</span></div>
+            <div class="bchrome"><i></i><i></i><i></i><span class="baddr">ema.europa.eu</span></div>
             <div class="bviz dark">
               <svg class="medviz" viewBox="0 0 260 150" aria-hidden="true">
                 <rect width="260" height="150" fill="#0e0e13"/>
@@ -633,25 +673,71 @@
               <h3 data-i="wins.w8.h"></h3>
               <p data-i="wins.w8.p"></p>
               <div class="bfact" data-i="wins.w8.fact"></div>
-              <div class="winsrc"><a href="https://www.fda.gov/" target="_blank" rel="noopener">fda.gov</a><span class="arr">&#8599;</span></div>
+              <div class="winsrc"><a href="https://www.ema.europa.eu/en/documents/regulatory-procedural-guideline/good-practice-guide-risk-minimisation-and-prevention-medication-errors_en.pdf" target="_blank" rel="noopener">EMA guide</a><span class="dotsep">&#183;</span><a href="https://www.fda.gov/" target="_blank" rel="noopener">fda.gov</a><span class="arr">&#8599;</span></div>
+            </div>
+          </article>
+          <article class="brow reveal-on-scroll">
+            <div class="bchrome"><i></i><i></i><i></i><span class="baddr">docs.github.com</span></div>
+            <div class="bviz dark"><svg viewBox="0 0 320 180" aria-hidden="true" style="width:100%;height:100%"><rect width="320" height="180" fill="#0e0e13"/><text x="80" y="26" text-anchor="middle" font-family="monospace" font-size="10" fill="#8d8398">DEFAULT</text><text x="240" y="26" text-anchor="middle" font-family="monospace" font-size="10" fill="#8d8398">COLOUR-BLIND THEME</text><rect x="16" y="40" width="136" height="26" rx="4" fill="#3d1f24"/><text x="26" y="58" font-family="monospace" font-size="12" fill="#ff8b8b">−  removed line</text><rect x="16" y="72" width="136" height="26" rx="4" fill="#1d3a26"/><text x="26" y="90" font-family="monospace" font-size="12" fill="#7fe29a">+  added line</text><rect x="168" y="40" width="136" height="26" rx="4" fill="#4a3412"/><text x="178" y="58" font-family="monospace" font-size="12" fill="#ffb24a">−  removed line</text><rect x="168" y="72" width="136" height="26" rx="4" fill="#12304f"/><text x="178" y="90" font-family="monospace" font-size="12" fill="#7ab8ff">+  added line</text><text x="160" y="140" text-anchor="middle" font-family="monospace" font-size="10" fill="#7b766c">illustration</text></svg></div>
+            <div class="bmeta">
+              <div class="tag">Developer tools</div>
+              <div class="fixcue">Extra cue: orange and blue instead of red and green</div>
+              <h3>GitHub’s colour-blind themes</h3>
+              <p>GitHub offers light and dark colour-blind themes that swap red and green for orange and blue. Its changelog says the first launched as a public beta in September 2021 and was later split into protanopia/deuteranopia and tritanopia versions.</p>
+              <div class="bfact">The reader picks the theme, so the fix works for them without the designer guessing who they are.</div>
+              <div class="winsrc"><a href="https://github.blog/changelog/2021-09-29-colorblind-themes-beta/" target="_blank" rel="noopener">GitHub changelog</a><span class="dotsep">&#183;</span><a href="https://docs.github.com/en/get-started/accessibility/managing-your-theme-settings" target="_blank" rel="noopener">GitHub docs</a><span class="arr">&#8599;</span></div>
+            </div>
+          </article>
+          <article class="brow reveal-on-scroll">
+            <div class="bchrome"><i></i><i></i><i></i><span class="baddr">nytimes.com/games</span></div>
+            <div class="bviz dark"><svg viewBox="0 0 320 180" aria-hidden="true" style="width:100%;height:100%"><rect width="320" height="180" fill="#0e0e13"/><text x="160" y="26" text-anchor="middle" font-family="monospace" font-size="10" fill="#8d8398">WORDLE-STYLE RESULT ROW</text><rect x="22" y="40" width="40" height="40" rx="5" fill="#538d4e"/><text x="42" y="67" text-anchor="middle" font-family="monospace" font-size="20" fill="#fff">C</text><rect x="74" y="40" width="40" height="40" rx="5" fill="#b59f3b"/><text x="94" y="67" text-anchor="middle" font-family="monospace" font-size="20" fill="#fff">O</text><rect x="126" y="40" width="40" height="40" rx="5" fill="#3a3a3c"/><text x="146" y="67" text-anchor="middle" font-family="monospace" font-size="20" fill="#fff">L</text><rect x="178" y="40" width="40" height="40" rx="5" fill="#538d4e"/><text x="198" y="67" text-anchor="middle" font-family="monospace" font-size="20" fill="#fff">O</text><rect x="230" y="40" width="40" height="40" rx="5" fill="#b59f3b"/><text x="250" y="67" text-anchor="middle" font-family="monospace" font-size="20" fill="#fff">R</text><rect x="22" y="100" width="40" height="40" rx="5" fill="#f5793a"/><text x="42" y="127" text-anchor="middle" font-family="monospace" font-size="20" fill="#fff">C</text><rect x="74" y="100" width="40" height="40" rx="5" fill="#85c0f9"/><text x="94" y="127" text-anchor="middle" font-family="monospace" font-size="20" fill="#fff">O</text><rect x="126" y="100" width="40" height="40" rx="5" fill="#3a3a3c"/><text x="146" y="127" text-anchor="middle" font-family="monospace" font-size="20" fill="#fff">L</text><rect x="178" y="100" width="40" height="40" rx="5" fill="#f5793a"/><text x="198" y="127" text-anchor="middle" font-family="monospace" font-size="20" fill="#fff">O</text><rect x="230" y="100" width="40" height="40" rx="5" fill="#85c0f9"/><text x="250" y="127" text-anchor="middle" font-family="monospace" font-size="20" fill="#fff">R</text><text x="160" y="164" text-anchor="middle" font-family="monospace" font-size="10" fill="#7b766c">top: default · bottom: high contrast · illustration</text></svg></div>
+            <div class="bmeta">
+              <div class="tag">Games</div>
+              <div class="fixcue">Extra cue: an alternative colour scheme</div>
+              <h3>Wordle’s high-contrast mode</h3>
+              <p>The New York Times lists a High Contrast Mode among Wordle’s settings, for contrast and colour-blindness improvements. Reports say it swaps green and yellow for orange and blue, including in shared results.</p>
+              <div class="bfact">Some players say the setting is hard to find, and ask for a cue other than colour as well.</div>
+              <div class="winsrc"><a href="https://thenewyorktimeshelpcenter.helpjuice.com/360011158491-New-York-Times-Games/24611727334932-Wordle" target="_blank" rel="noopener">NYT Games help</a><span class="dotsep">&#183;</span><a href="https://billfischer.substack.com/p/these-2-wordle-colors-undermine-color" target="_blank" rel="noopener">Player critique</a><span class="arr">&#8599;</span></div>
+            </div>
+          </article>
+          <article class="brow reveal-on-scroll">
+            <div class="bchrome"><i></i><i></i><i></i><span class="baddr">datawrapper.de/docs</span></div>
+            <div class="bviz dark"><svg viewBox="0 0 320 180" aria-hidden="true" style="width:100%;height:100%"><rect width="320" height="180" fill="#0e0e13"/><text x="160" y="30" text-anchor="middle" font-family="monospace" font-size="10" fill="#8d8398">SIMULATE VISION</text><rect x="14" y="46" width="68" height="30" rx="15" fill="#16161d" stroke="#3a3a48"/><text x="48" y="65" text-anchor="middle" font-family="monospace" font-size="10" fill="#f3efe6">None</text><rect x="90" y="46" width="68" height="30" rx="15" fill="#2a2a34" stroke="#ffb24a"/><text x="124" y="65" text-anchor="middle" font-family="monospace" font-size="10" fill="#f3efe6">Deuteran.</text><rect x="166" y="46" width="68" height="30" rx="15" fill="#16161d" stroke="#3a3a48"/><text x="200" y="65" text-anchor="middle" font-family="monospace" font-size="10" fill="#f3efe6">Protan.</text><rect x="242" y="46" width="68" height="30" rx="15" fill="#16161d" stroke="#3a3a48"/><text x="276" y="65" text-anchor="middle" font-family="monospace" font-size="10" fill="#f3efe6">Tritan.</text><circle cx="152" cy="47" r="10" fill="#ffb24a"/><text x="152" y="51.5" text-anchor="middle" font-family="monospace" font-size="13" font-weight="700" fill="#08080b">!</text><text x="160" y="116" text-anchor="middle" font-family="monospace" font-size="11" fill="#cfcabd">⚠ Readers with deuteranopia may not tell</text><text x="160" y="132" text-anchor="middle" font-family="monospace" font-size="11" fill="#cfcabd">two of these colours apart.</text><text x="160" y="164" text-anchor="middle" font-family="monospace" font-size="10" fill="#7b766c">illustration</text></svg></div>
+            <div class="bmeta">
+              <div class="tag">Chart tools</div>
+              <div class="fixcue">Extra cue: an automatic warning while you design</div>
+              <h3>A colour-blind check inside the chart editor</h3>
+              <p>Datawrapper simulates deuteranopia, protanopia and tritanopia under every chart and puts a warning on the simulation button when readers with that type may not tell the colours apart. The company says the automatic check has flagged charts since 2018.</p>
+              <div class="bfact">The warning arrives while the designer is still choosing colours, which is the moment that matters.</div>
+              <div class="winsrc"><a href="https://www.datawrapper.de/docs/automatic-colorblind-check" target="_blank" rel="noopener">Datawrapper docs</a><span class="dotsep">&#183;</span><a href="https://www.datawrapper.de/blog/colorblind-check" target="_blank" rel="noopener">Datawrapper blog</a><span class="arr">&#8599;</span></div>
+            </div>
+          </article>
+          <article class="brow reveal-on-scroll">
+            <div class="bchrome"><i></i><i></i><i></i><span class="baddr">thedataschool.co.uk</span></div>
+            <div class="bviz dark"><svg viewBox="0 0 320 180" aria-hidden="true" style="width:100%;height:100%"><rect width="320" height="180" fill="#0e0e13"/><text x="16" y="28" font-family="monospace" font-size="10" fill="#8d8398">preferences.tps</text><rect x="16" y="38" width="288" height="52" rx="6" fill="#15151c" stroke="#2c2c38"/><text x="26" y="58" font-family="monospace" font-size="11" fill="#cfcabd">&lt;color-palette name="Okabe-Ito"</text><text x="26" y="76" font-family="monospace" font-size="11" fill="#cfcabd">   type="regular"&gt; …</text><rect x="16" y="108" width="30" height="40" rx="4" fill="#303030" stroke="#3a3a48"/><rect x="52" y="108" width="30" height="40" rx="4" fill="#009e74" stroke="#3a3a48"/><rect x="88" y="108" width="30" height="40" rx="4" fill="#0071b2" stroke="#3a3a48"/><rect x="124" y="108" width="30" height="40" rx="4" fill="#56b3e9" stroke="#3a3a48"/><rect x="160" y="108" width="30" height="40" rx="4" fill="#f0e442" stroke="#3a3a48"/><rect x="196" y="108" width="30" height="40" rx="4" fill="#e69f00" stroke="#3a3a48"/><rect x="232" y="108" width="30" height="40" rx="4" fill="#d55c00" stroke="#3a3a48"/><rect x="268" y="108" width="30" height="40" rx="4" fill="#cc79a7" stroke="#3a3a48"/><text x="304" y="170" text-anchor="end" font-family="monospace" font-size="9" fill="#7b766c">illustration</text></svg></div>
+            <div class="bmeta">
+              <div class="tag">Chart tools</div>
+              <div class="fixcue">Extra cue: a curated palette you add yourself</div>
+              <h3>Adding a colour-blind palette to Tableau</h3>
+              <p>A Data School guide shows how to add a curated palette, such as Okabe–Ito, to Tableau by editing the preferences file in the My Tableau Repository folder. It lists other options too: Paul Tol, Carto, viridis.</p>
+              <div class="bfact">The same guide still advises avoiding colour as the only way to convey information.</div>
+              <div class="winsrc"><a href="https://www.thedataschool.co.uk/miles-cumiskey/accessible-color-tableau/" target="_blank" rel="noopener">The Data School</a><span class="arr">&#8599;</span></div>
+            </div>
+          </article>
+          <article class="brow reveal-on-scroll">
+            <div class="bchrome"><i></i><i></i><i></i><span class="baddr">overwatch · options</span></div>
+            <div class="bviz dark"><svg viewBox="0 0 320 180" aria-hidden="true" style="width:100%;height:100%"><rect width="320" height="180" fill="#0e0e13"/><text x="160" y="26" text-anchor="middle" font-family="monospace" font-size="10" fill="#8d8398">TEAM OUTLINES</text><g transform="translate(60,48)"><circle cx="0" cy="18" r="16" fill="none" stroke="#4aa8ff" stroke-width="5"/><rect x="-14" y="38" width="28" height="48" rx="12" fill="none" stroke="#4aa8ff" stroke-width="5"/></g><g transform="translate(120,48)"><circle cx="0" cy="18" r="16" fill="none" stroke="#4aa8ff" stroke-width="5"/><rect x="-14" y="38" width="28" height="48" rx="12" fill="none" stroke="#4aa8ff" stroke-width="5"/></g><g transform="translate(200,48)"><circle cx="0" cy="18" r="16" fill="none" stroke="#ff9a2e" stroke-width="5"/><rect x="-14" y="38" width="28" height="48" rx="12" fill="none" stroke="#ff9a2e" stroke-width="5"/></g><g transform="translate(260,48)"><circle cx="0" cy="18" r="16" fill="none" stroke="#ff9a2e" stroke-width="5"/><rect x="-14" y="38" width="28" height="48" rx="12" fill="none" stroke="#ff9a2e" stroke-width="5"/></g><text x="90" y="156" text-anchor="middle" font-family="monospace" font-size="10" fill="#cfcabd">allies</text><text x="230" y="156" text-anchor="middle" font-family="monospace" font-size="10" fill="#cfcabd">enemies</text><text x="304" y="174" text-anchor="end" font-family="monospace" font-size="9" fill="#7b766c">illustration</text></svg></div>
+            <div class="bmeta">
+              <div class="tag">Games</div>
+              <div class="fixcue">Extra cue: nine alternative colours</div>
+              <h3>Team colours you can change</h3>
+              <p>A 2018 Overwatch update added colour-blind options that recolour team interface elements and hero outlines, with nine colour choices, so allies and enemies can be told apart by the colours that work for each player.</p>
+              <div class="bfact">Players have reported gaps: some effects, such as barriers and deployables, were not covered.</div>
+              <div class="winsrc"><a href="https://www.slashgear.com/overwatch-gets-updated-colorblind-feature-with-nine-color-options-21546973" target="_blank" rel="noopener">SlashGear report</a><span class="arr">&#8599;</span></div>
             </div>
           </article>
 
-          <article class="brow wide reveal-on-scroll">
-            <div class="bchrome"><i></i><i></i><i></i><span class="baddr">enchroma.com</span></div>
-            <div class="bviz">
-              <img class="bimg" loading="lazy" alt="EnChroma colour-blind glasses" src="assets/enchroma_with.jpg" onerror="this.style.display='none';this.parentElement.querySelector('.bfallback').style.display='flex'">
-              <div class="bfallback"><svg viewBox="0 0 240 100"><g fill="none" stroke="currentColor" stroke-width="3" opacity=".85" stroke-linecap="round"><circle cx="88" cy="54" r="20"/><circle cx="152" cy="54" r="20"/><path d="M108 51 q12 -7 24 0"/><path d="M68 49 l-16 -9"/><path d="M172 49 l16 -9"/></g><text x="120" y="22" text-anchor="middle" font-family="monospace" font-size="9" fill="#7b766c">Not a cure — a filter.</text></svg></div>
-            </div>
-            <div class="bmeta">
-              <div class="tag" data-i="wins.w6.tag"></div>
-              <div class="fixcue" data-i="wins.w6.cue"></div>
-              <h3 data-i="wins.w6.h"></h3>
-              <p data-i="wins.w6.p"></p>
-              <div class="bfact" data-i="wins.w6.fact"></div>
-              <div class="winsrc"><a href="https://enchroma.com/" target="_blank" rel="noopener">enchroma.com</a><span class="arr">&#8599;</span></div>
-            </div>
-          </article>
+
         </div>
       </div>
 
@@ -678,11 +764,11 @@
             <div class="cslabel" data-i="wins.cs.l1"></div>
           </div>
           <div class="csviz" data-step="2">
-            <img src="assets/japan_traffic_light.png" alt="Japanese traffic light before blue-green ao adjustment" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.cslabel').style.display='none'">
+            <img src="assets/japan_traffic_light.png" alt="A Japanese traffic signal" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.cslabel').style.display='none'">
             <div class="cslabel" data-i="wins.cs.l2"></div>
           </div>
           <div class="csviz" data-step="3">
-            <img src="assets/japan_pedestrian.png" alt="Japanese pedestrian signal with blue-green ao and countdown" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.cslabel').style.display='none'">
+            <img src="assets/japan_pedestrian.png" alt="A Japanese pedestrian signal" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.cslabel').style.display='none'">
             <div class="cslabel" data-i="wins.cs.l3"></div>
           </div>
           <div class="csviz" data-step="4">
@@ -767,6 +853,10 @@
             </div>
             <p class="csimpact" data-i="wins.cs.case3.impact"></p>
           </article>
+
+
+
+
         </div>
       </div>
 
@@ -777,7 +867,7 @@
         </div>
         <div class="bento gaps">
           <article class="brow reveal-on-scroll">
-            <div class="bchrome"><i></i><i></i><i></i><span class="baddr">store.steampowered.com</span></div>
+            <div class="bchrome"><i></i><i></i><i></i><span class="baddr" data-i="wins.mock"></span></div>
             <div class="bviz dark">
               <svg class="gameviz" viewBox="0 0 260 150" aria-hidden="true">
                 <rect width="260" height="150" fill="#0e0e13"/>
@@ -803,7 +893,7 @@
           </article>
 
           <article class="brow reveal-on-scroll">
-            <div class="bchrome"><i></i><i></i><i></i><span class="baddr">weather.gov</span></div>
+            <div class="bchrome"><i></i><i></i><i></i><span class="baddr" data-i="wins.mock"></span></div>
             <div class="bviz dark">
               <svg class="weatherviz" viewBox="0 0 260 150" aria-hidden="true">
                 <rect width="260" height="150" fill="#0e0e13"/>
@@ -826,7 +916,7 @@
           </article>
 
           <article class="brow reveal-on-scroll">
-            <div class="bchrome"><i></i><i></i><i></i><span class="baddr">dashboard.example</span></div>
+            <div class="bchrome"><i></i><i></i><i></i><span class="baddr" data-i="wins.mock"></span></div>
             <div class="bviz dark">
               <svg class="pieviz" viewBox="0 0 260 150" aria-hidden="true">
                 <rect width="260" height="150" fill="#0e0e13"/>
@@ -850,7 +940,7 @@
           </article>
 
           <article class="brow reveal-on-scroll">
-            <div class="bchrome"><i></i><i></i><i></i><span class="baddr">social.example</span></div>
+            <div class="bchrome"><i></i><i></i><i></i><span class="baddr" data-i="wins.mock"></span></div>
             <div class="bviz dark">
               <svg class="statusviz" viewBox="0 0 260 150" aria-hidden="true">
                 <rect width="260" height="150" fill="#0e0e13"/>
@@ -969,17 +1059,27 @@
           </div>
         </div>
 
-        <div class="winsrc" style="margin-top:18px"><a href="https://zh.wikipedia.org/zh-hans/%E8%BB%8A%E7%AB%99%E7%B7%A8%E8%99%9F" target="_blank" rel="noopener" data-i="wins.cn.src1"></a><span class="dotsep">&#183;</span><a href="https://m.thepaper.cn/baijiahao_13762524" target="_blank" rel="noopener" data-i="wins.cn.src2"></a><span class="dotsep">&#183;</span><a href="https://www.moe.gov.cn/jyb_xxgk/gk_gbgg/moe_0/moe_9/moe_34/tnull_40.html" target="_blank" rel="noopener" data-i="wins.cn.src3"></a><span class="arr">&#8599;</span></div>
+        <div class="winsrc" style="margin-top:18px"><a href="https://zh.wikipedia.org/zh-hans/%E8%BB%8A%E7%AB%99%E7%B7%A8%E8%99%9F" target="_blank" rel="noopener" data-i="wins.cn.src1"></a><span class="dotsep">&#183;</span><a href="https://gjyk.ijournals.cn/gjyken/article/pdf/20230923" target="_blank" rel="noopener" data-i="wins.cn.src2"></a><span class="dotsep">&#183;</span><a href="https://www.moe.gov.cn/jyb_xxgk/gk_gbgg/moe_0/moe_9/moe_34/tnull_40.html" target="_blank" rel="noopener" data-i="wins.cn.src3"></a><span class="arr">&#8599;</span></div>
       </div>
-      <button class="btn" data-go="evidence" data-i="wins.next"></button>
+      <button class="btn" data-go="palette">Build a palette that works →</button>
     </div>
   </section>
 
   <section class="screen" id="evidence" data-hud="0">
     <div class="wrap" style="max-width:1080px">
-      <div class="kicker" data-i="ev.kicker"><span class="secnum">09</span></div>
-      <h2 class="title" style="margin-top:14px" data-i="ev.title"></h2>
-      <p class="lede" data-i="ev.lede"></p>
+      <div class="kicker"><span class="secnum">06</span> Chapter 1 · The numbers</div>
+      <h2 class="title" style="margin-top:14px">Not rare. Not an edge case.</h2>
+      <p class="lede">In a classroom of thirty, a bus of fifty or a team of twelve, someone is almost certainly living the day you just lived. Here is how often, and what researchers have measured.</p>
+      <div class="num-cards">
+        <div class="numc"><b data-to="8" data-dec="0" data-suf="%">8%</b><span>of men of European ancestry have red-green colour vision deficiency</span><em>Birch 2012, review</em></div>
+        <div class="numc"><b data-to="4.11" data-dec="2" data-suf="%">4.11%</b><span>of male Chinese undergraduates, measured in a screening of 17,303 students</span><em>Gao 2023</em></div>
+        <div class="numc"><b data-to="52.3" data-dec="1" data-suf="%">52.3%</b><span>of affected students knew before their college-entrance medical exam</span><em>Gao 2023</em></div>
+      </div>
+      <div class="prev-box">
+        <h3>How common is it, by group?</h3>
+        <div class="prev-key"><span><svg viewBox="0 0 26 16" aria-hidden="true"><rect width="26" height="16" fill="#ffb24a"/><rect width="26" height="16" fill="url(#pat-hatch)"/></svg>Review of many studies</span><span><svg viewBox="0 0 26 16" aria-hidden="true"><rect width="26" height="16" fill="#46a6ff"/><rect width="26" height="16" fill="url(#pat-dots)"/></svg>Measured in one screening</span></div>
+        <svg id="prevChart" viewBox="0 0 640 300" role="img" aria-labelledby="prevChartT prevChartD"></svg>
+      </div>
       <div class="evidence-grid">
         <article class="paper-card">
           <div class="paper-tag" data-i="ev.p1.tag"></div>
@@ -1003,16 +1103,25 @@
           <a class="paper-link" href="https://pubmed.ncbi.nlm.nih.gov/15312030/" target="_blank" rel="noopener">Cole 2004 ↗</a>
         </article>
       </div>
-      <button class="btn" data-go="methods" data-i="ev.next"></button>
-    </div>
-  </section>
-
-  <section class="screen" id="methods" data-hud="0">
-    <div class="wrap" style="max-width:1080px">
-      <div class="kicker" data-i="mt.kicker"><span class="secnum">10</span></div>
-      <h2 class="title" style="margin-top:14px" data-i="mt.title"></h2>
-      <p class="lede" data-i="mt.lede"></p>
-      <div class="method-board">
+      <div class="dig">
+        <h3 class="dig-h">Keep digging</h3>
+        <div class="dig-tiles">
+          <button class="dig-tile" data-panel="method" aria-expanded="false" type="button">
+            <span class="dig-ic"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="21" cy="21" r="11" fill="none" stroke="currentColor" stroke-width="3"/><path d="M29.5 29.5 L40 40" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/><path d="M16 21 h10 M21 16 v10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></span>
+            <b>Method and risks</b><em>Three problems the evidence points to, and what each one asks of a designer.</em><span class="dig-go">Open ↓</span>
+          </button>
+          <button class="dig-tile" data-panel="sources" aria-expanded="false" type="button">
+            <span class="dig-ic"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="8" y="10" width="9" height="28" rx="2" fill="none" stroke="currentColor" stroke-width="3"/><rect x="20" y="6" width="9" height="32" rx="2" fill="none" stroke="currentColor" stroke-width="3"/><path d="M33 12 l9 3 -7 24 -9 -3z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/></svg></span>
+            <b>All sources</b><em>Every paper, standard and dataset behind a number on this site, with links.</em><span class="dig-go">Open ↓</span>
+          </button>
+          <button class="dig-tile dig-main" data-go="charts" type="button">
+            <span class="dig-ic"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="7" y="26" width="8" height="14" fill="currentColor"/><rect x="20" y="14" width="8" height="26" fill="currentColor"/><rect x="33" y="20" width="8" height="20" fill="currentColor"/><path d="M6 40 H42" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></span>
+            <b>See the charts</b><em>Those numbers say who. Next: real charts, seen through each pair of eyes.</em><span class="dig-go">Continue →</span>
+          </button>
+        </div>
+        <div class="dig-panel" data-for="method" hidden>
+          <h4>Method and risks</h4>
+          <div class="method-board">
         <div class="method-row">
           <div><b data-i="mt.r1.problem"></b><span data-i="mt.r1.risk"></span></div>
           <div><b data-i="mt.r1.evidence"></b><span data-i="mt.r1.source"></span></div>
@@ -1034,32 +1143,135 @@
         <a href="https://www.tandfonline.com/doi/abs/10.1179/000870403235002042" target="_blank" rel="noopener">Harrower & Brewer 2003</a>
         <a href="https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html" target="_blank" rel="noopener">WCAG 2.2 SC 1.4.1</a>
         <a href="https://webaim.org/projects/million/" target="_blank" rel="noopener">WebAIM Million 2026</a>
+        <a href="method.html">How the charts were measured</a>
       </div>
-      <button class="btn" data-go="bibliography" data-i="mt.next"></button>
+        </div>
+        <div class="dig-panel" data-for="sources" hidden>
+          <h4>All sources</h4>
+          <div class="bib-list">
+        <h5 class="bib-g">How common it is, and why</h5>
+        <a href="https://pubmed.ncbi.nlm.nih.gov/22472762/" target="_blank" rel="noopener"><b>Birch, J. (2012)</b><span data-i="bib.birch"></span></a>
+        <a href="https://gjyk.ijournals.cn/gjyken/article/pdf/20230923" target="_blank" rel="noopener"><b>Gao et al. (2023)</b><span> · Screening of 17,303 Chinese undergraduates: 4.11% of men, 0.16% of women. Int J Ophthalmol.</span></a>
+        <a href="https://www.colourblindawareness.org/colour-blindness/" target="_blank" rel="noopener"><b>Colour Blind Awareness</b><span> · Source of the worldwide estimate of 300 million or more people.</span></a>
+        <a href="https://www.nature.com/articles/eye2009251" target="_blank" rel="noopener"><b>Simunovic, M. P. (2010)</b><span data-i="bib.simunovic"></span></a>
+        <a href="https://pubmed.ncbi.nlm.nih.gov/15312030/" target="_blank" rel="noopener"><b>Cole, B. L. (2004)</b><span data-i="bib.cole"></span></a>
+        <a href="http://www.moe.gov.cn/srcsite/A15/moe_776/s3258/200303/t20030303_79883.html" target="_blank" rel="noopener"><b>China, Ministry of Education et al. (2003)</b><span> · Notice 3 on medical examination for admission to higher education; majors that may refuse colour weakness or blindness. Official page; clause text checked on a government repost.</span></a>
+        <h5 class="bib-g">How the charts were measured</h5>
+        <a href="https://ourworldindata.org" target="_blank" rel="noopener"><b>Our World in Data</b><span> · The chart frame (CC BY 4.0) from which 120 charts were drawn at random.</span></a>
+        <a href="method.html" target="_blank" rel="noopener"><b>Method page and open data</b><span> · Sampling frame, seed, frozen thresholds, exclusions and the CSV of results.</span></a>
+        <a href="https://doi.org/10.1364/JOSAA.14.002647" target="_blank" rel="noopener"><b>Brettel, Viénot & Mollon (1997)</b><span> · The dichromacy simulation used by the checker and the on-screen filters.</span></a>
+        <a href="https://github.com/DaltonLens/libDaltonLens" target="_blank" rel="noopener"><b>libDaltonLens</b><span> · Source of the simulation constants.</span></a>
+        <h5 class="bib-g">Design guidance and standards</h5>
+        <a href="https://journals.plos.org/plosone/article?id=10.1371%2Fjournal.pone.0199239" target="_blank" rel="noopener"><b>Nuñez, Anderton & Renslow (2018)</b><span data-i="bib.nunez"></span></a>
+        <a href="https://www.tandfonline.com/doi/abs/10.1179/000870403235002042" target="_blank" rel="noopener"><b>Harrower & Brewer (2003)</b><span data-i="bib.brewer"></span></a>
+        <a href="https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html" target="_blank" rel="noopener"><b>W3C WCAG, SC 1.4.1</b><span data-i="bib.wcag"></span></a>
+        <a href="https://www.access-board.gov/ict/" target="_blank" rel="noopener"><b>US Access Board, Revised Section 508</b><span> · Incorporates WCAG 2.0 Level A and AA by reference.</span></a>
+        <a href="https://www.etsi.org/deliver/etsi_en/301500_301599/301549/02.01.01_20/en_301549v020101a.pdf" target="_blank" rel="noopener"><b>ETSI EN 301 549</b><span> · EU accessibility standard; clause 9.1.4.1 requires the WCAG use-of-colour criterion for web content.</span></a>
+        <a href="https://webaim.org/projects/million/" target="_blank" rel="noopener"><b>WebAIM Million (2026)</b><span data-i="bib.webaim"></span></a>
+        <a href="https://www.ema.europa.eu/en/documents/regulatory-procedural-guideline/good-practice-guide-risk-minimisation-and-prevention-medication-errors_en.pdf" target="_blank" rel="noopener"><b>European Medicines Agency</b><span> · Good-practice guide on medication errors: colour, shape and marking of tablets.</span></a>
+        <h5 class="bib-g">Fixes already in use</h5>
+        <a href="https://community.spotify.com/t5/Implemented-Ideas/All-Platforms-Make-Shuffle-Icons-Discernible-for-Color-Blind/idi-p/1556225" target="_blank" rel="noopener"><b>Spotify Community thread</b><span> · The 2017 request and the dot added to the desktop app.</span></a>
+        <a href="https://support.atlassian.com/trello/docs/adding-labels-to-cards/" target="_blank" rel="noopener"><b>Trello support</b><span> · Colour-blind friendly mode for card labels.</span></a>
+        <a href="https://support.apple.com/111773" target="_blank" rel="noopener"><b>Apple Support</b><span> · Colour filters on iPhone and iPad.</span></a>
+        <a href="https://support.google.com/accessibility/android/answer/11183305?hl=en" target="_blank" rel="noopener"><b>Android Accessibility Help</b><span> · Colour correction.</span></a>
+        <a href="https://www.npa.go.jp/bureau/traffic/seibi2/annzen-shisetu/hyoushiki-shingouki/onkyou.html" target="_blank" rel="noopener"><b>Japan National Police Agency</b><span> · Count of audible pedestrian signal devices (in Japanese).</span></a>
+        <a href="https://www.pref.hiroshima.lg.jp/site/police/055-05599-shingo-arekore.html" target="_blank" rel="noopener"><b>Hiroshima Prefectural Police</b><span> · Why the go light is called blue and when lamps changed (in Japanese).</span></a>
+        <a href="https://mappinglondon.co.uk/2014/colourblind-tube-map/" target="_blank" rel="noopener"><b>Mapping London</b><span> · The 2013 Colourblind Tube Map app and its patterned lines.</span></a>
+        <a href="https://techcrunch.com/2020/10/06/googles-new-logos-are-bad" target="_blank" rel="noopener"><b>TechCrunch (2020)</b><span> · Critics on the 2020 Workspace icons.</span></a>
+        <a href="https://workspaceupdates.googleblog.com/2026/05/introducing-fresh-visual-identity-for-Google-Workspace-app-icons.html" target="_blank" rel="noopener"><b>Google Workspace Updates (2026)</b><span> · The May 2026 icon redesign.</span></a>
+        <a href="https://www.datawrapper.de/docs/automatic-colorblind-check" target="_blank" rel="noopener"><b>Datawrapper docs</b><span> · Automatic colour-blind check in the chart editor.</span></a>
+        <a href="https://github.blog/changelog/2021-09-29-colorblind-themes-beta/" target="_blank" rel="noopener"><b>GitHub changelog</b><span> · Colour-blind themes, public beta in September 2021.</span></a>
+        <a href="https://www.thedataschool.co.uk/miles-cumiskey/accessible-color-tableau/" target="_blank" rel="noopener"><b>The Data School</b><span> · Adding a colour-blind palette to Tableau.</span></a>
+        <h5 class="bib-g">Colour-correcting glasses</h5>
+        <a href="https://www.blakeporterneuro.com/color-vision-efficacy-enchroma-glasses/" target="_blank" rel="noopener"><b>Porter, B. (informal survey, 2015)</b><span> · 42 EnChroma owners among 406 respondents; self-selected and self-reported.</span></a>
+        <a href="https://jpmsonline.com/article/jpms-volume-13-issue-2-pages129-136-ra/" target="_blank" rel="noopener"><b>Almutairi et al. (2024)</b><span> · Published version of the Pacific University study: 10 participants, no significant difference from placebo.</span></a>
+        <a href="https://digibug.ugr.es/handle/10481/57698" target="_blank" rel="noopener"><b>Gómez-Robledo et al. (2018)</b><span> · Optics Express: the glasses change colours but do not improve diagnostic test results.</span></a>
+        <a href="https://pubmed.ncbi.nlm.nih.gov/33055508/" target="_blank" rel="noopener"><b>Bastien, Mallet & Saint-Amour (2020)</b><span> · Optometry and Vision Science: 9 colour-blind adults; no clear gain except in the protan subgroup.</span></a>
+        <a href="https://enchroma.com/blogs/beyond-color/facts-about-enchroma-glasses" target="_blank" rel="noopener"><b>EnChroma</b><span> · The company says its glasses are not a cure and do not give everyone the same results.</span></a>
+      </div>
+        </div>
+      </div>
     </div>
   </section>
 
-  <section class="screen" id="bibliography" data-hud="0">
-    <div class="wrap" style="max-width:1080px">
-      <div class="kicker" data-i="bib.kicker"><span class="secnum">11</span></div>
-      <h2 class="title" style="margin-top:14px" data-i="bib.title"></h2>
-      <p class="lede" data-i="bib.lede"></p>
-      <div class="bib-list">
-        <a href="https://pubmed.ncbi.nlm.nih.gov/22472762/" target="_blank" rel="noopener"><b>Birch, J. (2012)</b><span data-i="bib.birch"></span></a>
-        <a href="https://www.nature.com/articles/eye2009251" target="_blank" rel="noopener"><b>Simunovic, M. P. (2010)</b><span data-i="bib.simunovic"></span></a>
-        <a href="https://pubmed.ncbi.nlm.nih.gov/15312030/" target="_blank" rel="noopener"><b>Cole, B. L. (2004)</b><span data-i="bib.cole"></span></a>
-        <a href="https://journals.plos.org/plosone/article?id=10.1371%2Fjournal.pone.0199239" target="_blank" rel="noopener"><b>Nuñez, Anderton & Renslow (2018)</b><span data-i="bib.nunez"></span></a>
-        <a href="https://www.tandfonline.com/doi/abs/10.1179/000870403235002042" target="_blank" rel="noopener"><b>Harrower & Brewer (2003)</b><span data-i="bib.brewer"></span></a>
-        <a href="https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html" target="_blank" rel="noopener"><b>W3C WCAG 2.2</b><span data-i="bib.wcag"></span></a>
-        <a href="https://webaim.org/projects/million/" target="_blank" rel="noopener"><b>WebAIM Million (2026)</b><span data-i="bib.webaim"></span></a>
+  <section class="screen" id="charts" data-hud="0">
+    <div class="wrap" style="max-width:1000px">
+      <div class="kicker"><span class="secnum">07</span> Chapter 2 · The charts</div>
+      <h2 class="title" style="margin-top:14px">The same chart, through four pairs of eyes.</h2>
+      <p class="lede">We ran the checker behind our palette tool on real charts from Our World in Data: three studied up close, then a random sample of 120. Scroll, and the eyes change.</p>
+    </div>
+    <div id="storyHost"></div>
+    <div class="wrap" style="max-width:1000px">
+      <div class="wall-summary">
+        <h3>Beyond three charts: a random sample of 120</h3>
+        <p class="s" id="sampleIntro">We drew 120 charts at random from Our World in Data’s public chart list. The checker’s thresholds were frozen first; the checker was run once.</p>
+        <div class="num-cards sample-cards">
+          <div class="numc"><b data-sample="all"></b><span data-sample-t="all"></span><em data-sample-e="all"></em></div>
+          <div class="numc"><b data-sample="stacked"></b><span data-sample-t="stacked"></span><em data-sample-e="stacked"></em></div>
+          <div class="numc"><b data-sample="line"></b><span data-sample-t="line"></span><em data-sample-e="line"></em></div>
+        </div>
+        <h4 class="sum-h">Share of charts with a collapsing pair, by chart kind and type of colour vision</h4>
+        <svg id="storyChart" viewBox="0 0 640 296" role="img" aria-labelledby="storyChartT storyChartD"></svg>
+        <ul class="limits">
+          <li>A flag is not proof that a reader fails. The checker has not been validated against people with colour vision deficiency.</li>
+          <li>One publisher and one house style: this is not “all charts”. Many of its charts also label lines directly, which can rescue a flagged pair. That is not measured here.</li>
+          <li>Maps use sequential colour scales that the checker may over-flag, which is why results are split by kind.</li>
+        </ul>
+        <div class="data-links"><a href="data/chart-audit-sample.csv" download>Download the 120-chart data (CSV)</a><a href="method.html" target="_blank" rel="noopener">Method and limits</a></div>
       </div>
-      <button class="btn" data-go="done" data-i="bib.next"></button>
+      <button class="btn" data-go="lab">Now: what actually helps →</button>
+    </div>
+  </section>
+
+  <section class="screen" id="palette" data-hud="0" data-eye="normal">
+    <div class="wrap">
+      <div class="kicker"><span class="secnum">11</span> Palette studio</div>
+      <h2 class="title" style="margin-top:14px">Build a palette that survives.</h2>
+      <p class="lede">You have seen what other people’s charts look like through their eyes. Now it is your chart, your colours and your reader.</p>
+      <div class="pal-story" id="palStory">
+        <ol class="pal-steps" id="palSteps"><li data-act="1"><b>1</b><span>See</span></li><li data-act="2"><b>2</b><span>Fix</span></li><li data-act="3"><b>3</b><span>Add a cue</span></li><li data-act="4"><b>4</b><span>Your turn</span></li></ol>
+        <div class="pal-act"><h3 id="palActT"></h3><p id="palActP"></p><div class="pal-act-btns"><button class="btn ghost" id="palBack" type="button">← Back</button><button class="btn" id="palNext" type="button"></button></div></div>
+      </div>
+      <div class="pal-layout">
+        <div class="pal-card pal-edit">
+          <h3>Your colours</h3>
+          <div class="pal-presets"><button class="wchip" data-preset="Okabe–Ito" aria-pressed="true">Okabe–Ito</button><button class="wchip" data-preset="Tol bright" aria-pressed="false">Tol bright</button><button class="wchip" data-preset="IBM" aria-pressed="false">IBM</button><button class="wchip" data-preset="Tableau 10" aria-pressed="false">Tableau 10</button><button class="wchip" data-preset="ColorBrewer Set1" aria-pressed="false">ColorBrewer Set1</button><button class="wchip" data-preset="Red / green" aria-pressed="false">Red / green</button></div>
+          <ul id="palList"></ul>
+          <button id="palAdd" type="button">+ Add a colour</button>
+        </div>
+        <div class="pal-card pal-sim">
+          <h3>What each pair of eyes sees</h3>
+          <p class="pal-hint">Shown as typical vision. Click a row to see what each type sees in the chart below. <span class="pal-count" id="palCount"></span></p>
+          <div id="palSim"></div>
+          <label class="audit-fix"><input type="checkbox" id="palFix" /><span>Add a second cue (a pattern on every colour)</span></label>
+          <div class="pal-found" id="palFound"></div>
+          <ul id="palPairs"></ul>
+          <div class="pal-demo"><p class="pal-cap" id="palCap"></p><svg id="palChart" viewBox="0 0 560 190" role="img" aria-label="A bar chart drawn with your palette, shown through the selected pair of eyes"></svg></div>
+        </div>
+      </div>
+      <div class="pal-upload">
+        <h3>Or check a chart of your own</h3>
+        <p class="lede">Pick a chart, a slide or a screenshot. The same checker looks for colour pairs that collapse and shows you where.</p>
+        <label class="btn audit-upload"><span>Choose an image</span><input type="file" id="mineFile" accept="image/*" hidden /></label>
+        <p class="audit-note">The image is read in your browser. Nothing is uploaded or stored.</p>
+        <div class="audit-eyes" role="group" aria-label="Pair of eyes">
+        <span class="audit-eyes-l">Seeing as</span>
+        <button class="aeye" data-eye-btn="normal">Typical vision</button><button class="aeye" data-eye-btn="protan">Protanopia</button><button class="aeye" data-eye-btn="deutan">Deuteranopia</button><button class="aeye" data-eye-btn="tritan">Tritanopia</button>
+      </div>
+        <div class="audit-stage audit-mine-out" id="mineOut" hidden>
+          <figure class="audit-fig"><div class="audit-imgwrap"><img id="mineImg" class="audit-img" alt="" /></div></figure>
+          <div class="audit-panel"><h3 id="mineFound"></h3><ul class="audit-pairs" id="minePairs"></ul><p class="audit-fixnote" id="mineNote"></p></div>
+        </div>
+
+      </div>
+      <button class="btn pal-finish" data-go="done">Finish: what you can do →</button>
+      <p class="pal-small"><a class="audit-fulltool" href="https://fatduckzzz.github.io/through-their-eyes-palette/" target="_blank" rel="noopener">standalone version of this tool</a></p>
     </div>
   </section>
 
   <section class="screen" id="done" data-hud="0">
     <div class="wrap">
-      <div class="kicker"><span class="secnum">12</span></div>
+      <div class="kicker"><span class="secnum">12</span> Epilogue</div>
       <h2 data-i-html="done.title"></h2>
       <p class="lede" data-i="done.lede"></p>
       <div class="spectrum"><i style="background:#ff5b4a"></i><i style="background:#ff8a4c"></i><i style="background:#ffd86b"></i><i style="background:#7fd36b"></i><i style="background:#19c2c2"></i><i style="background:#46a6ff"></i><i style="background:#9b6bff"></i></div>
@@ -1071,23 +1283,50 @@
           <li data-i="done.check.3"></li>
         </ul>
       </div>
-      <!-- 完成码闸门。标记必须与对照站 (#gate/#gateBtn/#gateCode/#gateStatus)
-           逐字一致，tracker.js 才能以同一套逻辑驱动两组。 -->
-      <div id="gate">
-        <h3 data-i="gate.title"></h3>
-        <p data-i="gate.lede"></p>
-        <button class="btn" id="gateBtn" disabled data-i="gate.btn"></button>
-        <div id="gateCode" aria-live="polite"></div>
-        <p id="gateStatus"></p>
-      </div>
 
+      <div class="credits">
+        <h3>Credits: what is ours, and what is not</h3>
+        <div class="credits-grid">
+          <div><h4>Made for this story</h4><ul>
+            <li>The eight-scene first-person story, its writing and its interactions</li>
+            <li>The colour-vision filters and simulations shown on screen</li>
+            <li>The scroll-driven chart chapter, the patterned charts and the prevalence chart</li>
+            <li>The chart-audit method, code and open data (<a href="method.html">method</a>, <a href="data/chart-audit-sample.csv" download>CSV</a>)</li>
+            <li>The palette studio and the colour-collision checker</li>
+            <li>The page design, animation and all example illustrations</li>
+          </ul></div>
+          <div><h4>Used, with credit</h4><ul>
+            <li>Charts: <a href="https://ourworldindata.org" target="_blank" rel="noopener">Our World in Data</a>, CC BY 4.0, each linked in the data file</li>
+            <li>Prevalence: Birch 2012; Gao 2023; Colour Blind Awareness</li>
+            <li>Dichromacy simulation: Brettel, Viénot and Mollon 1997, constants from libDaltonLens</li>
+            <li>Transit map in the opening comparison: Transport for London</li>
+            <li>Product screenshots on the fixes page: their makers, named on each card</li>
+            <li>Interviews: Datawrapper, The Verge, Plural Lab (paraphrased as composites)</li>
+            <li>Fonts: Fraunces, Hanken Grotesk, Spline Sans Mono (SIL Open Font License)</li>
+            <li>No JavaScript libraries are used</li>
+          </ul></div>
+        </div>
+      </div>
       <div class="done-actions"><button class="btn" id="restartBtn" data-i="done.restart"></button></div>
       <footer data-i-html="done.footer"></footer>
     </div>
   </section>
 </main>
-<script src="i18n.js"></script>
-<script src="tracker.js"></script>
-<script src="app.js"></script>
+<script src="i18n.js?v=12"></script>
+<script src="cvd.js?v=7"></script>
+<script src="analyse.js?v=7"></script>
+<script src="audit-data.js?v=7"></script>
+<script src="app.js?v=10"></script>
+<script src="shared.js?v=11"></script>
+<script src="nav.js?v=8"></script>
+<script src="hero.js?v=9"></script>
+<script src="sample-data.js?v=2"></script>
+<script src="story.js?v=8"></script>
+<script src="research.js?v=10"></script>
+<script src="palette.js?v=13"></script>
+<script src="scenes.js?v=2"></script>
+<script src="scenes2.js?v=2"></script>
+<script src="extras.js?v=3"></script>
+<script src="fx.js?v=1"></script>
 </body>
 </html>
