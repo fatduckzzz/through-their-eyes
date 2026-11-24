@@ -401,3 +401,6 @@ body[data-lens][data-vision] .simfx,body[data-lens][data-vision] .scene.active .
 
 /* ---------- opening: falling into the pupil ---------- */
 #pupilZoom{position:fixed;inset:0;z-index:250;background:#050507;pointer-events:none}
+
+/* hold-to-peek must win over the always-on colour-vision filter above (that rule is more specific) */
+body[data-vision] .scene.active .world.simfx.peek,body[data-vision] .world.simfx.peek{filter:none!important}
