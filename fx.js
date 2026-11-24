@@ -87,5 +87,38 @@
       }
       last = g;
     });
+
+    /* ---- opening: the camera falls into the pupil, then the story begins ---- */
+    var zooming = false, passThrough = false;
+    document.addEventListener('click', function (e) {
+      if (passThrough) return;
+      if (zooming) { e.preventDefault(); e.stopPropagation(); return; }
+      var b = e.target.closest && e.target.closest('#hero [data-go]'); if (!b) return;
+      var heroEl = document.getElementById('hero'), iris = heroEl && heroEl.querySelector('.iris'), pupil = iris && iris.querySelector('.pupil');
+      if (!heroEl || !heroEl.classList.contains('active') || !iris || !pupil || window.scrollY > 200) return;
+      var r = pupil.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+      var R = Math.hypot(Math.max(cx, innerWidth - cx), Math.max(cy, innerHeight - cy)) + 60;
+      e.preventDefault(); e.stopPropagation(); zooming = true; busy = true;
+      var ov = document.createElement('div'); ov.id = 'pupilZoom'; ov.setAttribute('aria-hidden', 'true');
+      ov.style.clipPath = 'circle(0px at ' + cx + 'px ' + cy + 'px)';
+      document.body.appendChild(ov);
+      var base = iris.style.transform, a = heroEl.querySelector('.hero-a');
+      iris.style.transition = 'transform .95s cubic-bezier(.55,0,.25,1), opacity .95s';
+      iris.style.transform = (base.replace(/\s*scale\([^)]*\)/, '') || 'translate(-50%,-50%)') + ' scale(7)';
+      if (a) { a.style.transition = 'opacity .45s'; a.style.opacity = '0'; }
+      void ov.offsetWidth;
+      ov.style.transition = 'clip-path .95s cubic-bezier(.55,0,.25,1)';
+      ov.style.clipPath = 'circle(' + R.toFixed(0) + 'px at ' + cx + 'px ' + cy + 'px)';
+      setTimeout(function () {
+        passThrough = true; try { b.click(); } finally { passThrough = false; }
+        ov.style.transition = 'opacity .7s ease'; ov.style.opacity = '0';
+        setTimeout(function () {
+          if (ov.parentNode) ov.parentNode.removeChild(ov);
+          iris.style.transition = ''; iris.style.transform = base; iris.style.opacity = '';
+          if (a) { a.style.transition = ''; a.style.opacity = ''; }
+          zooming = false; busy = false;
+        }, 760);
+      }, 1000);
+    }, true);
   }
 })();

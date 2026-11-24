@@ -373,3 +373,31 @@ input[type=color]{-webkit-appearance:none;appearance:none;background:none;paddin
 input[type=color]::-webkit-color-swatch-wrapper{padding:0}
 input[type=color]::-webkit-color-swatch{border:0;border-radius:inherit}
 input[type=color]::-moz-color-swatch{border:0;border-radius:inherit}
+
+
+/* ---------- page lens ---------- */
+body[data-lens="protan"] main,body[data-lens="protan"] #topnav,body[data-lens="protan"] #hud{filter:url(#f-protan)}
+body[data-lens="deutan"] main,body[data-lens="deutan"] #topnav,body[data-lens="deutan"] #hud{filter:url(#f-deutan)}
+body[data-lens="tritan"] main,body[data-lens="tritan"] #topnav,body[data-lens="tritan"] #hud{filter:url(#f-tritan)}
+body[data-lens="achro"] main,body[data-lens="achro"] #topnav,body[data-lens="achro"] #hud{filter:url(#f-achro)}
+/* inside the lens the scenes use the lens, not their assigned eye (one filter, never two) */
+body[data-lens][data-vision] .simfx,body[data-lens][data-vision] .scene.active .world.simfx{filter:none!important}
+#lens{position:fixed;left:16px;bottom:16px;z-index:90;display:flex;flex-direction:column;align-items:flex-start;gap:10px;font-family:var(--sans)}
+.lens-toggle{display:inline-flex;align-items:center;gap:9px;min-height:44px;padding:0 16px 0 13px;border-radius:999px;border:1px solid var(--glass-b);background:rgba(10,10,15,.96);color:var(--paper);font:inherit;font-size:12px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;box-shadow:0 14px 40px -14px #000;transition:border-color .2s,background .2s}
+.lens-toggle:hover{border-color:rgba(255,255,255,.4)}
+.lens-toggle:focus-visible,.lens-opts button:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.lens.on .lens-toggle{border-color:var(--gold)}
+.lens-cur{color:var(--gold);letter-spacing:.08em}
+.lens-cur:empty{display:none}
+.lens-panel{width:min(320px,calc(100vw - 32px));padding:16px;border-radius:20px;border:1px solid var(--glass-b);background:rgba(10,10,15,.97);box-shadow:0 30px 70px -20px #000}
+.lens-panel[hidden]{display:none}
+.lens-h{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);margin-bottom:10px}
+.lens-opts{display:flex;flex-wrap:wrap;gap:8px}
+.lens-opts button{min-height:40px;padding:0 14px;border-radius:999px;border:1px solid var(--glass-b);background:rgba(255,255,255,.05);color:var(--paper);font:inherit;font-size:13px;cursor:pointer}
+.lens-opts button[aria-pressed="true"]{background:var(--paper);color:#07070a;border-color:var(--paper)}
+.lens-note{margin-top:12px;font-size:12.5px;line-height:1.55;color:var(--mute)}
+.lens-live{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media(max-width:760px){.lens-lab{display:none}.lens-toggle{padding:0 13px}.lens.on .lens-lab{display:none}}
+
+/* ---------- opening: falling into the pupil ---------- */
+#pupilZoom{position:fixed;inset:0;z-index:250;background:#050507;pointer-events:none}

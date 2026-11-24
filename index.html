@@ -16,11 +16,29 @@
      CJK falls back to the system stack, which is preinstalled on every target OS. -->
 <link rel="stylesheet" href="style.css?v=7">
 <link rel="stylesheet" href="style2.css?v=8">
-<link rel="stylesheet" href="style3.css?v=23">
+<link rel="stylesheet" href="style3.css?v=24">
 </head>
 <body data-vision="normal" data-arm="n">
 
 
+<div id="lens" class="lens" role="group" aria-label="Page lens">
+  <div class="lens-panel" id="lensPanel" hidden>
+    <p class="lens-h">See this whole page as</p>
+    <div class="lens-opts">
+      <button type="button" data-lens="off" aria-pressed="true">As designed</button>
+      <button type="button" data-lens="protan" aria-pressed="false">Protanopia</button>
+      <button type="button" data-lens="deutan" aria-pressed="false">Deuteranopia</button>
+      <button type="button" data-lens="tritan" aria-pressed="false">Tritanopia</button>
+      <button type="button" data-lens="achro" aria-pressed="false">Achromatopsia</button>
+    </div>
+    <p class="lens-note">The lens filters every screen, chart and menu. Charts that already simulate an eye stay as they are inside it. Try it on the patterned charts: they should still read.</p>
+  </div>
+  <button type="button" class="lens-toggle" aria-expanded="false" aria-controls="lensPanel">
+    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M1.5 12S5.5 5 12 5s10.5 7 10.5 7-4 7-10.5 7S1.5 12 1.5 12z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="12" cy="12" r="3.4" fill="currentColor"/></svg>
+    <span class="lens-lab">Lens</span><span class="lens-cur"></span>
+  </button>
+  <span class="lens-live" role="status" aria-live="polite"></span>
+</div>
 <div id="cursorDot" aria-hidden="true"></div><div id="cursorRing" aria-hidden="true"></div>
 <canvas id="ambient" aria-hidden="true"></canvas>
 <div id="loader" aria-hidden="true"><div class="lmark">Through Their Eyes</div><div class="lbar"><i></i></div><div class="lpct">0%</div></div>
@@ -1328,6 +1346,7 @@
 <script src="scenes.js?v=2"></script>
 <script src="scenes2.js?v=2"></script>
 <script src="extras.js?v=3"></script>
-<script src="fx.js?v=5"></script>
+<script src="fx.js?v=6"></script>
+<script src="lens.js?v=1"></script>
 </body>
 </html>
