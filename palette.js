@@ -3,8 +3,64 @@
    chart in the browser; nothing is uploaded anywhere. */
 (function () {
   'use strict';
+  /* The pair rule on exact colours (same as pairs.js in the standalone tool). It lives inside this file on purpose:
+     the palette must still work if a separate script is slow to deploy, cached, or blocked. */
+  if (typeof CVDAnalyse === 'undefined' || typeof CVD === 'undefined') return;
+  var TTEPairs = (function () {
+    'use strict';
+    var C = CVDAnalyse.CONFIG, TYPES = ['protan', 'deutan', 'tritan'];
+
+    function hex2rgb(h) { var v = parseInt(String(h).replace('#', ''), 16); return [(v >> 16) & 255, (v >> 8) & 255, v & 255]; }
+    function hex(rgb) { return CVDAnalyse.rgb2hex(rgb); }
+
+    /* a, b: [r,g,b]. Returns null (no problem) or
+       { types, severity, detail:[{type,simChroma,simLight,simDE}], simDE, origChroma, origDE, rareTypeOnly, sim:{type:[hexA,hexB]} } */
+    function judge(a, b) {
+      var la = CVD.rgb2lab(a[0], a[1], a[2]), lb = CVD.rgb2lab(b[0], b[1], b[2]);
+      var origChroma = CVD.chromaDelta(la, lb);
+      if (origChroma <= C.ORIGINAL_CHROMA_MIN) return null;      // never relied on colour to begin with
+      var origDE = CVD.deltaE(la, lb), hits = [], sim = {};
+      for (var i = 0; i < TYPES.length; i++) {
+        var tp = TYPES[i], sa = CVD.simulate(a, tp), sb = CVD.simulate(b, tp);
+        sim[tp] = [hex(sa), hex(sb)];
+        var xa = CVD.rgb2lab(sa[0], sa[1], sa[2]), xb = CVD.rgb2lab(sb[0], sb[1], sb[2]);
+        var sc = CVD.chromaDelta(xa, xb), sl = CVD.lightDelta(xa, xb), sd = CVD.deltaE(xa, xb);
+        var hueCollapse = sc < C.SIM_CHROMA_MAX && sl < C.SIM_LIGHT_SAFE;
+        var tooClose = sd < C.SIM_DE_MAX && sl < C.SIM_LIGHT_SAFE && (origDE - sd) >= C.MIN_DE_LOSS;
+        if (hueCollapse || tooClose) hits.push({ type: tp, simChroma: sc, simLight: sl, simDE: sd });
+      }
+      if (!hits.length) return null;
+      var worst = hits[0];
+      for (var j = 1; j < hits.length; j++) if (hits[j].simDE < worst.simDE) worst = hits[j];
+      var common = hits.some(function (h) { return h.type !== 'tritan'; });
+      return {
+        types: hits.map(function (h) { return h.type; }), detail: hits, sim: sim,
+        severity: worst.simDE < C.HIGH_DE_MAX ? 'high' : 'moderate',
+        simDE: worst.simDE, simLight: worst.simLight, simChroma: worst.simChroma,
+        origChroma: origChroma, origDE: origDE, rareTypeOnly: !common
+      };
+    }
+
+    /* every pair of a list of hex colours.
+       findings: pairs that lose their difference for at least one type (worst first)
+       close:    pairs already too similar for everybody (nothing for colour vision to take away) */
+    function analyse(hexes) {
+      var rgb = hexes.map(hex2rgb), labs = rgb.map(function (c) { return CVD.rgb2lab(c[0], c[1], c[2]); });
+      var findings = [], close = [];
+      for (var i = 0; i < rgb.length; i++) for (var j = i + 1; j < rgb.length; j++) {
+        var v = judge(rgb[i], rgb[j]);
+        if (v) { v.i = i; v.j = j; v.a = hex(rgb[i]); v.b = hex(rgb[j]); findings.push(v); }
+        else if (CVD.deltaE(labs[i], labs[j]) < C.MIN_SEP) close.push([i, j]);
+      }
+      findings.sort(function (p, q) { if (p.severity !== q.severity) return p.severity === 'high' ? -1 : 1; return p.simDE - q.simDE; });
+      return { findings: findings, close: close };
+    }
+
+    return { judge: judge, analyse: analyse, hex2rgb: hex2rgb };
+  })();
+
   var sec = document.getElementById('palette');
-  if (!sec || typeof TTEUI === 'undefined' || typeof CVDAnalyse === 'undefined' || typeof TTEPairs === 'undefined') return;
+  if (!sec || typeof TTEUI === 'undefined') return;
   var U = TTEUI, $ = U.$;
   var PRESETS = {
     'Okabe–Ito': ['#e69f00', '#56b4e9', '#009e73', '#f0e442', '#0072b2', '#d55e00', '#cc79a7'],
