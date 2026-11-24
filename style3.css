@@ -422,3 +422,18 @@ body::before{display:none!important}
 /* heads-up tier in the chart checker */
 .apair.soft{border-style:dashed;background:rgba(255,255,255,.025)}
 .apair-sub{list-style:none;margin:10px 0 2px;font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+
+
+/* result summaries: a calm title, one quiet line and small chips (each with a shape, so colour is never the only cue) */
+#mineFound,#palFound{font-size:1rem!important;font-weight:400!important;line-height:1.4!important;margin:0 0 14px!important}
+.sum-t{display:block;font-family:var(--serif);font-weight:400;font-size:1.12rem;line-height:1.35;color:var(--paper)}
+.sum-s{display:block;margin-top:3px;font-family:var(--sans);font-size:.86rem;color:var(--mute)}
+.sum-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.chip{display:inline-flex;align-items:center;gap:8px;padding:5px 12px 5px 10px;border-radius:999px;border:1px solid var(--glass-b);background:rgba(255,255,255,.04);font-family:var(--sans);font-size:.8rem;line-height:1.2;color:var(--dim)}
+.chip i{display:block;width:8px;height:8px;background:currentColor;flex:0 0 auto}
+.chip.hi i{clip-path:polygon(50% 0,100% 100%,0 100%)}
+.chip.mid i{clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}
+.chip.lt i{border-radius:50%;background:none;border:1.5px solid currentColor;width:8px;height:8px}
+.chip.cl i{border-radius:2px}
+.chip.hi{color:#ffb9a8}
+.chip.lt{color:var(--gold)}

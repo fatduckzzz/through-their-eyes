@@ -133,9 +133,7 @@
     });
     var nHigh = a.findings.filter(function (f) { return f.sev === 'high'; }).length, nClose = a.close.length, nMod = a.findings.length - nHigh;
     var n = a.findings.length + nClose;
-    $('palFound').textContent = n === 0 ? 'No colour pair loses its difference. This palette holds up for all three types.' :
-      (nHigh + nMod === 0 ? '' : (nHigh + nMod) + (nHigh + nMod === 1 ? ' pair loses' : ' pairs lose') + ' much of the difference for at least one type' + (nHigh ? '; ' + nHigh + (nHigh === 1 ? ' becomes' : ' become') + ' nearly identical.' : '; none become nearly identical.') + ' ') +
-      (nClose ? nClose + (nClose === 1 ? ' pair is' : ' pairs are') + ' already too close for everyone. ' : '') + 'A second cue helps most where colours become nearly identical.';
+    $('palFound').innerHTML = U.summaryHtml(nHigh + nMod, nHigh, 0, { close: nClose });
     $('palPairs').innerHTML = html;
     var pc = $('palCount'); if (pc) pc.textContent = n === 0 ? 'Pairs that lose difference: none' : 'Pairs that lose difference: ' + n + (nHigh ? ' (' + nHigh + ' nearly identical)' : '');
     var cap = $('palCap'); if (cap) cap.textContent = 'Chart shown through: ' + U.NAMES[eye];
@@ -189,7 +187,8 @@
     var out = $('mineOut'); if (!mine) { out.hidden = true; return; }
     out.hidden = false;
     var soft = mine.soft || [];
-    $('mineFound').textContent = mine.colours < 2 ? 'Fewer than two distinct colours were found, so there is nothing to compare.' : U.foundText(mine.findings.length, mine.findings.filter(function (f) { return f.sev === 'high'; }).length, soft.length);
+    if (mine.colours < 2) $('mineFound').textContent = 'Fewer than two distinct colours were found, so there is nothing to compare.';
+    else $('mineFound').innerHTML = U.summaryHtml(mine.findings.length, mine.findings.filter(function (f) { return f.sev === 'high'; }).length, soft.length);
     $('minePairs').innerHTML = byEye(mine.findings).map(function (f) { return U.pairLi(f, eye); }).join('') +
       (soft.length ? '<li class="apair-sub">Only lightness keeps these apart</li>' + byEye(soft).map(function (f) { return U.pairLi(f, eye); }).join('') : '');
     $('mineNote').textContent = (mine.overloaded ? 'This image uses many colours for categories. Matching that many colours to a legend is hard for everyone, so direct labels will help more than a new palette. ' : '') +

@@ -34,6 +34,22 @@ var TTEUI = (function () {
   /* A heads-up tier next to the audited rule (the rule itself stays exactly as frozen). It lists category colours whose
      hue merges for some type of colour vision but that a lightness difference of 18 to 32 still separates: fine on big
      areas, easy to confuse on small marks or a dim screen. Capped at three, and only for colours that cover real area. */
+  /* the result summary: a short title, one muted line, and small chips with a shape so colour is never the only cue */
+  function chip(kind, text) { return '<span class="chip ' + kind + '"><i aria-hidden="true"></i>' + text + '</span>'; }
+  function summaryHtml(n, nHigh, nSoft, extra) {
+    nHigh = nHigh || 0; nSoft = nSoft || 0; extra = extra || {};
+    var title, sub = '', chips = [];
+    if (!n && !nSoft && !(extra.close)) { title = 'No colour pair loses its difference'; sub = 'It holds up for all three types of colour vision.'; }
+    else {
+      title = n ? (n === 1 ? '1 colour pair loses much of its difference' : n + ' colour pairs lose much of their difference') : 'No colour pair loses its difference outright';
+      sub = n ? 'for at least one type of colour vision' : '';
+      if (nHigh) chips.push(chip('hi', nHigh + ' nearly identical'));
+      if (n - nHigh > 0) chips.push(chip('mid', (n - nHigh) + ' harder to tell apart'));
+      if (nSoft) chips.push(chip('lt', nSoft + ' kept apart by lightness alone'));
+      if (extra.close) chips.push(chip('cl', extra.close + (extra.close === 1 ? ' pair already too close for everyone' : ' pairs already too close for everyone')));
+    }
+    return '<span class="sum-t">' + title + '</span>' + (sub ? '<span class="sum-s">' + sub + '</span>' : '') + (chips.length ? '<span class="sum-chips">' + chips.join('') + '</span>' : '');
+  }
   var SOFT = { share: 0.0006, chroma: 18, lmax: 32, cap: 3 };
   function softPairs(res) {
     var C = CVDAnalyse.CONFIG, hard = {};
@@ -115,5 +131,5 @@ var TTEUI = (function () {
     svg.innerHTML = s;
   }
   return { NAMES: NAMES, TYPES: TYPES, FILL: FILL, PAT: PAT, esc: esc, $: $, typeList: typeList, reduced: reduced,
-           pairLi: pairLi, foundText: foundText, fromRun: fromRun, analyseImage: analyseImage, groupedBars: groupedBars };
+           pairLi: pairLi, foundText: foundText, summaryHtml: summaryHtml, fromRun: fromRun, analyseImage: analyseImage, groupedBars: groupedBars };
 })();
