@@ -4,7 +4,7 @@
 (function () {
   'use strict';
   var sec = document.getElementById('palette');
-  if (!sec || typeof TTEUI === 'undefined' || typeof CVDAnalyse === 'undefined') return;
+  if (!sec || typeof TTEUI === 'undefined' || typeof CVDAnalyse === 'undefined' || typeof TTEPairs === 'undefined') return;
   var U = TTEUI, $ = U.$;
   var PRESETS = {
     'Okabe–Ito': ['#e69f00', '#56b4e9', '#009e73', '#f0e442', '#0072b2', '#d55e00', '#cc79a7'],
@@ -30,24 +30,14 @@
   function sim(hex, type) { return type === 'normal' ? hex : CVDAnalyse.rgb2hex(CVDAnalyse.simulate(hex2rgb(hex), type)); }
   function validHex(s) { return /^#[0-9a-f]{6}$/i.test(s); }
 
-  /* ---------- analysis: render the palette to a canvas and run the same checker as for images ---------- */
+  /* ---------- analysis: the exact colours, not a picture of them ----------
+     Rendering the palette to a canvas and reading it back lost colours the extractor merged or ignored
+     (the brown in ColorBrewer Set1) and showed slightly averaged hex codes. TTEPairs applies the same
+     rule as the chart checker (thresholds from analyse.js) to every pair of the colours as typed. */
   function analyse() {
-    var n = cols.length, cell = 70, gap = 18, w = n * cell + (n + 1) * gap, h = cell + 2 * gap;
-    var c = document.createElement('canvas'); c.width = w; c.height = h;
-    var cx = c.getContext('2d'); cx.fillStyle = '#fff'; cx.fillRect(0, 0, w, h);
-    cols.forEach(function (hx, i) { cx.fillStyle = hx; cx.fillRect(gap + i * (cell + gap), gap, cell, cell); });
-    var res = CVDAnalyse.run(cx.getImageData(0, 0, w, h), w, h, []);
-    var lab = cols.map(function (hx) { return CVDAnalyse.rgb2lab.apply(null, hex2rgb(hx)); });
-    function idx(hex) {
-      var l = CVDAnalyse.rgb2lab.apply(null, hex2rgb(hex)), best = 0, bd = 1e9;
-      lab.forEach(function (m, i) { var d = CVDAnalyse.deltaE(l, m); if (d < bd) { bd = d; best = i; } });
-      return best;
-    }
-    var f = res.findings.map(function (x) { var o = U.fromRun(x); o.ia = idx(o.a); o.ib = idx(o.b); return o; });
-    /* pairs already too close for anyone: the checker merges those into one colour */
-    var close = [];
-    for (var i = 0; i < n; i++) for (var j = i + 1; j < n; j++) if (CVDAnalyse.deltaE(lab[i], lab[j]) < CVDAnalyse.CONFIG.MIN_SEP) close.push([i, j]);
-    return { findings: f, close: close };
+    var r = TTEPairs.analyse(cols);
+    var f = r.findings.map(function (v) { return { a: v.a, b: v.b, types: v.types, sev: v.severity, sim: v.sim, ia: v.i, ib: v.j }; });
+    return { findings: f, close: r.close };
   }
 
   /* ---------- rendering ---------- */

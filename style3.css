@@ -404,3 +404,9 @@ body[data-lens][data-vision] .simfx,body[data-lens][data-vision] .scene.active .
 
 /* hold-to-peek must win over the always-on colour-vision filter above (that rule is more specific) */
 body[data-vision] .scene.active .world.simfx.peek,body[data-vision] .world.simfx.peek{filter:none!important}
+
+/* the intro must end where its content ends: glow layers that overshoot the section were adding blank scroll space below "Begin" */
+#hero{overflow:hidden;overflow:clip}
+
+/* no dark vignette: it shaded the bottom of every screen */
+body::before{display:none!important}
