@@ -13,13 +13,19 @@ var TTEUI = (function () {
   function reduced() { return window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches; }
 
   /* one flagged pair -> one list row. f = {a, b, types, sev, sim:{protan:[a,b],...}} */
+  /* how bad a flagged pair is for ONE type of eye (the pair's own grade is its worst type) */
+  function eyeSev(f, eye) {
+    if (!f.sim || !f.sim[eye] || typeof CVD === 'undefined') return f.sev;
+    function lab(h) { var v = parseInt(h.slice(1), 16); return CVD.rgb2lab((v >> 16) & 255, (v >> 8) & 255, v & 255); }
+    return CVD.deltaE(lab(f.sim[eye][0]), lab(f.sim[eye][1])) < CVDAnalyse.CONFIG.HIGH_DE_MAX ? 'high' : 'mid';
+  }
   function pairLi(f, eye) {
     var hit = eye !== 'normal' && f.types.indexOf(eye) >= 0;
     var ca = eye === 'normal' ? f.a : f.sim[eye][0];
     var cb = eye === 'normal' ? f.b : f.sim[eye][1];
-    var near = f.sev === 'high', soft = f.sev === 'soft';
+    var soft = f.sev === 'soft', near = (hit && !soft ? eyeSev(f, eye) : f.sev) === 'high';
     var status = eye === 'normal' ? ('Affects ' + typeList(f.types)) : (hit ? (soft ? 'Hue merges; only lightness separates' : near ? 'Nearly identical for these eyes' : 'Harder to tell apart for these eyes') : 'Still distinct for these eyes');
-    var sev = soft ? 'hue merges, only lightness separates them' : near ? 'nearly identical' : 'harder to tell apart, some lightness difference remains';
+    var sev = soft ? 'hue merges, only lightness separates them' : f.sev === 'high' ? 'nearly identical' : 'harder to tell apart, some lightness difference remains';
     return '<li class="apair' + (hit ? ' hit' : '') + (soft ? ' soft' : '') + '"><div class="aswatches" aria-hidden="true">' +
       '<span class="asw" style="background:' + ca + '"><i>A</i></span><span class="asw b" style="background:' + cb + '"><i>B</i></span></div>' +
       '<div class="ameta"><b>' + esc(f.a) + ' ↔ ' + esc(f.b) + '</b><span class="st">' + esc(status) + '</span>' + (eye === 'normal' ? ' · ' + esc(sev) : '') + '</div></li>';
@@ -39,10 +45,10 @@ var TTEUI = (function () {
   function summaryHtml(n, nHigh, nSoft, extra) {
     nHigh = nHigh || 0; nSoft = nSoft || 0; extra = extra || {};
     var title, sub = '', chips = [];
-    if (!n && !nSoft && !(extra.close)) { title = 'No colour pair loses its difference'; sub = 'It holds up for all three types of colour vision.'; }
+    if (!n && !nSoft && !(extra.close)) { title = 'No colour pair loses its difference'; sub = extra.eye ? 'for ' + extra.eye + '.' : 'It holds up for all three types of colour vision.'; }
     else {
       title = n ? (n === 1 ? '1 colour pair loses much of its difference' : n + ' colour pairs lose much of their difference') : 'No colour pair loses its difference outright';
-      sub = n ? 'for at least one type of colour vision' : '';
+      sub = n ? (extra.eye ? 'for ' + extra.eye : 'for at least one type of colour vision') : '';
       if (nHigh) chips.push(chip('hi', nHigh + ' nearly identical'));
       if (n - nHigh > 0) chips.push(chip('mid', (n - nHigh) + ' harder to tell apart'));
       if (nSoft) chips.push(chip('lt', nSoft + ' kept apart by lightness alone'));
@@ -131,5 +137,5 @@ var TTEUI = (function () {
     svg.innerHTML = s;
   }
   return { NAMES: NAMES, TYPES: TYPES, FILL: FILL, PAT: PAT, esc: esc, $: $, typeList: typeList, reduced: reduced,
-           pairLi: pairLi, foundText: foundText, summaryHtml: summaryHtml, fromRun: fromRun, analyseImage: analyseImage, groupedBars: groupedBars };
+           pairLi: pairLi, foundText: foundText, summaryHtml: summaryHtml, eyeSev: eyeSev, fromRun: fromRun, analyseImage: analyseImage, groupedBars: groupedBars };
 })();

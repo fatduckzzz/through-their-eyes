@@ -186,11 +186,15 @@
   function renderMine() {
     var out = $('mineOut'); if (!mine) { out.hidden = true; return; }
     out.hidden = false;
-    var soft = mine.soft || [];
+    var soft = mine.soft || [], one = eye !== 'normal';
+    /* typical vision lists everything; a chosen type lists only what is lost for those eyes */
+    var list = one ? mine.findings.filter(function (f) { return f.types.indexOf(eye) >= 0; }) : mine.findings;
+    list = one ? list.slice().sort(function (a, b) { return (U.eyeSev(b, eye) === 'high') - (U.eyeSev(a, eye) === 'high'); }) : list;
     if (mine.colours < 2) $('mineFound').textContent = 'Fewer than two distinct colours were found, so there is nothing to compare.';
-    else $('mineFound').innerHTML = U.summaryHtml(mine.findings.length, mine.findings.filter(function (f) { return f.sev === 'high'; }).length, soft.length);
-    $('minePairs').innerHTML = byEye(mine.findings).map(function (f) { return U.pairLi(f, eye); }).join('') +
-      (soft.length ? '<li class="apair-sub">Only lightness keeps these apart</li>' + byEye(soft).map(function (f) { return U.pairLi(f, eye); }).join('') : '');
+    else if (one) $('mineFound').innerHTML = U.summaryHtml(list.length, list.filter(function (f) { return U.eyeSev(f, eye) === 'high'; }).length, 0, { eye: U.NAMES[eye].toLowerCase() });
+    else $('mineFound').innerHTML = U.summaryHtml(list.length, list.filter(function (f) { return f.sev === 'high'; }).length, soft.length);
+    $('minePairs').innerHTML = list.map(function (f) { return U.pairLi(f, eye); }).join('') +
+      (!one && soft.length ? '<li class="apair-sub">Only lightness keeps these apart</li>' + soft.map(function (f) { return U.pairLi(f, eye); }).join('') : '');
     $('mineNote').textContent = (mine.overloaded ? 'This image uses many colours for categories. Matching that many colours to a legend is hard for everyone, so direct labels will help more than a new palette. ' : '') +
       'Works best on flat-colour charts. Photos, gradients and heavily compressed images can give false alarms.';
   }

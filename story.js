@@ -57,12 +57,12 @@
     var list = block.querySelector('.sc-pairs'), nm = U.NAMES[pic].toLowerCase();
     /* under a given pair of eyes, show the pairs that collapse for those eyes (worst first) and fold the rest into one line */
     var hits = pic === 'normal' ? d.findings.slice() : d.findings.filter(function (f) { return f.types.indexOf(pic) >= 0; });
-    hits.sort(function (p, q) { return (q.sev === 'high') - (p.sev === 'high') || (p.de - q.de); });
+    var sv = function (f) { return (pic === 'normal' ? f.sev : U.eyeSev(f, pic)) === 'high'; };
+    hits.sort(function (p, q) { return (sv(q) - sv(p)) || (p.de - q.de); });
     var rest = d.findings.length - hits.length;
     if (!d.findings.length) list.innerHTML = '<li class="apair"><div class="ameta"><b>No colour pair collapses.</b>Every pair stays distinct for all three types.</div></li>';
     else if (!hits.length) list.innerHTML = '<li class="apair"><div class="ameta"><b>No colour pair collapses under ' + nm + '.</b>The ' + d.findings.length + ' flagged for other types stay distinct here.</div></li>';
-    else list.innerHTML = hits.map(function (f) { return U.pairLi(f, pic); }).join('') +
-      (rest && pic !== 'normal' ? '<li class="apair apair-rest"><div class="ameta"><b>+ ' + rest + ' other ' + (rest === 1 ? 'pair' : 'pairs') + '</b>stay distinct under ' + nm + '</div></li>' : '');
+    else list.innerHTML = hits.map(function (f) { return U.pairLi(f, pic); }).join('');
     list.scrollTop = 0;
     [].forEach.call(block.querySelectorAll('.sc-step'), function (s) { s.classList.toggle('on', +s.getAttribute('data-s') === si); });
   }
