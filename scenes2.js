@@ -36,7 +36,7 @@
     if (ok) return;
     var fb = fbOf(sc), n = ch.getAttribute('data-name') || 'one', ty = type(), h = fb.innerHTML;
     h = h.replace(/dark green/g, 'dark ' + n).replace(/the green case/g, 'the ' + n + ' case').replace(/That’s the green case/g, 'That’s the ' + n + ' case');
-    if (ty !== 'tritan' && ty !== 'achro') h = h.replace(/To your eyes today, red, green and brown are triplets holding hands\./, 'To your eyes the dark green and dark brown cases were near-twins, and the red one had turned a muddy olive-yellow.');
+    if (ty !== 'tritan' && ty !== 'achro') h = h.replace(/To your eyes today, red, green and brown are triplets holding hands\./, 'To your eyes the dark green and dark brown cases were near-twins, and the red one had gone a muddy olive-brown.');
     fb.innerHTML = h;
   });
 

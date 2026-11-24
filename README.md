@@ -27,6 +27,10 @@ Open `http://localhost:8765/`. Opening `index.html` directly may work, but some 
 | Palette | `palette` | A four-act guided story (see, fix, add a cue, your turn): palette editor, four pairs of eyes, pattern as second cue, check your own chart. A small link opens the standalone tool |
 | Epilogue | `done` | What you can do |
 
+## How the colours on screen are simulated
+
+The scenes, charts, lens and previews use SVG colour filters. They are 3x3 matrices (in linear RGB) fitted to the same simulation the chart checker uses (Brettel, Viénot and Mollon 1997, constants from libDaltonLens), so what you see on screen is what the checker measures. Against that simulation the protanopia and deuteranopia filters differ by a mean of about 2 colour units (CIE76) and the tritanopia filter by about 7, with larger errors on a few saturated colours (pure red under tritanopia is off by about 34). Achromatopsia uses linear luminance. An earlier version used the popular Coblis-style matrices, which show reds far too bright (a red node came out olive-yellow at almost the brightness of a yellow one), so they were replaced. The CHI study version is unchanged at the tag `study-version-2026-11`.
+
 ## Files
 
 ```
