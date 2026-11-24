@@ -17,18 +17,44 @@ var TTEUI = (function () {
     var hit = eye !== 'normal' && f.types.indexOf(eye) >= 0;
     var ca = eye === 'normal' ? f.a : f.sim[eye][0];
     var cb = eye === 'normal' ? f.b : f.sim[eye][1];
-    var near = f.sev === 'high';
-    var status = eye === 'normal' ? ('Affects ' + typeList(f.types)) : (hit ? (near ? 'Nearly identical for these eyes' : 'Harder to tell apart for these eyes') : 'Still distinct for these eyes');
-    var sev = near ? 'nearly identical' : 'harder to tell apart, some lightness difference remains';
-    return '<li class="apair' + (hit ? ' hit' : '') + '"><div class="aswatches" aria-hidden="true">' +
+    var near = f.sev === 'high', soft = f.sev === 'soft';
+    var status = eye === 'normal' ? ('Affects ' + typeList(f.types)) : (hit ? (soft ? 'Hue merges; only lightness separates' : near ? 'Nearly identical for these eyes' : 'Harder to tell apart for these eyes') : 'Still distinct for these eyes');
+    var sev = soft ? 'hue merges, only lightness separates them' : near ? 'nearly identical' : 'harder to tell apart, some lightness difference remains';
+    return '<li class="apair' + (hit ? ' hit' : '') + (soft ? ' soft' : '') + '"><div class="aswatches" aria-hidden="true">' +
       '<span class="asw" style="background:' + ca + '"><i>A</i></span><span class="asw b" style="background:' + cb + '"><i>B</i></span></div>' +
       '<div class="ameta"><b>' + esc(f.a) + ' ↔ ' + esc(f.b) + '</b><span class="st">' + esc(status) + '</span>' + (eye === 'normal' ? ' · ' + esc(sev) : '') + '</div></li>';
   }
-  function foundText(n, nHigh) {
-    nHigh = nHigh || 0;
-    if (n === 0) return 'No colour pair loses its difference for any of the three types.';
+  function foundText(n, nHigh, nSoft) {
+    nHigh = nHigh || 0; nSoft = nSoft || 0;
+    var tail = nSoft ? ' ' + (nSoft === 1 ? '1 more pair is' : nSoft + ' more pairs are') + ' kept apart by lightness alone (listed below).' : '';
+    if (n === 0) return (nSoft ? 'No colour pair loses its difference outright.' : 'No colour pair loses its difference for any of the three types.') + tail;
     return (n === 1 ? '1 colour pair loses much of its difference' : n + ' colour pairs lose much of their difference') + ' for at least one type of colour vision' +
-      (nHigh ? '; ' + (nHigh === n && n > 1 ? 'all of them' : nHigh + (nHigh === 1 ? ' of them' : ' of them')) + ' become nearly identical.' : '; none become nearly identical.');
+      (nHigh ? '; ' + (nHigh === n && n > 1 ? 'all of them' : nHigh + ' of them') + ' become nearly identical.' : '; none become nearly identical.') + tail;
+  }
+  /* A heads-up tier next to the audited rule (the rule itself stays exactly as frozen). It lists category colours whose
+     hue merges for some type of colour vision but that a lightness difference of 18 to 32 still separates: fine on big
+     areas, easy to confuse on small marks or a dim screen. Capped at three, and only for colours that cover real area. */
+  var SOFT = { share: 0.0006, chroma: 18, lmax: 32, cap: 3 };
+  function softPairs(res) {
+    var C = CVDAnalyse.CONFIG, hard = {};
+    res.findings.forEach(function (f) { hard[[f.hexA, f.hexB].sort().join('|')] = 1; });
+    var cols = res.colours.filter(function (c) { var l = CVD.rgb2lab(c.rgb[0], c.rgb[1], c.rgb[2]); return Math.sqrt(l[1] * l[1] + l[2] * l[2]) > 18 && c.share >= SOFT.share; });
+    var out = [];
+    for (var i = 0; i < cols.length; i++) for (var j = i + 1; j < cols.length; j++) {
+      var a = cols[i], b = cols[j]; if (hard[[a.hex, b.hex].sort().join('|')]) continue;
+      var la = CVD.rgb2lab(a.rgb[0], a.rgb[1], a.rgb[2]), lb = CVD.rgb2lab(b.rgb[0], b.rgb[1], b.rgb[2]);
+      if (CVD.chromaDelta(la, lb) <= C.ORIGINAL_CHROMA_MIN) continue;
+      var types = [], light = 1e9, sim = {};
+      TYPES.forEach(function (tp) {
+        var sa = CVD.simulate(a.rgb, tp), sb = CVD.simulate(b.rgb, tp); sim[tp] = [CVDAnalyse.rgb2hex(sa), CVDAnalyse.rgb2hex(sb)];
+        var xa = CVD.rgb2lab(sa[0], sa[1], sa[2]), xb = CVD.rgb2lab(sb[0], sb[1], sb[2]);
+        var sc = CVD.chromaDelta(xa, xb), sl = CVD.lightDelta(xa, xb);
+        if (sc < SOFT.chroma && sl >= C.SIM_LIGHT_SAFE && sl < SOFT.lmax) { types.push(tp); if (sl < light) light = sl; }
+      });
+      if (types.length) out.push({ a: a.hex, b: b.hex, types: types, sev: 'soft', sim: sim, light: light });
+    }
+    out.sort(function (p, q) { return p.light - q.light; });
+    return out.slice(0, SOFT.cap);
   }
   /* turn a raw CVDAnalyse finding into the shape pairLi expects */
   function fromRun(f) {
@@ -47,7 +73,7 @@ var TTEUI = (function () {
       var c = document.createElement('canvas'); c.width = w; c.height = h;
       var cx = c.getContext('2d'); cx.fillStyle = '#fff'; cx.fillRect(0, 0, w, h); cx.drawImage(im, 0, 0, w, h);
       var res = CVDAnalyse.run(cx.getImageData(0, 0, w, h), w, h, []);
-      done({ url: url, name: file.name, colours: res.colours.length, overloaded: !!res.colourOverloaded, findings: res.findings.map(fromRun) });
+      done({ url: url, name: file.name, colours: res.colours.length, overloaded: !!res.colourOverloaded, findings: res.findings.map(fromRun), soft: softPairs(res) });
     };
     im.src = url;
   }

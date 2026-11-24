@@ -106,6 +106,14 @@
     }).join('');
     $('palAdd').disabled = cols.length >= MAXC;
   }
+  /* with an eye selected, the pairs that collapse for those eyes come first (worst first) */
+  function byEye(list) {
+    if (eye === 'normal') return list;
+    return list.slice().sort(function (a, b) {
+      var ha = a.types.indexOf(eye) >= 0 ? 1 : 0, hb = b.types.indexOf(eye) >= 0 ? 1 : 0;
+      return (hb - ha) || ((b.sev === 'high' ? 1 : 0) - (a.sev === 'high' ? 1 : 0));
+    });
+  }
   function renderResult() {
     var a = analyse(), fix = sec.classList.contains('fix-on');
     $('palSim').innerHTML = EYES.map(function (ty) {
@@ -119,7 +127,7 @@
       html += '<li class="apair hit"><div class="aswatches" aria-hidden="true"><span class="asw" style="background:' + cols[p[0]] + '"><i>' + (p[0] + 1) + '</i></span><span class="asw" style="background:' + cols[p[1]] + '"><i>' + (p[1] + 1) + '</i></span></div>' +
         '<div class="ameta"><b>#' + (p[0] + 1) + ' ↔ #' + (p[1] + 1) + '</b><span class="st">Too similar for everyone</span> · already close with typical vision</div></li>';
     });
-    a.findings.forEach(function (f) {
+    byEye(a.findings).forEach(function (f) {
       var li = U.pairLi(f, eye).replace('<b>' + U.esc(f.a) + ' ↔ ' + U.esc(f.b) + '</b>', '<b>#' + (f.ia + 1) + ' ↔ #' + (f.ib + 1) + ' <span class="hx">' + U.esc(f.a) + ' / ' + U.esc(f.b) + '</span></b>');
       html += li;
     });
@@ -180,8 +188,10 @@
   function renderMine() {
     var out = $('mineOut'); if (!mine) { out.hidden = true; return; }
     out.hidden = false;
-    $('mineFound').textContent = mine.colours < 2 ? 'Fewer than two distinct colours were found, so there is nothing to compare.' : U.foundText(mine.findings.length, mine.findings.filter(function (f) { return f.sev === 'high'; }).length);
-    $('minePairs').innerHTML = mine.findings.map(function (f) { return U.pairLi(f, eye); }).join('');
+    var soft = mine.soft || [];
+    $('mineFound').textContent = mine.colours < 2 ? 'Fewer than two distinct colours were found, so there is nothing to compare.' : U.foundText(mine.findings.length, mine.findings.filter(function (f) { return f.sev === 'high'; }).length, soft.length);
+    $('minePairs').innerHTML = byEye(mine.findings).map(function (f) { return U.pairLi(f, eye); }).join('') +
+      (soft.length ? '<li class="apair-sub">Only lightness keeps these apart</li>' + byEye(soft).map(function (f) { return U.pairLi(f, eye); }).join('') : '');
     $('mineNote').textContent = (mine.overloaded ? 'This image uses many colours for categories. Matching that many colours to a legend is hard for everyone, so direct labels will help more than a new palette. ' : '') +
       'Works best on flat-colour charts. Photos, gradients and heavily compressed images can give false alarms.';
   }

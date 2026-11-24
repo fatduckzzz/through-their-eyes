@@ -410,3 +410,15 @@ body[data-vision] .scene.active .world.simfx.peek,body[data-vision] .world.simfx
 
 /* no dark vignette: it shaded the bottom of every screen */
 body::before{display:none!important}
+
+
+/* charts chapter: the card always fits the screen, so the pairs that collapse are visible without scrolling the page */
+.sc-img{max-height:min(34vh,380px)!important}
+.sc-pairs{max-height:min(24vh,214px)!important}
+.sc-pairs .apair-rest{opacity:.7;border-style:dashed}
+.sc-pairs .apair-rest .ameta b{font-weight:600}
+@media(max-width:900px){.sc-img{max-height:30vh!important}.sc-pairs{max-height:min(22vh,130px)!important}}
+
+/* heads-up tier in the chart checker */
+.apair.soft{border-style:dashed;background:rgba(255,255,255,.025)}
+.apair-sub{list-style:none;margin:10px 0 2px;font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
