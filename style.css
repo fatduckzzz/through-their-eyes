@@ -175,10 +175,10 @@
   .appwin .inner{padding:18px 20px}
   .appwin h4{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin-bottom:13px}
   html[lang="zh"] .appwin h4{font-family:var(--sans)}
-  .field{display:block;width:100%;background:#101018;border-radius:9px;padding:10px 13px;margin-bottom:10px;border:2.5px solid #8cb41e;color:var(--dim);font-size:.9rem;text-align:left;transition:.2s;position:relative}
+  .field{display:block;width:100%;background:#101018;border-radius:9px;padding:10px 13px;margin-bottom:10px;border:2.5px solid #749468;color:var(--dim);font-size:.9rem;text-align:left;transition:.2s;position:relative}
   .field small{display:block;font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin-bottom:3px}
   .field:hover{filter:brightness(1.25)}
-  .field.err{border-color:#b46464}
+  .field.err{border-color:#c77e6d}
   .field .fix-ic{display:none;position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:.95rem}
   .field .fix-msg{display:none;font-size:.76rem;margin-top:4px;color:#ff8a7a}
   .dual{position:relative;width:100%;aspect-ratio:7/4;border-radius:16px;overflow:hidden;box-shadow:0 40px 110px -45px #000,inset 0 0 0 1px rgba(255,255,255,.05)}
